@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>登录</title>
+</head>
+<body onload="document.getElementById('username').focus()">
+
+<form name="loginForm" action="login" method="POST">
+    <input id="username" name="username" type="text" value="admin" autocomplete="off"/>
+    <input id="password" name="password" type="password" value="123456" />
+    <button type="submit">登录</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<div class="dropdown uic-tree-select">
+    <a class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="input-group" style="width: 100%" ng-show="editable" >
+            <input type="text" class="form-control" ng-model="ngModel.name" ng-focus="onFocus($event)" ng-blur="onBlur($event)" ng-keydown="onKeyDown($event)" stop-propagation>
+            <span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
+        </div>
+        <div class="input-group" style="width: 100%" ng-show="!editable">
+            <input type="text" class="form-control" ng-model="ngModel.name" readonly>
+            <span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
+        </div>
+    </a>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dLabel" ng-style="{width: dropdownWidth}"
+          stop-propagation>
+        <div uic-tree="tree" selected-node="selectedNode" ></div>
+    </div>
+    <a ng-show="showClear && ngModel.objectId" href="javascript:;" ng-click="deselect()" class="cancel-select">×</a>
+</div>

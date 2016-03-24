@@ -1,0 +1,38 @@
+<form class="form-horizontal" role="form" name="accountForm">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">×</button>
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">账号</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" ng-model="account.name" validator="required,minlength"
+                       min-length="3" minlength-error-message="账号长度不能小于3位" validator="required">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">密码</label>
+
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="password" ng-model="account.password"
+                       validator="required,minlength" min-length="6" minlength-error-message="密码长度不能小于6位">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">确认密码</label>
+
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword"
+                       validator="required,matching" validator-password="{{account.password}}">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" validation-submit="accountForm" ng-click="submit()">保存</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div>
+    <div cg-busy="promise"></div>
+</form>
