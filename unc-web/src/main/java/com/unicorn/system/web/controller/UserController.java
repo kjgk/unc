@@ -2,6 +2,7 @@ package com.unicorn.system.web.controller;
 
 import com.mysema.query.types.Predicate;
 import com.unicorn.core.exception.ServiceException;
+import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Account;
 import com.unicorn.system.domain.po.QUser;
@@ -10,8 +11,6 @@ import com.unicorn.system.service.AccountService;
 import com.unicorn.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +29,7 @@ public class UserController extends BaseController {
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<User> list(
-            String keyword,
-            @RequestParam(defaultValue = DEFAULT_PAGE_NO) int pageNo,
-            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
+    public Page<User> list(PageInfo pageInfo, String keyword) {
 
         QUser user = QUser.user;
         Predicate predicate = null;
@@ -41,9 +37,7 @@ public class UserController extends BaseController {
             predicate = user.name.containsIgnoreCase(keyword)
                     .or(user.userRoleList.any().role.name.containsIgnoreCase(keyword));
         }
-        Pageable pageable = new PageRequest(pageNo - 1, pageSize, new Sort(Sort.Direction.ASC, "name"));
-        QueryInfo queryInfo = new QueryInfo(predicate, pageable);
-
+        QueryInfo queryInfo = new QueryInfo(predicate, pageInfo, new Sort(Sort.Direction.ASC, "name"));
         return userService.getUser(queryInfo);
     }
 
@@ -85,7 +79,9 @@ public class UserController extends BaseController {
         accountService.saveAccount(account);
     }
 
-    /******************** 菜单 ********************/
+    /**
+     * ***************** 菜单 *******************
+     */
     @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.GET)
     public List<String> getMenus(@PathVariable("objectId") String objectId) {
 

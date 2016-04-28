@@ -8,12 +8,7 @@ import java.util.Date;
 
 public class BaseController {
 
-    protected static final String DEFAULT_PAGE_NO = "1";
-
-    protected static final String DEFAULT_PAGE_SIZE = "10";
-
     protected static final String TREE_NODE_ROOT = "Root";
-
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

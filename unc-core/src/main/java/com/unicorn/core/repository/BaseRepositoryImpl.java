@@ -4,6 +4,8 @@ import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
 import com.unicorn.core.query.QueryInfo;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 
@@ -46,6 +48,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
 
     public Page<T> findAll(QueryInfo queryInfo) {
 
-        return this.findAll(queryInfo.getPredicate(), queryInfo.getPageable());
+        Pageable pageable = new PageRequest(queryInfo.getPageInfo().getPageNo() - 1, queryInfo.getPageInfo().getPageSize(), queryInfo.getSort());
+        return this.findAll(queryInfo.getPredicate(), pageable);
     }
 }

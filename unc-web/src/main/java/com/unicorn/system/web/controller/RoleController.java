@@ -1,14 +1,13 @@
 package com.unicorn.system.web.controller;
 
 import com.mysema.query.types.Predicate;
+import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.QRole;
 import com.unicorn.system.domain.po.Role;
 import com.unicorn.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +22,14 @@ public class RoleController extends BaseController {
     private RoleService roleService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<Role> list(
-            String keyword,
-            @RequestParam(defaultValue = DEFAULT_PAGE_NO) int pageNo,
-            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
+    public Page<Role> list(PageInfo pageInfo, String keyword) {
 
         QRole role = QRole.role;
         Predicate predicate = null;
         if (!StringUtils.isEmpty(keyword)) {
             predicate = role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword));
         }
-        Pageable pageable = new PageRequest(pageNo - 1, pageSize, new Sort(Sort.Direction.ASC, "name"));
-        QueryInfo queryInfo = new QueryInfo(predicate, pageable);
-
+        QueryInfo queryInfo = new QueryInfo(predicate, pageInfo, new Sort(Sort.Direction.ASC, "name"));
         return roleService.getRole(queryInfo);
     }
 

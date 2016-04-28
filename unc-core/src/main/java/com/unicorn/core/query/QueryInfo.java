@@ -1,35 +1,32 @@
 package com.unicorn.core.query;
 
 import com.mysema.query.types.Predicate;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 public class QueryInfo {
 
     private Predicate predicate;
 
-    private Pageable pageable;
+    private PageInfo pageInfo;
 
-    public QueryInfo() {
-    }
+    private Sort sort;
 
-    public QueryInfo(Predicate predicate, Pageable pageable) {
+    public QueryInfo(Predicate predicate, PageInfo pageInfo, Sort sort) {
+
         this.predicate = predicate;
-        this.pageable = pageable;
+        this.pageInfo = pageInfo;
+        this.sort = sort;
     }
 
     public Predicate getPredicate() {
         return predicate;
     }
 
-    public void setPredicate(Predicate predicate) {
-        this.predicate = predicate;
+    public PageInfo getPageInfo() {
+        return pageInfo;
     }
 
-    public Pageable getPageable() {
-        return pageable;
-    }
-
-    public void setPageable(Pageable pageable) {
-        this.pageable = pageable;
+    public Sort getSort() {
+        return sort;
     }
 }
