@@ -1,6 +1,0 @@
-<div>
-    <div ng-repeat="x in items" class="uic-radio {{radioClass}}" ng-class="{'radio-inline': inline}">
-        <input id="{{'uic-radio-'+ ngModelName +'-'+ $index}}" name="{{ngModelName}}" ng-model="innerModel.value" value="{{x.objectId}}" type="radio">
-        <label for="{{'uic-radio-' + ngModelName +'-'+$index}}">{{x.name}}</label>
-    </div>
-</div>
