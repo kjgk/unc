@@ -1,7 +1,9 @@
 package com.unicorn.core.userdetails;
 
 import com.unicorn.system.domain.po.Account;
+import com.unicorn.system.domain.po.RoleAuthority;
 import com.unicorn.system.domain.po.User;
+import com.unicorn.system.domain.po.UserRole;
 import com.unicorn.system.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +27,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Account account = accountService.getAccountByName(name);
         User user = account.getUser();
         List authorities = new ArrayList();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        for (UserRole userRole : user.getUserRoleList()) {
+            for (RoleAuthority roleAuthority : userRole.getRole().getAuthorityList()) {
+                authorities.add(new SimpleGrantedAuthority(roleAuthority.getAuthority().getTag()));
+            }
+        }
         return new UserDetail(user, authorities);
     }
 }

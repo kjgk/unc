@@ -4,8 +4,10 @@ import com.unicorn.core.PasswordEncoder;
 import com.unicorn.core.exception.ServiceException;
 import com.unicorn.system.domain.po.Account;
 import com.unicorn.system.domain.po.User;
+import com.unicorn.system.domain.po.UserRole;
 import com.unicorn.system.reposiory.AccountRepository;
 import com.unicorn.system.reposiory.UserRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,11 @@ public class AccountService {
 
     public Account getAccountByName(String name) {
 
-        return accountRepository.findByName(name);
+        Account account = accountRepository.findByName(name);
+        Hibernate.initialize(account.getUser().getUserRoleList());
+        for (UserRole userRole : account.getUser().getUserRoleList()) {
+            Hibernate.initialize(userRole.getRole().getAuthorityList());
+        }
+        return account;
     }
 }

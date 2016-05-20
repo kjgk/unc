@@ -24,6 +24,8 @@ public class QRole extends EntityPathBase<Role> {
 
     public final com.unicorn.core.domain.QDefaultNomenclator _super;
 
+    public final ListPath<RoleAuthority, QRoleAuthority> authorityList = this.<RoleAuthority, QRoleAuthority>createList("authorityList", RoleAuthority.class, QRoleAuthority.class, PathInits.DIRECT2);
+
     // inherited
     public final QUser createdBy;
 

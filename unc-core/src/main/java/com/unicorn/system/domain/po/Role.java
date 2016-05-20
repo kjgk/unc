@@ -11,7 +11,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +27,6 @@ public class Role extends DefaultNomenclator {
 
     private String tag;
 
+    @OneToMany(mappedBy = "role")
+    private List<RoleAuthority> authorityList;
 }

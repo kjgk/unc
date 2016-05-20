@@ -1,6 +1,6 @@
 package com.unicorn.system.web.controller;
 
-import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
@@ -32,12 +32,11 @@ public class UserController extends BaseController {
     public Page<User> list(PageInfo pageInfo, String keyword) {
 
         QUser user = QUser.user;
-        Predicate predicate = null;
+        BooleanExpression expression = user.isNotNull();
         if (!StringUtils.isEmpty(keyword)) {
-            predicate = user.name.containsIgnoreCase(keyword)
-                    .or(user.userRoleList.any().role.name.containsIgnoreCase(keyword));
+            expression = expression.and(user.name.containsIgnoreCase(keyword).or(user.userRoleList.any().role.name.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(predicate, pageInfo, new Sort(Sort.Direction.ASC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.ASC, "name"));
         return userService.getUser(queryInfo);
     }
 

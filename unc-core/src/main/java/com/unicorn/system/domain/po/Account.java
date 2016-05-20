@@ -24,7 +24,7 @@ public class Account extends DefaultNomenclator {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
 }

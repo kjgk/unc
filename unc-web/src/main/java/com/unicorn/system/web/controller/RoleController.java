@@ -1,6 +1,6 @@
 package com.unicorn.system.web.controller;
 
-import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.QRole;
@@ -25,11 +25,11 @@ public class RoleController extends BaseController {
     public Page<Role> list(PageInfo pageInfo, String keyword) {
 
         QRole role = QRole.role;
-        Predicate predicate = null;
+        BooleanExpression expression = role.isNotNull();
         if (!StringUtils.isEmpty(keyword)) {
-            predicate = role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword));
+            expression = expression.and(role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(predicate, pageInfo, new Sort(Sort.Direction.ASC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.ASC, "name"));
         return roleService.getRole(queryInfo);
     }
 
