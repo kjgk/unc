@@ -1,8 +1,7 @@
-package com.unicorn.system.reposiory;
+package com.unicorn.system.repository;
 
 import com.unicorn.core.repository.BaseRepository;
 import com.unicorn.system.domain.po.Menu;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

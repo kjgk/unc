@@ -1,7 +1,7 @@
 package com.unicorn.system.service;
 
 import com.unicorn.system.domain.po.Code;
-import com.unicorn.system.reposiory.CodeRepository;
+import com.unicorn.system.repository.CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

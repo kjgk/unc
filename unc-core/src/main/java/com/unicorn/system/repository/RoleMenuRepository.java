@@ -1,4 +1,4 @@
-package com.unicorn.system.reposiory;
+package com.unicorn.system.repository;
 
 import com.unicorn.system.domain.po.RoleMenu;
 import org.springframework.data.jpa.repository.Modifying;
