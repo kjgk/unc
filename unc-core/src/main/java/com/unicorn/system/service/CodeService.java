@@ -33,6 +33,12 @@ public class CodeService {
         return codeList.get(0);
     }
 
+    public Code getCodeByEnum(Enum tag) {
+
+        List<Code> codeList = codeRepository.findByEnum(tag.getClass().getSimpleName(), tag.name());
+        return codeList.get(0);
+    }
+
     public void saveCode(Code code) {
 
         if (StringUtils.isEmpty(code.getObjectId())) {
