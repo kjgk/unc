@@ -31,7 +31,6 @@ public class AccountService {
         User user = userRepository.findOne(account.getUser().getObjectId());
         Account temp = getAccountByName(account.getName());
         if (temp == null) {
-
             if (user.getAccount() == null) {
                 account.setPassword(passwordEncoder.encode(account.getPassword()));
                 accountRepository.save(account);
@@ -53,6 +52,9 @@ public class AccountService {
     public Account getAccountByName(String name) {
 
         Account account = accountRepository.findByName(name);
+        if (account == null) {
+            return null;
+        }
         Hibernate.initialize(account.getUser().getUserRoleList());
         for (UserRole userRole : account.getUser().getUserRoleList()) {
             Hibernate.initialize(userRole.getRole().getAuthorityList());

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SYS_USER_ROLE")
+@Table(name = "SYS_USERROLE")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class UserRole extends DefaultIdentifiable {
 

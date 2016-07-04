@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SYS_ROLE_AUTHORITY")
+@Table(name = "SYS_ROLEAUTHORITY")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class RoleAuthority extends DefaultIdentifiable {
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ROLE_ID")
     private Role role;
 

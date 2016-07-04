@@ -14,4 +14,5 @@ public interface CodeRepository extends BaseRepository<Code> {
 
     @Query(value = "select c from Code c where c.parent.tag = ?1 and c.tag = ?2")
     List<Code> findByEnum(String parentTag, String tag);
+
 }

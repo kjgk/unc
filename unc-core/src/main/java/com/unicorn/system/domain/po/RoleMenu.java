@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "SYS_ROLE_MENU")
+@Table(name = "SYS_ROLEMENU")
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class RoleMenu extends DefaultIdentifiable {
 
