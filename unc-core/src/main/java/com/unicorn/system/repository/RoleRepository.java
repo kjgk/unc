@@ -5,4 +5,5 @@ import com.unicorn.core.repository.BaseRepository;
 
 public interface RoleRepository extends BaseRepository<Role> {
 
+    Role findByTag(String roleTag);
 }

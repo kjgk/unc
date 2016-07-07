@@ -1,13 +1,11 @@
 package com.unicorn.system.service;
 
 import com.unicorn.core.query.QueryInfo;
+import com.unicorn.system.domain.po.Role;
 import com.unicorn.system.domain.po.RoleMenu;
 import com.unicorn.system.domain.po.User;
 import com.unicorn.system.domain.po.UserRole;
-import com.unicorn.system.repository.AccountRepository;
-import com.unicorn.system.repository.RoleMenuRepository;
-import com.unicorn.system.repository.UserRepository;
-import com.unicorn.system.repository.UserRoleRepository;
+import com.unicorn.system.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +26,9 @@ public class UserService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserRoleRepository userRoleRepository;
@@ -88,5 +89,18 @@ public class UserService {
             }
         }
         return resultList;
+    }
+
+    public List<User> getUserByRoleTag(String roleTag) {
+
+        List<User> userList = new ArrayList();
+        Role role = roleRepository.findByTag(roleTag);
+        if (role != null) {
+            List<UserRole> userRoleList = userRoleRepository.findByRoleId(role.getObjectId());
+            for (UserRole userRole : userRoleList) {
+                userList.add(getUser(userRole.getUser().getObjectId()));
+            }
+        }
+        return userList;
     }
 }
