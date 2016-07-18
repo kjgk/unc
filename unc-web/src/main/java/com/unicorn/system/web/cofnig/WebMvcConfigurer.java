@@ -17,7 +17,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 
-        registry.addViewController("/login").setStatusCode(HttpStatus.FORBIDDEN).setViewName("login");
+        registry.addViewController("/login").setStatusCode(HttpStatus.OK).setViewName("login");
         registry.addViewController("/").setViewName("index");
     }
 
@@ -37,5 +37,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 
         return registration;
     }
+
 
 }

@@ -25,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
         Account account = accountService.getAccountByName(name);
+        if (account == null) {
+            throw new UsernameNotFoundException("用户不存在!");
+        }
         User user = account.getUser();
         List authorities = new ArrayList();
         for (UserRole userRole : user.getUserRoleList()) {
