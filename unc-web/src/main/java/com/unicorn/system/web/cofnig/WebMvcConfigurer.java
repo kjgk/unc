@@ -17,7 +17,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 
-        registry.addViewController("/login").setStatusCode(HttpStatus.OK).setViewName("login");
+        registry.addViewController("/login").setStatusCode(HttpStatus.FORBIDDEN).setViewName("login");
         registry.addViewController("/").setViewName("index");
     }
 
@@ -30,7 +30,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     public ServletRegistrationBean dispatcherServletRegistration() {
 
         ServletRegistrationBean registration = new ServletRegistrationBean(
-                dispatcherServlet(), "/", "/api/*");
+                dispatcherServlet(), "/", "/api/v1/*");
 
         registration
                 .setName(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_REGISTRATION_BEAN_NAME);
