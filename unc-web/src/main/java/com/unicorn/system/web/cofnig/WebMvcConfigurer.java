@@ -18,6 +18,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
 
         registry.addViewController("/login").setStatusCode(HttpStatus.FORBIDDEN).setViewName("login");
+        registry.addViewController("/apkDownload").setViewName("apkDownload");
         registry.addViewController("/").setViewName("index");
     }
 
