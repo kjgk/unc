@@ -23,6 +23,6 @@ public class User extends DefaultNomenclator {
     @OneToOne(mappedBy = "user")
     private Account account;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoleList;
 }

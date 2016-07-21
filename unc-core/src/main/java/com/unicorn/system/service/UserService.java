@@ -103,4 +103,9 @@ public class UserService {
         }
         return userList;
     }
+
+    public User getSystemUser() {
+
+        return userRepository.findOne("36e6754b82894343919a6b42a1a3216d");
+    }
 }
