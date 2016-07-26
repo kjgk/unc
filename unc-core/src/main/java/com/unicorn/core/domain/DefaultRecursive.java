@@ -3,6 +3,7 @@ package com.unicorn.core.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +19,7 @@ public abstract class DefaultRecursive<T> extends DefaultNomenclator implements 
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     @OrderBy(value = "ORDER_NO asc")
+    @Where(clause = "deleted=0")
     @JsonIgnore
     private List<T> childList;
 

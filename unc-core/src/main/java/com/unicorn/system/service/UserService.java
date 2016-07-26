@@ -104,8 +104,24 @@ public class UserService {
         return userList;
     }
 
-    public User getSystemUser() {
+    public List<String> getUserRoleTags(User user) {
+
+        List<String> roleTags = new ArrayList();
+        if (user != null && !CollectionUtils.isEmpty(user.getUserRoleList())) {
+            for (UserRole userRole : user.getUserRoleList()) {
+                roleTags.add(userRole.getRole().getTag());
+            }
+        }
+        return roleTags;
+    }
+
+    public User getAdministrator() {
 
         return userRepository.findOne("36e6754b82894343919a6b42a1a3216d");
+    }
+
+    public User getSystemUser() {
+
+        return userRepository.findOne("ff0d905985564798853e531fe0dc98ac");
     }
 }
