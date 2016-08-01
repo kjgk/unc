@@ -48,6 +48,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/hems/artificer/picture/**").permitAll()
                 .antMatchers("/apk/download/**").permitAll()
                 .antMatchers("/apkDownload").permitAll()
+                .antMatchers("/api/v1/hems/artificer/picture/**").permitAll()
                 .antMatchers("/**").access("hasRole('USER')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .anyRequest().authenticated()
@@ -63,6 +64,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .csrf().disable();
+
+        http.sessionManagement().maximumSessions(1);
     }
 
     @Override

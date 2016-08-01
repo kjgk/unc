@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AccountRepository extends BaseRepository<Account> {
 
-    @Query(value = "select a from Account a where a.name = ?1")
+    @Query(value = "select a from Account a where a.name = ?1 and a.user.deleted = 0")
     Account findByName(String s);
 }

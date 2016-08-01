@@ -13,6 +13,6 @@ public interface RoleMenuRepository extends CrudRepository<RoleMenu, String> {
     @Query("delete from RoleMenu a where a.role.objectId = ?1")
     void deleteByRoleId(String roleId);
 
-    @Query("select a from RoleMenu a where a.role.objectId = ?1")
+    @Query("select a from RoleMenu a where a.role.objectId = ?1 and a.role.deleted = 0 and a.menu.deleted = 0")
     List<RoleMenu> findByRoleId(String roleId);
 }
