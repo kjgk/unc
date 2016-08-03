@@ -4,7 +4,6 @@ import com.unicorn.system.domain.po.Menu;
 import com.unicorn.system.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 
@@ -18,9 +17,8 @@ public class MenuService {
 
     public Menu getRootMenu() {
 
-        return menuRepository.findByParent(null).get(0);
+        return menuRepository.findRoot();
     }
-
 
     public Menu getMenu(String id) {
 
@@ -29,11 +27,7 @@ public class MenuService {
 
     public void saveMenu(Menu menu) {
 
-        if (StringUtils.isEmpty(menu.getObjectId())) {
-            menuRepository.save(menu);
-        } else {
-            getMenu(menu.getObjectId()).merge(menu);
-        }
+        menuRepository.save(menu);
     }
 
     public void deleteMenu(String objectId) {

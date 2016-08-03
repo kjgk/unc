@@ -5,7 +5,6 @@ import com.unicorn.core.domain.DefaultRecursive;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "SYS_CODE")
-@Where(clause = "deleted=0")
 @EntityListeners({AuditingEntityListener.class})
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Code extends DefaultRecursive<Code> {

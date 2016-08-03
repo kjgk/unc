@@ -45,11 +45,7 @@ public class ApkService {
     public void saveApk(Apk apk) throws ServiceException {
 
         if (checkApkTag(apk)) {
-            if (StringUtils.isEmpty(apk.getObjectId())) {
-                apkRepository.save(apk);
-            } else {
-                getApk(apk.getObjectId()).merge(apk);
-            }
+            apkRepository.save(apk);
         } else {
             throw new ServiceException("安装包标识“" + apk.getTag() + "”已经存在！");
         }

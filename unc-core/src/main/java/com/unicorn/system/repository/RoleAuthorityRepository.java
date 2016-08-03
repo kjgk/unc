@@ -13,6 +13,6 @@ public interface RoleAuthorityRepository extends CrudRepository<RoleAuthority, S
     @Query("delete from RoleAuthority a where a.role.objectId = ?1")
     void deleteByRoleId(String roleId);
 
-    @Query("select a from RoleAuthority a where a.role.objectId = ?1")
+    @Query("select a from RoleAuthority a where a.role.objectId = ?1 and a.authority.deleted = 0")
     List<RoleAuthority> findByRoleId(String roleId);
 }

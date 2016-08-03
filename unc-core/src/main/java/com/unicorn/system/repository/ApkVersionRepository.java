@@ -1,10 +1,10 @@
 package com.unicorn.system.repository;
 
-import com.unicorn.core.repository.BaseRepository;
 import com.unicorn.system.domain.po.ApkVersion;
+import org.springframework.data.repository.CrudRepository;
 
 
-public interface ApkVersionRepository extends BaseRepository<ApkVersion> {
+public interface ApkVersionRepository extends CrudRepository<ApkVersion, String> {
 
     ApkVersion findByVersion(String version);
 

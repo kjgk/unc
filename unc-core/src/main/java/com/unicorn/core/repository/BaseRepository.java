@@ -29,4 +29,8 @@ public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPr
      * @return
      */
     Page<T> findAll(QueryInfo queryInfo);
+
+    T findRoot();
+
+    T findRoot(String tag);
 }

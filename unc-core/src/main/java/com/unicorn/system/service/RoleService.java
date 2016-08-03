@@ -9,7 +9,6 @@ import com.unicorn.system.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -36,11 +35,7 @@ public class RoleService {
 
     public void saveRole(Role role) {
 
-        if (StringUtils.isEmpty(role.getObjectId())) {
-            roleRepository.save(role);
-        } else {
-            getRole(role.getObjectId()).merge(role);
-        }
+        roleRepository.save(role);
     }
 
     public void deleteRole(String objectId) {

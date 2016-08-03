@@ -8,11 +8,10 @@ import java.util.List;
 
 public interface CodeRepository extends BaseRepository<Code> {
 
-    List<Code> findByParent(Code parent);
-
+    @Query("select a from Code a where a.tag = ?1 and a.deleted = 0")
     List<Code> findByTag(String tag);
 
-    @Query(value = "select c from Code c where c.parent.tag = ?1 and c.tag = ?2")
+    @Query("select a from Code a where a.parent.tag = ?1 and a.tag = ?2 and a.deleted = 0")
     List<Code> findByEnum(String parentTag, String tag);
 
 }

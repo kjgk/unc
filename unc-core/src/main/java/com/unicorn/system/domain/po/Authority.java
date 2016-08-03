@@ -6,16 +6,16 @@ import com.unicorn.core.domain.DefaultNomenclator;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "SYS_AUTHORITY")
-@Where(clause = "deleted=0")
 @EntityListeners({AuditingEntityListener.class})
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 @JsonIgnoreProperties(ignoreUnknown = true)

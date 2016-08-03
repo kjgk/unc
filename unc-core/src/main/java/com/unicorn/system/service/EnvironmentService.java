@@ -6,16 +6,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnvironmentService {
 
-    @Value("${temp.path}")
+    @Value("${environment.path.temp}")
     private String tempPath;
 
-    @Value("${upload.path}")
+    @Value("${environment.path.upload}")
     private String uploadPath;
 
-    @Value("${exploded.path}")
+    @Value("${environment.path.exploded}")
     private String explodedPath;
 
-    @Value("${webSocket.port}")
+    @Value("${environment.webSocket.port}")
     private Integer webSocketPort;
 
     public String getTempPath() {

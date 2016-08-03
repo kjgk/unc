@@ -50,15 +50,10 @@ public class UserService {
     public void saveUser(User user) {
 
         List<UserRole> userRoleList = user.getUserRoleList();
-
-        if (StringUtils.isEmpty(user.getObjectId())) {
-            userRepository.save(user);
-        } else {
-            User persistent = getUser(user.getObjectId());
-            userRoleRepository.delete(persistent.getUserRoleList());
-            persistent.merge(user);
+        if (!StringUtils.isEmpty(user.getObjectId())) {
+            userRoleRepository.delete(getUser(user.getObjectId()).getUserRoleList());
         }
-
+        userRepository.save(user);
         if (!CollectionUtils.isEmpty(userRoleList)) {
             for (UserRole userRole : userRoleList) {
                 userRole.setUser(user);
@@ -71,7 +66,6 @@ public class UserService {
 
         return accountRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getUser();
     }
-
 
     public void deleteUser(String objectId) {
 

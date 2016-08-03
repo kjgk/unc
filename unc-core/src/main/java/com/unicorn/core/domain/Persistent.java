@@ -5,6 +5,4 @@ public interface Persistent extends Identifiable {
     Integer getDeleted();
 
     void setDeleted(Integer deleted);
-
-    Persistent merge(Persistent from);
 }

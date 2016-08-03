@@ -6,7 +6,6 @@ import com.unicorn.core.domain.DefaultNomenclator;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -15,7 +14,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "SYS_ACCOUNT")
-@Where(clause = "deleted=0")
 @EntityListeners({AuditingEntityListener.class})
 @JsonIdentityInfo(generator = JSOGGenerator.class)
 public class Account extends DefaultNomenclator {
