@@ -38,12 +38,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http
             .authorizeRequests()
-                .antMatchers("/static/**").permitAll()
+                .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/api/v1/system/file/**").permitAll()
                 .antMatchers("/api/v1/hems/artificer/picture/**").permitAll()
                 .antMatchers("/apk/download/**").permitAll()
                 .antMatchers("/apkDownload").permitAll()
-                .antMatchers("/api/v1/hems/artificer/picture/**").permitAll()
                 .antMatchers("/**").access("hasRole('USER')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .anyRequest().authenticated()
