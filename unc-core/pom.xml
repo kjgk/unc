@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.unicorn</groupId>
         <artifactId>unc-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.5-RELEASE</version>
     </parent>
 
     <properties>
@@ -68,6 +68,12 @@
             <groupId>com.voodoodyne.jackson.jsog</groupId>
             <artifactId>jackson-jsog</artifactId>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
         </dependency>
 
         <dependency>

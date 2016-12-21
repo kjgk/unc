@@ -60,6 +60,8 @@ public class MenuController extends BaseController {
                 data.put("tag", child.getTag());
                 data.put("url", child.getUrl());
                 data.put("icon", child.getIcon());
+                data.put("hidden", child.getHidden());
+                data.put("enabled", child.getEnabled());
                 data.put("orderNo", child.getOrderNo());
                 data.put("leaf", CollectionUtils.isEmpty(child.getChildList()) ? 1 : 0);
                 if (fetchChild) {

@@ -24,4 +24,8 @@ public class Menu extends DefaultRecursive<Menu> {
     private String icon;
 
     private String url;
+
+    private Integer hidden;
+
+    private Integer enabled;
 }

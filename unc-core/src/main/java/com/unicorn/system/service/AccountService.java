@@ -10,8 +10,10 @@ import com.unicorn.system.repository.UserRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -51,10 +53,11 @@ public class AccountService {
 
     public Account getAccountByName(String name) {
 
-        Account account = accountRepository.findByName(name);
-        if (account == null) {
+        List<Account> accounts = accountRepository.findByName(name);
+        if (CollectionUtils.isEmpty(accounts)) {
             return null;
         }
+        Account account = accounts.get(0);
         Hibernate.initialize(account.getUser().getUserRoleList());
         for (UserRole userRole : account.getUser().getUserRoleList()) {
             Hibernate.initialize(userRole.getRole().getAuthorityList());

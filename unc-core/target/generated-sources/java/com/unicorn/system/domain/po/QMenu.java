@@ -38,6 +38,10 @@ public class QMenu extends EntityPathBase<Menu> {
     //inherited
     public final StringPath description;
 
+    public final NumberPath<Integer> enabled = createNumber("enabled", Integer.class);
+
+    public final NumberPath<Integer> hidden = createNumber("hidden", Integer.class);
+
     public final StringPath icon = createString("icon");
 
     //inherited

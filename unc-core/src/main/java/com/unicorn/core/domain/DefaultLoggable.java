@@ -27,7 +27,6 @@ public abstract class DefaultLoggable extends DefaultIdentifiable implements Log
     @Fetch(FetchMode.JOIN)
     private User createdBy;
 
-    @JsonIgnore
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_DATE", nullable = true)

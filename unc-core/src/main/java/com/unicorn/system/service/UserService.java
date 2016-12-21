@@ -1,6 +1,7 @@
 package com.unicorn.system.service;
 
 import com.unicorn.core.query.QueryInfo;
+import com.unicorn.core.userdetails.UserDetail;
 import com.unicorn.system.domain.po.Role;
 import com.unicorn.system.domain.po.RoleMenu;
 import com.unicorn.system.domain.po.User;
@@ -64,7 +65,12 @@ public class UserService {
 
     public User getCurrentUser() {
 
-        return accountRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName()).getUser();
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (name.equals("anonymousUser")) {
+            return null;
+        }
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetail.getUser();
     }
 
     public void deleteUser(String objectId) {
@@ -79,7 +85,9 @@ public class UserService {
         for (UserRole userRole : userRoleList) {
             List<RoleMenu> roleMenuList = roleMenuRepository.findByRoleId(userRole.getRole().getObjectId());
             for (RoleMenu roleMenu : roleMenuList) {
-                resultList.add(roleMenu.getMenu().getObjectId());
+                if (roleMenu.getMenu().getEnabled() == 1) {
+                    resultList.add(roleMenu.getMenu().getObjectId());
+                }
             }
         }
         return resultList;
