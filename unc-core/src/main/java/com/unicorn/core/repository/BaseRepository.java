@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @NoRepositoryBean
 public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPredicateExecutor<T> {
@@ -29,6 +30,8 @@ public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPr
      * @return
      */
     Page<T> findAll(QueryInfo queryInfo);
+
+    List<T> findAll();
 
     T findRoot();
 

@@ -126,6 +126,18 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
         return this.findAll(expression, pageable);
     }
 
+    public List<T> findAll() {
+
+        EntityPath path = DEFAULT_ENTITY_PATH_RESOLVER.createPath(entityInformation.getJavaType());
+        Field deleted = ReflectionUtils.findField(path.getClass(), "deleted");
+        if (deleted != null) {
+            Predicate expression = ((NumberPath) ReflectionUtils.getField(ReflectionUtils.findField(path.getClass(), "deleted"), path)).eq(0);
+            return super.findAll(expression);
+        } else {
+            return super.findAll();
+        }
+    }
+
     public T findRoot() {
 
         return findRoot(null);
