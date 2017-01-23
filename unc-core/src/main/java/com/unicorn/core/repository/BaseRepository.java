@@ -1,5 +1,6 @@
 package com.unicorn.core.repository;
 
+import com.mysema.query.types.Predicate;
 import com.unicorn.core.query.QueryInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
@@ -21,6 +22,11 @@ public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPr
      */
     void logicDelete(String objectId);
 
+    /**
+     * 逻辑删除
+     *
+     * @param entity
+     */
     void logicDelete(T entity);
 
     /**
@@ -31,7 +37,21 @@ public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPr
      */
     Page<T> findAll(QueryInfo queryInfo);
 
+    /**
+     * 查询所有记录，不包含删除的记录
+     * @return
+     */
     List<T> findAll();
+
+    /**
+     * 基于QueryDSL的查询
+     *
+     * @param predicate
+     * @return
+     */
+    List<T> findAll(Predicate predicate);
+
+    long count(Predicate predicate);
 
     T findRoot();
 

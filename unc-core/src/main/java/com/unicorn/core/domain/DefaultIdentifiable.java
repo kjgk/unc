@@ -17,8 +17,6 @@ public abstract class DefaultIdentifiable implements Identifiable {
 
     @Id
     @Column(name = "OBJECTID")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @GeneratedValue(generator = "uuid")
     private String objectId;
 
 }

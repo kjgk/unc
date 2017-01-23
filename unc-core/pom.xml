@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.unicorn</groupId>
         <artifactId>unc-parent</artifactId>
-        <version>1.0.6-RELEASE</version>
+        <version>1.0.9-RELEASE</version>
     </parent>
 
     <properties>
@@ -36,11 +36,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
@@ -60,6 +55,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
@@ -68,12 +68,6 @@
             <groupId>com.voodoodyne.jackson.jsog</groupId>
             <artifactId>jackson-jsog</artifactId>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
         </dependency>
 
         <dependency>
@@ -98,6 +92,12 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>LATEST</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
         </dependency>
 
     </dependencies>
