@@ -23,5 +23,6 @@ public class Configuration extends DefaultLoggable {
 
     private String key;
 
+    @Column(columnDefinition = "text")
     private String value;
 }

@@ -78,6 +78,12 @@ public class UserController extends BaseController {
         accountService.saveAccount(account);
     }
 
+    @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
+    public void modifyPassword(@RequestBody Map data) throws ServiceException {
+
+        accountService.modifyPassword(getCurrentUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
+    }
+
     /**
      * ***************** 菜单 *******************
      */

@@ -51,6 +51,19 @@ public class AccountService {
         }
     }
 
+    public void modifyPassword(String userId, String newPassword, String originPassword) {
+
+        if (newPassword.equals(originPassword)) {
+            throw new ServiceException("新密码不能与旧密码一致!");
+        }
+        User user = userRepository.findOne(userId);
+        if (!passwordEncoder.matches(originPassword, user.getAccount().getPassword())) {
+            throw new ServiceException("原始密码不正确!");
+        }
+        user.getAccount().setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(user.getAccount());
+    }
+
     public Account getAccountByName(String name) {
 
         List<Account> accounts = accountRepository.findByName(name);
