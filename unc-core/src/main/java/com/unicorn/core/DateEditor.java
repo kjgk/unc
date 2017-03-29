@@ -1,5 +1,6 @@
 package com.unicorn.core;
 
+import org.joda.time.DateTime;
 import org.springframework.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
@@ -38,33 +39,37 @@ public class DateEditor extends PropertyEditorSupport {
             setValue(null);
         } else {
             try {
-                if (this.dateFormat != null)
-                    setValue(this.dateFormat.parse(text));
-                else {
-                    if (text.contains(" ")) {
-                        ParseException pe;
-                        String pattern = "HH:mm:ss";
-                        while (true) {
-                            try {
-                                setValue(new SimpleDateFormat("yyyy-MM-dd " + pattern).parse(text));
-                                pe = null;
-                                break;
-                            } catch (ParseException ex) {
-                                pe = ex;
-                                if (pattern.length() > 2) {
-                                    pattern = pattern.substring(0, pattern.length() - 3);
+                setValue(new DateTime(text).toDate());
+            } catch (Exception e) {
+                try {
+                    if (this.dateFormat != null)
+                        setValue(this.dateFormat.parse(text));
+                    else {
+                        if (text.contains(" ")) {
+                            ParseException pe;
+                            String pattern = "HH:mm:ss";
+                            while (true) {
+                                try {
+                                    setValue(new SimpleDateFormat("yyyy-MM-dd " + pattern).parse(text));
+                                    pe = null;
+                                    break;
+                                } catch (ParseException ex) {
+                                    pe = ex;
+                                    if (pattern.length() > 2) {
+                                        pattern = pattern.substring(0, pattern.length() - 3);
+                                    }
                                 }
                             }
+                            if (pe != null) {
+                                throw pe;
+                            }
+                        } else {
+                            setValue(DATEFORMAT.parse(text));
                         }
-                        if (pe != null) {
-                            throw pe;
-                        }
-                    } else {
-                        setValue(DATEFORMAT.parse(text));
                     }
+                } catch (ParseException ex) {
+                    throw new IllegalArgumentException("Could not parse date: " + ex.getMessage(), ex);
                 }
-            } catch (ParseException ex) {
-                throw new IllegalArgumentException("Could not parse date: " + ex.getMessage(), ex);
             }
         }
     }

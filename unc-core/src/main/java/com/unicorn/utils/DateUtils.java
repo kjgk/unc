@@ -188,4 +188,28 @@ public final class DateUtils {
         long t1 = c.getTime().getTime();
         return (int) (t / 1000 - t1 / 1000) / 3600 / 24;
     }
+
+    public static boolean dateBetween(Date date, Integer startMonth, Integer startDay, Integer endMonth, Integer endDay) {
+
+        Calendar calendar = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+
+        startDate.set(year, startMonth - 1, startDay, 0, 0, 0);
+        endDate.set(year, endMonth - 1, endDay + 1, 0, 0, 0);
+
+        if (startDate.after(endDate)) {
+            if (startDate.after(calendar)) {
+                startDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR) - 1);
+            } else {
+                endDate.set(Calendar.YEAR, endDate.get(Calendar.YEAR) + 1);
+            }
+        }
+        if (calendar.after(startDate) && calendar.before(endDate)) {
+            return true;
+        }
+        return false;
+    }
 }
