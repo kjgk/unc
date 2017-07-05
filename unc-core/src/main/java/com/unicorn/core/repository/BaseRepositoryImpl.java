@@ -1,6 +1,7 @@
 package com.unicorn.core.repository;
 
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
@@ -14,6 +15,7 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
@@ -133,6 +135,16 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
     public List<T> findAll(Predicate predicate) {
 
         return super.findAll(pretreatmentPredicate(predicate));
+    }
+
+    public List<T> findAll(Predicate predicate, Sort sort) {
+
+        return super.findAll(pretreatmentPredicate(predicate), sort);
+    }
+
+    public List<T> findAll(Predicate predicate, OrderSpecifier... orderSpecifiers) {
+
+        return super.findAll(pretreatmentPredicate(predicate), orderSpecifiers);
     }
 
     public List<T> findAll() {

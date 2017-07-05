@@ -1,8 +1,10 @@
 package com.unicorn.core.repository;
 
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.unicorn.core.query.QueryInfo;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -50,6 +52,22 @@ public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPr
      * @return
      */
     List<T> findAll(Predicate predicate);
+
+    /**
+     * 基于QueryDSL的查询
+     *
+     * @param predicate
+     * @return
+     */
+    public List<T> findAll(Predicate predicate, Sort sort);
+
+    /**
+     * 基于QueryDSL的查询
+     *
+     * @param predicate
+     * @return
+     */
+    Iterable<T> findAll(Predicate predicate, OrderSpecifier... orderSpecifiers);
 
     long count(Predicate predicate);
 

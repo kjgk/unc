@@ -189,6 +189,16 @@ public final class DateUtils {
         return (int) (t / 1000 - t1 / 1000) / 3600 / 24;
     }
 
+    /**
+     * 判断日期是否在指定区间内
+     *
+     * @param date
+     * @param startMonth
+     * @param startDay
+     * @param endMonth
+     * @param endDay
+     * @return
+     */
     public static boolean dateBetween(Date date, Integer startMonth, Integer startDay, Integer endMonth, Integer endDay) {
 
         Calendar calendar = Calendar.getInstance();
@@ -205,6 +215,42 @@ public final class DateUtils {
                 startDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR) - 1);
             } else {
                 endDate.set(Calendar.YEAR, endDate.get(Calendar.YEAR) + 1);
+            }
+        }
+        if (calendar.after(startDate) && calendar.before(endDate)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断时间是否在指定区间内
+     *
+     * @param time
+     * @param startHour
+     * @param startMinute
+     * @param endHour
+     * @param endMinute
+     * @return
+     */
+    public static boolean timeBetween(Date time, Integer startHour, Integer startMinute, Integer endHour, Integer endMinute) {
+
+        Calendar calendar = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        calendar.setTime(time);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int date = calendar.get(Calendar.DATE);
+
+        startDate.set(year, month, date, startHour, startMinute, 0);
+        endDate.set(year, month, date, endHour, endMinute + 1, 0);
+
+        if (startDate.after(endDate)) {
+            if (startDate.after(calendar)) {
+                startDate.set(Calendar.DATE, startDate.get(Calendar.DATE) - 1);
+            } else {
+                endDate.set(Calendar.DATE, endDate.get(Calendar.DATE) + 1);
             }
         }
         if (calendar.after(startDate) && calendar.before(endDate)) {

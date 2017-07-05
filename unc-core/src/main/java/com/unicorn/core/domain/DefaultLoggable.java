@@ -39,7 +39,6 @@ public abstract class DefaultLoggable extends DefaultIdentifiable implements Log
     @Fetch(FetchMode.JOIN)
     private User lastUpdatedBy;
 
-    @JsonIgnore
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "LAST_UPDATE_DATE", nullable = true)
