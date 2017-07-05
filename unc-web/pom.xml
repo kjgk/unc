@@ -5,19 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>unc-web</artifactId>
-    <version>1.2.1-RELEASE</version>
 
     <parent>
         <groupId>com.unicorn</groupId>
         <artifactId>unc-parent</artifactId>
-        <version>1.2.1-RELEASE</version>
+        <version>1.2.2-RELEASE</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.unicorn</groupId>
             <artifactId>unc-core</artifactId>
-            <version>1.2.1-RELEASE</version>
+            <version>1.2.2-RELEASE</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>

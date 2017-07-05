@@ -12,25 +12,11 @@ public class EnvironmentService {
     @Value("${environment.path.upload}")
     private String uploadPath;
 
-    @Value("${environment.path.exploded}")
-    private String explodedPath;
-
-    @Value("${environment.webSocket.port}")
-    private Integer webSocketPort;
-
     public String getTempPath() {
         return tempPath;
     }
 
-    public String getExplodedPath() {
-        return explodedPath;
-    }
-
     public String getUploadPath() {
         return uploadPath;
-    }
-
-    public Integer getWebSocketPort() {
-        return webSocketPort;
     }
 }
