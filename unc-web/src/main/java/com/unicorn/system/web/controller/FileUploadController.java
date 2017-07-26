@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class FileUploadController extends BaseController {
     private EnvironmentService environmentService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Map upload(@RequestParam(value = "attachment") CommonsMultipartFile attachment) throws Exception {
+    public Map upload(@RequestParam(value = "attachment") CommonsMultipartFile attachment, HttpServletRequest request) throws Exception {
 
         String filename = attachment.getFileItem().getName();
         String tempFilename = Identities.randomLong() + "";
@@ -33,7 +34,7 @@ public class FileUploadController extends BaseController {
         Map data = new HashMap();
         data.put("filename", filename);
         data.put("tempFilename", tempFilename);
-        data.put("tempFileName", tempFilename);
+        data.put("link", request.getContextPath() + "/system/file/download?tempFilename=" + tempFilename + "&type=image");
         return data;
     }
 
