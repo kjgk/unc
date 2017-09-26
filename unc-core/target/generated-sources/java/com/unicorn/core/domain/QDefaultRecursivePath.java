@@ -1,18 +1,18 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
+import com.querydsl.core.types.Path;
 
 
 /**
  * QDefaultRecursivePath is a Querydsl query type for DefaultRecursivePath
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultRecursivePath extends EntityPathBase<DefaultRecursivePath<?>> {
 
     private static final long serialVersionUID = -848574380L;
@@ -30,19 +30,19 @@ public class QDefaultRecursivePath extends EntityPathBase<DefaultRecursivePath<?
 
     public final StringPath path = createString("path");
 
-    @SuppressWarnings("all")
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursivePath(String variable) {
-        super((Class)DefaultRecursivePath.class, forVariable(variable));
+        super((Class) DefaultRecursivePath.class, forVariable(variable));
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursivePath(Path<? extends DefaultRecursivePath> path) {
-        super((Class)path.getType(), path.getMetadata());
+        super((Class) path.getType(), path.getMetadata());
     }
 
-    @SuppressWarnings("all")
-    public QDefaultRecursivePath(PathMetadata<?> metadata) {
-        super((Class)DefaultRecursivePath.class, metadata);
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
+    public QDefaultRecursivePath(PathMetadata metadata) {
+        super((Class) DefaultRecursivePath.class, metadata);
     }
 
 }

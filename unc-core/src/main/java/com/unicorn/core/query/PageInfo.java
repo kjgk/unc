@@ -1,5 +1,8 @@
 package com.unicorn.core.query;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 public class PageInfo {
 
     private Integer pageNo = 1;

@@ -1,18 +1,18 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
+import com.querydsl.core.types.Path;
 
 
 /**
  * QDefaultIdentifiable is a Querydsl query type for DefaultIdentifiable
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultIdentifiable extends EntityPathBase<DefaultIdentifiable> {
 
     private static final long serialVersionUID = 1422041561L;
@@ -29,7 +29,7 @@ public class QDefaultIdentifiable extends EntityPathBase<DefaultIdentifiable> {
         super(path.getType(), path.getMetadata());
     }
 
-    public QDefaultIdentifiable(PathMetadata<?> metadata) {
+    public QDefaultIdentifiable(PathMetadata metadata) {
         super(DefaultIdentifiable.class, metadata);
     }
 

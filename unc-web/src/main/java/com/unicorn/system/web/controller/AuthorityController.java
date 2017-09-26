@@ -1,6 +1,6 @@
 package com.unicorn.system.web.controller;
 
-import com.mysema.query.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Authority;

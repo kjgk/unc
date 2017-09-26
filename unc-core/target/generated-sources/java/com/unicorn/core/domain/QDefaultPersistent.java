@@ -1,19 +1,19 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QDefaultPersistent is a Querydsl query type for DefaultPersistent
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultPersistent extends EntityPathBase<DefaultPersistent> {
 
     private static final long serialVersionUID = 706678490L;
@@ -46,18 +46,18 @@ public class QDefaultPersistent extends EntityPathBase<DefaultPersistent> {
     }
 
     public QDefaultPersistent(Path<? extends DefaultPersistent> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QDefaultPersistent(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QDefaultPersistent(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QDefaultPersistent(PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultPersistent(PathMetadata metadata, PathInits inits) {
         this(DefaultPersistent.class, metadata, inits);
     }
 
-    public QDefaultPersistent(Class<? extends DefaultPersistent> type, PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultPersistent(Class<? extends DefaultPersistent> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QDefaultLoggable(type, metadata, inits);
         this.createdBy = _super.createdBy;

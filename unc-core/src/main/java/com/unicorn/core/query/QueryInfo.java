@@ -1,6 +1,6 @@
 package com.unicorn.core.query;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 
 public class QueryInfo {

@@ -1,19 +1,19 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QDefaultNomenclator is a Querydsl query type for DefaultNomenclator
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultNomenclator extends EntityPathBase<DefaultNomenclator> {
 
     private static final long serialVersionUID = -739223023L;
@@ -51,18 +51,18 @@ public class QDefaultNomenclator extends EntityPathBase<DefaultNomenclator> {
     }
 
     public QDefaultNomenclator(Path<? extends DefaultNomenclator> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QDefaultNomenclator(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QDefaultNomenclator(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QDefaultNomenclator(PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultNomenclator(PathMetadata metadata, PathInits inits) {
         this(DefaultNomenclator.class, metadata, inits);
     }
 
-    public QDefaultNomenclator(Class<? extends DefaultNomenclator> type, PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultNomenclator(Class<? extends DefaultNomenclator> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QDefaultPersistent(type, metadata, inits);
         this.createdBy = _super.createdBy;

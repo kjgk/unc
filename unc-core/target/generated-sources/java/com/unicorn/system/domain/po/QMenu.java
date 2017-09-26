@@ -1,19 +1,19 @@
 package com.unicorn.system.domain.po;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QMenu is a Querydsl query type for Menu
  */
-@Generated("com.mysema.query.codegen.EntitySerializer")
+@Generated("com.querydsl.codegen.EntitySerializer")
 public class QMenu extends EntityPathBase<Menu> {
 
     private static final long serialVersionUID = 1409884672L;
@@ -70,18 +70,18 @@ public class QMenu extends EntityPathBase<Menu> {
     }
 
     public QMenu(Path<? extends Menu> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QMenu(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QMenu(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QMenu(PathMetadata<?> metadata, PathInits inits) {
+    public QMenu(PathMetadata metadata, PathInits inits) {
         this(Menu.class, metadata, inits);
     }
 
-    public QMenu(Class<? extends Menu> type, PathMetadata<?> metadata, PathInits inits) {
+    public QMenu(Class<? extends Menu> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new com.unicorn.core.domain.QDefaultRecursive(type, metadata, inits);
         this.createdBy = _super.createdBy;

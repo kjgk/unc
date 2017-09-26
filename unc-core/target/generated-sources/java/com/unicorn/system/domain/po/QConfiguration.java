@@ -1,19 +1,19 @@
 package com.unicorn.system.domain.po;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QConfiguration is a Querydsl query type for Configuration
  */
-@Generated("com.mysema.query.codegen.EntitySerializer")
+@Generated("com.querydsl.codegen.EntitySerializer")
 public class QConfiguration extends EntityPathBase<Configuration> {
 
     private static final long serialVersionUID = 597364085L;
@@ -48,18 +48,18 @@ public class QConfiguration extends EntityPathBase<Configuration> {
     }
 
     public QConfiguration(Path<? extends Configuration> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QConfiguration(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QConfiguration(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QConfiguration(PathMetadata<?> metadata, PathInits inits) {
+    public QConfiguration(PathMetadata metadata, PathInits inits) {
         this(Configuration.class, metadata, inits);
     }
 
-    public QConfiguration(Class<? extends Configuration> type, PathMetadata<?> metadata, PathInits inits) {
+    public QConfiguration(Class<? extends Configuration> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new com.unicorn.core.domain.QDefaultLoggable(type, metadata, inits);
         this.createdBy = _super.createdBy;

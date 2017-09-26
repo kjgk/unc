@@ -1,19 +1,19 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QDefaultRecursive is a Querydsl query type for DefaultRecursive
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
 
     private static final long serialVersionUID = 1864781711L;
@@ -54,26 +54,26 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
 
     public final SimplePath<Object> parent = createSimple("parent", Object.class);
 
-    @SuppressWarnings("all")
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursive(String variable) {
-        this((Class)DefaultRecursive.class, forVariable(variable), INITS);
+        this((Class) DefaultRecursive.class, forVariable(variable), INITS);
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursive(Path<? extends DefaultRecursive> path) {
-        this((Class)path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this((Class) path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QDefaultRecursive(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QDefaultRecursive(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    @SuppressWarnings("all")
-    public QDefaultRecursive(PathMetadata<?> metadata, PathInits inits) {
-        this((Class)DefaultRecursive.class, metadata, inits);
+    @SuppressWarnings({"all", "rawtypes", "unchecked"})
+    public QDefaultRecursive(PathMetadata metadata, PathInits inits) {
+        this((Class) DefaultRecursive.class, metadata, inits);
     }
 
-    public QDefaultRecursive(Class<? extends DefaultRecursive<?>> type, PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultRecursive(Class<? extends DefaultRecursive<?>> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new QDefaultNomenclator(type, metadata, inits);
         this.createdBy = _super.createdBy;

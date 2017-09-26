@@ -1,10 +1,10 @@
 package com.unicorn.core.repository;
 
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.NumberPath;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.unicorn.core.domain.DefaultPersistent;
 import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
@@ -192,4 +192,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
         }
         return predicate;
     }
+
+
+
 }

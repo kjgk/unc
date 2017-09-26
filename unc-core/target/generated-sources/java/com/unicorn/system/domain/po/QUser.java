@@ -1,19 +1,19 @@
 package com.unicorn.system.domain.po;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QUser is a Querydsl query type for User
  */
-@Generated("com.mysema.query.codegen.EntitySerializer")
+@Generated("com.querydsl.codegen.EntitySerializer")
 public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = 1410136172L;
@@ -59,18 +59,18 @@ public class QUser extends EntityPathBase<User> {
     }
 
     public QUser(Path<? extends User> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QUser(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QUser(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QUser(PathMetadata<?> metadata, PathInits inits) {
+    public QUser(PathMetadata metadata, PathInits inits) {
         this(User.class, metadata, inits);
     }
 
-    public QUser(Class<? extends User> type, PathMetadata<?> metadata, PathInits inits) {
+    public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new com.unicorn.core.domain.QDefaultNomenclator(type, metadata, inits);
         this.account = inits.isInitialized("account") ? new QAccount(forProperty("account"), inits.get("account")) : null;

@@ -1,19 +1,19 @@
 package com.unicorn.core.domain;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.mysema.query.types.path.*;
+import com.querydsl.core.types.dsl.*;
 
-import com.mysema.query.types.PathMetadata;
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PathInits;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
  * QDefaultLoggable is a Querydsl query type for DefaultLoggable
  */
-@Generated("com.mysema.query.codegen.SupertypeSerializer")
+@Generated("com.querydsl.codegen.SupertypeSerializer")
 public class QDefaultLoggable extends EntityPathBase<DefaultLoggable> {
 
     private static final long serialVersionUID = -866417024L;
@@ -40,18 +40,18 @@ public class QDefaultLoggable extends EntityPathBase<DefaultLoggable> {
     }
 
     public QDefaultLoggable(Path<? extends DefaultLoggable> path) {
-        this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QDefaultLoggable(PathMetadata<?> metadata) {
-        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
+    public QDefaultLoggable(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QDefaultLoggable(PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultLoggable(PathMetadata metadata, PathInits inits) {
         this(DefaultLoggable.class, metadata, inits);
     }
 
-    public QDefaultLoggable(Class<? extends DefaultLoggable> type, PathMetadata<?> metadata, PathInits inits) {
+    public QDefaultLoggable(Class<? extends DefaultLoggable> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.createdBy = inits.isInitialized("createdBy") ? new com.unicorn.system.domain.po.QUser(forProperty("createdBy"), inits.get("createdBy")) : null;
         this.lastUpdatedBy = inits.isInitialized("lastUpdatedBy") ? new com.unicorn.system.domain.po.QUser(forProperty("lastUpdatedBy"), inits.get("lastUpdatedBy")) : null;
