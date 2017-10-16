@@ -3,7 +3,6 @@ package com.unicorn.system.web.controller;
 import com.unicorn.system.service.EnvironmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,19 +26,16 @@ public class FileDownloadController extends BaseController {
         String filename = request.getParameter("filename");
         String tempFilename = request.getParameter("tempFilename");
         String type = request.getParameter("type");
-
-        File file = null;
-        if (!StringUtils.isEmpty(tempFilename)) {
-            file = new File(environmentService.getTempPath() + '/' + tempFilename);
-        }
-        if (!StringUtils.isEmpty(filename)) {
-            file = new File(environmentService.getUploadPath() + '/' + filename);
-        }
-
+        String tempFilePath = environmentService.getTempPath() + '/' + tempFilename;
+        File file = new File(tempFilePath);
         FileInputStream fileInputStream = new FileInputStream(file);
 
         response.setHeader("Content-Length", file.length() + "");
+        if (filename != null) {
+            response.setHeader("Content-Disposition", "filename=" + new String(filename.getBytes("GBK"), "ISO-8859-1"));
+        }
         if ("image".equals(type)) {
+
             response.setContentType("image/jpg");
         } else {
             response.setContentType("application/octet-stream");
