@@ -36,6 +36,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.printStackTrace();
         Map errors = new HashMap();
         errors.put("error", ex.getMessage());
+        errors.put("code", ex.getCode());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(MediaTypes.TEXT_PLAIN_UTF_8));
         return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.BAD_REQUEST, request);

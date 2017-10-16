@@ -46,19 +46,19 @@ public class AccountService {
             if (temp.getUser().getObjectId().equals(account.getUser().getObjectId())) {
                 temp.setPassword(passwordEncoder.encode(account.getPassword()));
             } else {
-                throw new ServiceException("帐号已经存在!");
+                throw new ServiceException("帐号已经存在!", "E101");
             }
         }
     }
 
     public void modifyPassword(String userId, String newPassword, String originPassword) {
 
-        if (newPassword.equals(originPassword)) {
-            throw new ServiceException("新密码不能与旧密码一致!");
-        }
         User user = userRepository.findOne(userId);
         if (!passwordEncoder.matches(originPassword, user.getAccount().getPassword())) {
-            throw new ServiceException("原始密码不正确!");
+            throw new ServiceException("原始密码不正确!", "E102");
+        }
+        if (newPassword.equals(originPassword)) {
+            throw new ServiceException("新密码不能与旧密码一致!", "E103");
         }
         user.getAccount().setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(user.getAccount());
