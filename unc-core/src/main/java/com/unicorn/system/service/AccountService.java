@@ -1,12 +1,15 @@
 package com.unicorn.system.service;
 
 import com.unicorn.core.PasswordEncoder;
+import com.unicorn.core.RSAKeyProducer;
 import com.unicorn.core.exception.ServiceException;
 import com.unicorn.system.domain.po.Account;
 import com.unicorn.system.domain.po.User;
 import com.unicorn.system.domain.po.UserRole;
 import com.unicorn.system.repository.AccountRepository;
 import com.unicorn.system.repository.UserRepository;
+import com.unicorn.utils.RSAUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,26 @@ public class AccountService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void saveAccount(Account account) throws ServiceException {
+    @Autowired
+    private EnvironmentService environmentService;
+
+    @Autowired
+    private RSAKeyProducer rsaKeyProducer;
+
+    public void saveAccount(Account account) {
+
+        String passwordTransport = environmentService.getPasswordTransport();
+        if (!StringUtils.isEmpty(passwordTransport)) {
+            if (environmentService.getPasswordTransport().equalsIgnoreCase("rsa")) {
+                String password = null;
+                try {
+                    password = RSAUtils.decryptByPrivateKey(account.getPassword(), rsaKeyProducer.getPrivateKey());
+                } catch (Exception e) {
+                    throw new ServiceException(e.getMessage());
+                }
+                account.setPassword(password);
+            }
+        }
 
         User user = userRepository.findOne(account.getUser().getObjectId());
         Account temp = getAccountByName(account.getName());
@@ -52,6 +74,18 @@ public class AccountService {
     }
 
     public void modifyPassword(String userId, String newPassword, String originPassword) {
+
+        String passwordTransport = environmentService.getPasswordTransport();
+        if (!StringUtils.isEmpty(passwordTransport)) {
+            if (environmentService.getPasswordTransport().equalsIgnoreCase("rsa")) {
+                try {
+                    originPassword = RSAUtils.decryptByPrivateKey(originPassword, rsaKeyProducer.getPrivateKey());
+                    newPassword = RSAUtils.decryptByPrivateKey(newPassword, rsaKeyProducer.getPrivateKey());
+                } catch (Exception e) {
+                    throw new ServiceException(e.getMessage());
+                }
+            }
+        }
 
         User user = userRepository.findOne(userId);
         if (!passwordEncoder.matches(originPassword, user.getAccount().getPassword())) {

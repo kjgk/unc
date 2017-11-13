@@ -1,7 +1,6 @@
 package com.unicorn.system.web.controller;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Account;
@@ -68,7 +67,7 @@ public class UserController extends BaseController {
      * ***************** 帐号 *******************
      */
     @RequestMapping(value = "/{objectId}/account", method = RequestMethod.PUT)
-    public void saveAccount(@RequestBody Map data, @PathVariable String objectId) throws ServiceException {
+    public void saveAccount(@RequestBody Map data, @PathVariable String objectId) throws Exception {
 
         User user = userService.getUser(objectId);
         Account account = new Account();
@@ -79,7 +78,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
-    public void modifyPassword(@RequestBody Map data) throws ServiceException {
+    public void modifyPassword(@RequestBody Map data) throws Exception {
 
         accountService.modifyPassword(getCurrentUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
     }
