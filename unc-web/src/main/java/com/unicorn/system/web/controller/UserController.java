@@ -83,6 +83,20 @@ public class UserController extends BaseController {
         accountService.modifyPassword(getCurrentUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
     }
 
+    @RequestMapping(value = "/{objectId}/account/lock", method = RequestMethod.PUT)
+    public void lockAccount(@PathVariable String objectId) throws Exception {
+
+        User user = userService.getUser(objectId);
+        accountService.lockAccount(user.getAccount().getName());
+    }
+
+    @RequestMapping(value = "/{objectId}/account/unlock", method = RequestMethod.PUT)
+    public void unlockAccount(@PathVariable String objectId) throws Exception {
+
+        User user = userService.getUser(objectId);
+        accountService.unlockAccount(user.getAccount().getName());
+    }
+
     /**
      * ***************** 菜单 *******************
      */

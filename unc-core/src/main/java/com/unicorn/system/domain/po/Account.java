@@ -25,4 +25,10 @@ public class Account extends DefaultNomenclator {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    /**
+     * 1: 正常
+     * 3：账户被禁用
+     * 4：账户被锁定
+     */
+    private Integer status;
 }

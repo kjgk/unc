@@ -6,6 +6,7 @@ import com.unicorn.system.domain.po.User;
 import com.unicorn.system.domain.po.UserRole;
 import com.unicorn.system.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +28,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Account account = accountService.getAccountByName(name);
         if (account == null) {
             throw new UsernameNotFoundException("用户不存在!");
+        }
+        if (account.getStatus() != null && account.getStatus() == 4) {
+            throw new LockedException("该用户被禁止登录！");
         }
         User user = account.getUser();
         List authorities = new ArrayList();

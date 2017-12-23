@@ -111,4 +111,20 @@ public class AccountService {
         }
         return account;
     }
+
+    public void lockAccount(String name) {
+
+        Account account = getAccountByName(name);
+        if (account != null) {
+            account.setStatus(4);
+        }
+    }
+
+    public void unlockAccount(String name) {
+
+        Account account = getAccountByName(name);
+        if (account != null) {
+            account.setStatus(1);
+        }
+    }
 }

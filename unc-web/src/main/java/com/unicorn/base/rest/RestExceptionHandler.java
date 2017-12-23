@@ -48,9 +48,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.printStackTrace();
         Map errors = new HashMap();
         if (ex instanceof FileNotFoundException) {
-            errors.put("error", "File Not Found！");
+            errors.put("error", "File Not Found!");
         } else {
-            errors.put("error", ex.toString());
+            errors.put("error", "HTTP-Internal Server Error!");
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(MediaTypes.TEXT_PLAIN_UTF_8));

@@ -50,6 +50,8 @@ public class QAccount extends EntityPathBase<Account> {
 
     public final StringPath password = createString("password");
 
+    public final NumberPath<Integer> status = createNumber("status", Integer.class);
+
     public final QUser user;
 
     public QAccount(String variable) {
