@@ -76,6 +76,8 @@ public class UserService {
     public void deleteUser(String objectId) {
 
         userRepository.logicDelete(objectId);
+
+        accountRepository.deleteByUserId(objectId);
     }
 
     public List<String> getUserMenus(String objectId) {

@@ -8,7 +8,7 @@
 
     <groupId>com.unicorn</groupId>
     <artifactId>unc-parent</artifactId>
-    <version>1.4.3-RELEASE</version>
+    <version>1.4.4-RELEASE</version>
     <packaging>pom</packaging>
 
     <modules>
