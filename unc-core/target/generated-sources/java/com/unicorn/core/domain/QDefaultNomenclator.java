@@ -36,6 +36,9 @@ public class QDefaultNomenclator extends EntityPathBase<DefaultNomenclator> {
     public final StringPath description = createString("description");
 
     //inherited
+    public final NumberPath<Long> id;
+
+    //inherited
     public final DateTimePath<java.util.Date> lastUpdateDate;
 
     // inherited
@@ -68,6 +71,7 @@ public class QDefaultNomenclator extends EntityPathBase<DefaultNomenclator> {
         this.createdBy = _super.createdBy;
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
+        this.id = _super.id;
         this.lastUpdateDate = _super.lastUpdateDate;
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.objectId = _super.objectId;

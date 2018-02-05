@@ -45,6 +45,9 @@ public class QMenu extends EntityPathBase<Menu> {
     public final StringPath icon = createString("icon");
 
     //inherited
+    public final NumberPath<Long> id;
+
+    //inherited
     public final DateTimePath<java.util.Date> lastUpdateDate;
 
     // inherited
@@ -88,6 +91,7 @@ public class QMenu extends EntityPathBase<Menu> {
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
         this.description = _super.description;
+        this.id = _super.id;
         this.lastUpdateDate = _super.lastUpdateDate;
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.name = _super.name;

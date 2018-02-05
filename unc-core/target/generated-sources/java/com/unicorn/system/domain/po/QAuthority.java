@@ -37,6 +37,9 @@ public class QAuthority extends EntityPathBase<Authority> {
     public final StringPath description;
 
     //inherited
+    public final NumberPath<Long> id;
+
+    //inherited
     public final DateTimePath<java.util.Date> lastUpdateDate;
 
     // inherited
@@ -73,6 +76,7 @@ public class QAuthority extends EntityPathBase<Authority> {
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
         this.description = _super.description;
+        this.id = _super.id;
         this.lastUpdateDate = _super.lastUpdateDate;
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.name = _super.name;

@@ -28,6 +28,9 @@ public class QDefaultLoggable extends EntityPathBase<DefaultLoggable> {
 
     public final DateTimePath<java.util.Date> createdDate = createDateTime("createdDate", java.util.Date.class);
 
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
     public final DateTimePath<java.util.Date> lastUpdateDate = createDateTime("lastUpdateDate", java.util.Date.class);
 
     public final com.unicorn.system.domain.po.QUser lastUpdatedBy;

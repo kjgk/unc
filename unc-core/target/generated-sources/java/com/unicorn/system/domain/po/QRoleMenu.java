@@ -24,6 +24,9 @@ public class QRoleMenu extends EntityPathBase<RoleMenu> {
 
     public final com.unicorn.core.domain.QDefaultIdentifiable _super = new com.unicorn.core.domain.QDefaultIdentifiable(this);
 
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
     public final QMenu menu;
 
     //inherited

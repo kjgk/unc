@@ -26,6 +26,9 @@ public class QDefaultRecursivePath extends EntityPathBase<DefaultRecursivePath<?
     public final SimplePath<Object> genuine = createSimple("genuine", Object.class);
 
     //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
     public final StringPath objectId = _super.objectId;
 
     public final StringPath path = createString("path");

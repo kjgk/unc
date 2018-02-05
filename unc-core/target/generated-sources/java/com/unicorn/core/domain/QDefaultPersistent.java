@@ -33,6 +33,9 @@ public class QDefaultPersistent extends EntityPathBase<DefaultPersistent> {
     public final NumberPath<Integer> deleted = createNumber("deleted", Integer.class);
 
     //inherited
+    public final NumberPath<Long> id;
+
+    //inherited
     public final DateTimePath<java.util.Date> lastUpdateDate;
 
     // inherited
@@ -62,6 +65,7 @@ public class QDefaultPersistent extends EntityPathBase<DefaultPersistent> {
         this._super = new QDefaultLoggable(type, metadata, inits);
         this.createdBy = _super.createdBy;
         this.createdDate = _super.createdDate;
+        this.id = _super.id;
         this.lastUpdateDate = _super.lastUpdateDate;
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.objectId = _super.objectId;

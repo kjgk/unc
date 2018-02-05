@@ -27,6 +27,9 @@ public class QRoleAuthority extends EntityPathBase<RoleAuthority> {
     public final QAuthority authority;
 
     //inherited
+    public final NumberPath<Long> id = _super.id;
+
+    //inherited
     public final StringPath objectId = _super.objectId;
 
     public final QRole role;

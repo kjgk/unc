@@ -39,6 +39,9 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
     public final StringPath description;
 
     //inherited
+    public final NumberPath<Long> id;
+
+    //inherited
     public final DateTimePath<java.util.Date> lastUpdateDate;
 
     // inherited
@@ -80,6 +83,7 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
         this.description = _super.description;
+        this.id = _super.id;
         this.lastUpdateDate = _super.lastUpdateDate;
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.name = _super.name;
