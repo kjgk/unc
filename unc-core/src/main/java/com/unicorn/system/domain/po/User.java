@@ -23,6 +23,4 @@ public class User extends DefaultNomenclator {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoleList;
-
-    private String telephone;
 }

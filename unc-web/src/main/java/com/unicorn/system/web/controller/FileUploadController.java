@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/system/file/upload")
-public class FileUploadController extends BaseController {
+public class FileUploadController {
 
     @Autowired
     private EnvironmentService environmentService;

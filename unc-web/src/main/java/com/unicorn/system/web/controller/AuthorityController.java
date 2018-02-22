@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/system/authority")
-public class AuthorityController extends BaseController {
+public class AuthorityController {
 
     @Autowired
     private AuthorityService authorityService;

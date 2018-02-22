@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 
 @RestController
 @RequestMapping(value = "/system/file/download")
-public class FileDownloadController extends BaseController {
+public class FileDownloadController {
 
     @Autowired
     private EnvironmentService environmentService;

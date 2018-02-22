@@ -3,6 +3,7 @@ package com.unicorn.system.web.controller;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
+import com.unicorn.core.userdetails.UserDetail;
 import com.unicorn.system.domain.po.Account;
 import com.unicorn.system.domain.po.QUser;
 import com.unicorn.system.domain.po.User;
@@ -11,6 +12,7 @@ import com.unicorn.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/system/user")
-public class UserController extends BaseController {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -80,7 +82,8 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
     public void modifyPassword(@RequestBody Map data) throws Exception {
 
-        accountService.modifyPassword(getCurrentUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        accountService.modifyPassword(userDetail.getUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
     }
 
     @RequestMapping(value = "/{objectId}/account/lock", method = RequestMethod.PUT)

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/system/code")
-public class CodeController extends BaseController {
+public class CodeController {
 
     @Autowired
     private CodeService codeService;
@@ -41,7 +41,7 @@ public class CodeController extends BaseController {
         // 根据ID获取
         else {
             Code code;
-            if (StringUtils.isEmpty(id) || TREE_NODE_ROOT.equals(id)) {
+            if (StringUtils.isEmpty(id) || "ROOT".equalsIgnoreCase(id)) {
                 if (fetchRoot) {
                     code = new Code();
                     code.setChildList(new ArrayList());

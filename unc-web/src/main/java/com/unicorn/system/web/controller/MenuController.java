@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/system/menu")
-public class MenuController extends BaseController {
+public class MenuController {
 
     @Autowired
     private MenuService menuService;
@@ -33,7 +33,7 @@ public class MenuController extends BaseController {
         // 根据ID获取
         else {
             Menu menu;
-            if (StringUtils.isEmpty(id) || TREE_NODE_ROOT.equals(id)) {
+            if (StringUtils.isEmpty(id) || "ROOT".equalsIgnoreCase(id)) {
                 if (fetchRoot) {
                     menu = new Menu();
                     menu.setChildList(new ArrayList());

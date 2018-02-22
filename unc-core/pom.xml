@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.unicorn</groupId>
         <artifactId>unc-parent</artifactId>
-        <version>1.4.4-RELEASE</version>
+        <version>1.4.5-RELEASE</version>
     </parent>
 
     <properties>
