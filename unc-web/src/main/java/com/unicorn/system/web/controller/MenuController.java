@@ -82,8 +82,7 @@ public class MenuController {
     @RequestMapping(method = RequestMethod.POST)
     public Menu create(@RequestBody Menu menu) {
 
-        menuService.saveMenu(menu);
-        return menu;
+        return menuService.saveMenu(menu);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)

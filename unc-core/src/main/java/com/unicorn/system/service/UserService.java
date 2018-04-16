@@ -2,7 +2,6 @@ package com.unicorn.system.service;
 
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.core.userdetails.UserDetail;
-import com.unicorn.system.domain.po.Role;
 import com.unicorn.system.domain.po.RoleMenu;
 import com.unicorn.system.domain.po.User;
 import com.unicorn.system.domain.po.UserRole;
@@ -48,19 +47,26 @@ public class UserService {
         return userRepository.findOne(objectId);
     }
 
-    public void saveUser(User user) {
+    public User saveUser(User user) {
 
-        List<UserRole> userRoleList = user.getUserRoleList();
-        if (!StringUtils.isEmpty(user.getObjectId())) {
-            userRoleRepository.delete(getUser(user.getObjectId()).getUserRoleList());
+        User current;
+        if (StringUtils.isEmpty(user.getObjectId())) {
+            current = userRepository.save(user);
+        } else {
+            current = userRepository.findOne(user.getObjectId());
+            current.setName(user.getName());
+            current.setDescription(user.getDescription());
+            userRoleRepository.delete(current.getUserRoleList());
         }
-        userRepository.save(user);
-        if (!CollectionUtils.isEmpty(userRoleList)) {
-            for (UserRole userRole : userRoleList) {
-                userRole.setUser(user);
+
+        if (!CollectionUtils.isEmpty(user.getUserRoleList())) {
+            for (UserRole userRole : user.getUserRoleList()) {
+                userRole.setUser(current);
                 userRoleRepository.save(userRole);
             }
+            current.setUserRoleList(user.getUserRoleList());
         }
+        return current;
     }
 
     public User getCurrentUser() {
@@ -93,30 +99,6 @@ public class UserService {
             }
         }
         return resultList;
-    }
-
-    public List<User> getUserByRoleTag(String roleTag) {
-
-        List<User> userList = new ArrayList();
-        Role role = roleRepository.findByTag(roleTag);
-        if (role != null) {
-            List<UserRole> userRoleList = userRoleRepository.findByRoleId(role.getObjectId());
-            for (UserRole userRole : userRoleList) {
-                userList.add(getUser(userRole.getUser().getObjectId()));
-            }
-        }
-        return userList;
-    }
-
-    public List<String> getUserRoleTags(User user) {
-
-        List<String> roleTags = new ArrayList();
-        if (user != null && !CollectionUtils.isEmpty(user.getUserRoleList())) {
-            for (UserRole userRole : user.getUserRoleList()) {
-                roleTags.add(userRole.getRole().getTag());
-            }
-        }
-        return roleTags;
     }
 
     public User getAdministrator() {

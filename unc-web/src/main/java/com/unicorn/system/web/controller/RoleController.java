@@ -42,8 +42,7 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.POST)
     public Role create(@RequestBody Role role) {
 
-        roleService.saveRole(role);
-        return role;
+        return roleService.saveRole(role);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)

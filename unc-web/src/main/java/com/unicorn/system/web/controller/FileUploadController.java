@@ -37,5 +37,4 @@ public class FileUploadController {
         data.put("link", request.getContextPath() + "/system/file/download?tempFilename=" + tempFilename + "&type=image");
         return data;
     }
-
 }

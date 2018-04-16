@@ -50,8 +50,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public User create(@RequestBody User user) {
 
-        userService.saveUser(user);
-        return user;
+        return userService.saveUser(user);
     }
 
     @RequestMapping(value = "{objectId}", method = RequestMethod.PUT)

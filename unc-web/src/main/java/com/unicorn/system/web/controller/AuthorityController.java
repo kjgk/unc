@@ -41,8 +41,7 @@ public class AuthorityController {
     @RequestMapping(method = RequestMethod.POST)
     public Authority create(@RequestBody Authority authority) {
 
-        authorityService.saveAuthority(authority);
-        return authority;
+        return authorityService.saveAuthority(authority);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)

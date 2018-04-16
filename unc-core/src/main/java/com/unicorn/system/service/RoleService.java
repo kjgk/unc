@@ -1,10 +1,7 @@
 package com.unicorn.system.service;
 
 import com.unicorn.core.query.QueryInfo;
-import com.unicorn.system.domain.po.Menu;
-import com.unicorn.system.domain.po.Role;
-import com.unicorn.system.domain.po.RoleAuthority;
-import com.unicorn.system.domain.po.RoleMenu;
+import com.unicorn.system.domain.po.*;
 import com.unicorn.system.repository.RoleAuthorityRepository;
 import com.unicorn.system.repository.RoleMenuRepository;
 import com.unicorn.system.repository.RoleRepository;
@@ -12,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -39,18 +37,28 @@ public class RoleService {
         return roleRepository.findOne(id);
     }
 
-    public void saveRole(Role role) {
+    public Role saveRole(Role role) {
 
-        roleRepository.save(role);
+        Role current;
+        if (StringUtils.isEmpty(role.getObjectId())) {
+            current = roleRepository.save(role);
+        } else {
+            current = roleRepository.findOne(role.getObjectId());
+            current.setName(role.getName());
+            current.setTag(role.getTag());
+            current.setDescription(role.getDescription());
+        }
 
-        roleAuthorityRepository.deleteByRoleId(role.getObjectId());
+        roleAuthorityRepository.deleteByRoleId(current.getObjectId());
 
         if (!CollectionUtils.isEmpty(role.getAuthorityList())) {
             for (RoleAuthority roleAuthority : role.getAuthorityList()) {
-                roleAuthority.setRole(role);
+                roleAuthority.setRole(current);
                 roleAuthorityRepository.save(roleAuthority);
             }
         }
+
+        return current;
     }
 
     public void deleteRole(String objectId) {

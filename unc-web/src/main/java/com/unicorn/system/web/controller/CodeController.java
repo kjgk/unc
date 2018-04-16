@@ -86,8 +86,7 @@ public class CodeController {
     @RequestMapping(method = RequestMethod.POST)
     public Code create(@RequestBody Code code) {
 
-        codeService.saveCode(code);
-        return code;
+        return codeService.saveCode(code);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)

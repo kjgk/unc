@@ -4,6 +4,7 @@ import com.unicorn.system.domain.po.Code;
 import com.unicorn.system.repository.CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -38,9 +39,22 @@ public class CodeService {
         return codeList.get(0);
     }
 
-    public void saveCode(Code code) {
+    public Code saveCode(Code code) {
 
-        codeRepository.save(code);
+        Code current;
+        if (StringUtils.isEmpty(code.getObjectId())) {
+            current = codeRepository.save(code);
+        } else {
+            current = codeRepository.findOne(code.getObjectId());
+            current.setName(code.getName());
+            current.setTag(code.getTag());
+            current.setOrderNo(code.getOrderNo());
+            current.setDescription(code.getDescription());
+            if (code.getParent() != null) {
+                current.setParent(code.getParent());
+            }
+        }
+        return current;
     }
 
     public void deleteCode(String objectId) {

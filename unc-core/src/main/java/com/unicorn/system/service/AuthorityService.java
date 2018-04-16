@@ -6,6 +6,7 @@ import com.unicorn.system.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 
@@ -26,9 +27,18 @@ public class AuthorityService {
         return authorityRepository.findOne(id);
     }
 
-    public void saveAuthority(Authority authority) {
+    public Authority saveAuthority(Authority authority) {
 
-        authorityRepository.save(authority);
+        Authority current;
+        if (StringUtils.isEmpty(authority.getObjectId())) {
+            current = authorityRepository.save(authority);
+        } else {
+            current = authorityRepository.findOne(authority.getObjectId());
+            current.setName(authority.getName());
+            current.setDescription(authority.getDescription());
+            current.setTag(authority.getTag());
+        }
+        return current;
     }
 
     public void deleteAuthority(String objectId) {
