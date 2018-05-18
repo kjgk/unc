@@ -24,7 +24,7 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
 
     public final QDefaultNomenclator _super;
 
-    public final ListPath<Object, SimplePath<Object>> childList = this.<Object, SimplePath<Object>>createList("childList", Object.class, SimplePath.class, PathInits.DIRECT2);
+    public final ListPath<DefaultRecursive<?>, QDefaultRecursive> childList = this.<DefaultRecursive<?>, QDefaultRecursive>createList("childList", DefaultRecursive.class, QDefaultRecursive.class, PathInits.DIRECT2);
 
     // inherited
     public final com.unicorn.system.domain.po.QUser createdBy;
@@ -52,7 +52,9 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
 
-    public final SimplePath<Object> parent = createSimple("parent", Object.class);
+    public final QDefaultRecursive parent;
+
+    public final StringPath parentId = createString("parentId");
 
     @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursive(String variable) {
@@ -84,6 +86,7 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
         this.lastUpdatedBy = _super.lastUpdatedBy;
         this.name = _super.name;
         this.objectId = _super.objectId;
+        this.parent = inits.isInitialized("parent") ? new QDefaultRecursive(forProperty("parent"), inits.get("parent")) : null;
     }
 
 }

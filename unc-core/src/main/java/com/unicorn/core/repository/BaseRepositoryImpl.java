@@ -127,7 +127,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
 
     public Page<T> findAll(QueryInfo queryInfo) {
 
-        Pageable pageable = new PageRequest(queryInfo.getPageInfo().getPageNo() - 1, queryInfo.getPageInfo().getPageSize(), queryInfo.getSort());
+        Pageable pageable = new PageRequest(queryInfo.getPageInfo().getPage() - 1, queryInfo.getPageInfo().getPageSize(), queryInfo.getSort());
         Predicate expression = pretreatmentPredicate(queryInfo.getPredicate());
         return this.findAll(expression, pageable);
     }

@@ -24,7 +24,8 @@ public class QCode extends EntityPathBase<Code> {
 
     public final com.unicorn.core.domain.QDefaultRecursive _super;
 
-    public final ListPath<Code, QCode> childList = this.<Code, QCode>createList("childList", Code.class, QCode.class, PathInits.DIRECT2);
+    //inherited
+    public final ListPath<com.unicorn.core.domain.DefaultRecursive<?>, com.unicorn.core.domain.QDefaultRecursive> childList;
 
     // inherited
     public final QUser createdBy;
@@ -55,6 +56,9 @@ public class QCode extends EntityPathBase<Code> {
 
     public final QCode parent;
 
+    //inherited
+    public final StringPath parentId;
+
     public final StringPath tag = createString("tag");
 
     public QCode(String variable) {
@@ -76,6 +80,7 @@ public class QCode extends EntityPathBase<Code> {
     public QCode(Class<? extends Code> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new com.unicorn.core.domain.QDefaultRecursive(type, metadata, inits);
+        this.childList = _super.childList;
         this.createdBy = _super.createdBy;
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
@@ -85,7 +90,8 @@ public class QCode extends EntityPathBase<Code> {
         this.name = _super.name;
         this.objectId = _super.objectId;
         this.orderNo = _super.orderNo;
-        this.parent = inits.isInitialized("parent") ? new QCode(forProperty("parent"), inits.get("parent")) : null;
+        this.parent = inits.isInitialized("parent") ? new QCode(forProperty("parent")) : null;
+        this.parentId = _super.parentId;
     }
 
 }

@@ -1,7 +1,10 @@
 package com.unicorn.system.service;
 
 import com.unicorn.core.query.QueryInfo;
-import com.unicorn.system.domain.po.*;
+import com.unicorn.system.domain.po.Menu;
+import com.unicorn.system.domain.po.Role;
+import com.unicorn.system.domain.po.RoleAuthority;
+import com.unicorn.system.domain.po.RoleMenu;
 import com.unicorn.system.repository.RoleAuthorityRepository;
 import com.unicorn.system.repository.RoleMenuRepository;
 import com.unicorn.system.repository.RoleRepository;
@@ -12,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,9 +70,21 @@ public class RoleService {
         roleRepository.logicDelete(objectId);
     }
 
-    public List<RoleMenu> getRoleMenuList(String objectId) {
+    public void deleteRole(List<String> ids) {
 
-        return roleMenuRepository.findByRoleId(objectId);
+        for (String objectId : ids) {
+            roleRepository.logicDelete(objectId);
+        }
+    }
+
+    public List<String> getRoleMenuList(String objectId) {
+
+        List result = new ArrayList();
+        List<RoleMenu> list = roleMenuRepository.findByRoleId(objectId);
+        for (RoleMenu roleMenu : list) {
+            result.add(roleMenu.getMenu().getObjectId());
+        }
+        return result;
     }
 
     public void saveRoleMenu(String objectId, String[] menuList) {

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/system/authority")
 public class AuthorityController {
@@ -28,7 +30,7 @@ public class AuthorityController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(authority.name.containsIgnoreCase(keyword).or(authority.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.ASC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
         return authorityService.getAuthority(queryInfo);
     }
 
@@ -44,7 +46,7 @@ public class AuthorityController {
         return authorityService.saveAuthority(authority);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
     public void update(@RequestBody Authority authority, @PathVariable String objectId) {
 
         authorityService.saveAuthority(authority);
@@ -54,5 +56,11 @@ public class AuthorityController {
     public void delete(@PathVariable("objectId") String objectId) {
 
         authorityService.deleteAuthority(objectId);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void delete(@RequestBody List<String> ids) {
+
+        authorityService.deleteAuthority(ids);
     }
 }

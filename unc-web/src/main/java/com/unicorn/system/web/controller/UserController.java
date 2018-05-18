@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,7 +52,7 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @RequestMapping(value = "{objectId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{objectId}", method = RequestMethod.PATCH)
     public void update(@RequestBody User user, @PathVariable String objectId) {
 
         userService.saveUser(user);
@@ -79,32 +78,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
-    public void modifyPassword(@RequestBody Map data) throws Exception {
+    public void modifyPassword(@RequestBody Map data) {
 
         UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         accountService.modifyPassword(userDetail.getUser().getObjectId(), (String) data.get("newPassword"), (String) data.get("originPassword"));
-    }
-
-    @RequestMapping(value = "/{objectId}/account/lock", method = RequestMethod.PUT)
-    public void lockAccount(@PathVariable String objectId) throws Exception {
-
-        User user = userService.getUser(objectId);
-        accountService.lockAccount(user.getAccount().getName());
-    }
-
-    @RequestMapping(value = "/{objectId}/account/unlock", method = RequestMethod.PUT)
-    public void unlockAccount(@PathVariable String objectId) throws Exception {
-
-        User user = userService.getUser(objectId);
-        accountService.unlockAccount(user.getAccount().getName());
-    }
-
-    /**
-     * ***************** 菜单 *******************
-     */
-    @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.GET)
-    public List<String> getMenus(@PathVariable("objectId") String objectId) {
-
-        return userService.getUserMenus(objectId);
     }
 }

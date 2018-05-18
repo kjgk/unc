@@ -33,12 +33,6 @@ public class CodeService {
         return codeList.get(0);
     }
 
-    public Code getCodeByEnum(Enum tag) {
-
-        List<Code> codeList = codeRepository.findByEnum(tag.getClass().getSimpleName(), tag.name());
-        return codeList.get(0);
-    }
-
     public Code saveCode(Code code) {
 
         Code current;
@@ -48,11 +42,7 @@ public class CodeService {
             current = codeRepository.findOne(code.getObjectId());
             current.setName(code.getName());
             current.setTag(code.getTag());
-            current.setOrderNo(code.getOrderNo());
             current.setDescription(code.getDescription());
-            if (code.getParent() != null) {
-                current.setParent(code.getParent());
-            }
         }
         return current;
     }
@@ -61,5 +51,4 @@ public class CodeService {
 
         codeRepository.logicDelete(objectId);
     }
-
 }

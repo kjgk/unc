@@ -24,7 +24,8 @@ public class QMenu extends EntityPathBase<Menu> {
 
     public final com.unicorn.core.domain.QDefaultRecursive _super;
 
-    public final ListPath<Menu, QMenu> childList = this.<Menu, QMenu>createList("childList", Menu.class, QMenu.class, PathInits.DIRECT2);
+    //inherited
+    public final ListPath<com.unicorn.core.domain.DefaultRecursive<?>, com.unicorn.core.domain.QDefaultRecursive> childList;
 
     // inherited
     public final QUser createdBy;
@@ -61,6 +62,9 @@ public class QMenu extends EntityPathBase<Menu> {
 
     public final QMenu parent;
 
+    //inherited
+    public final StringPath parentId;
+
     public final StringPath tag = createString("tag");
 
     public final StringPath url = createString("url");
@@ -84,6 +88,7 @@ public class QMenu extends EntityPathBase<Menu> {
     public QMenu(Class<? extends Menu> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this._super = new com.unicorn.core.domain.QDefaultRecursive(type, metadata, inits);
+        this.childList = _super.childList;
         this.createdBy = _super.createdBy;
         this.createdDate = _super.createdDate;
         this.deleted = _super.deleted;
@@ -93,7 +98,8 @@ public class QMenu extends EntityPathBase<Menu> {
         this.name = _super.name;
         this.objectId = _super.objectId;
         this.orderNo = _super.orderNo;
-        this.parent = inits.isInitialized("parent") ? new QMenu(forProperty("parent"), inits.get("parent")) : null;
+        this.parent = inits.isInitialized("parent") ? new QMenu(forProperty("parent")) : null;
+        this.parentId = _super.parentId;
     }
 
 }

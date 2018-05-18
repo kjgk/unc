@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -15,6 +16,11 @@ public class MenuService {
     @Autowired
     private MenuRepository menuRepository;
 
+
+    public List<Menu> getAll() {
+
+        return menuRepository.findAll();
+    }
 
     public Menu getRootMenu() {
 
@@ -35,15 +41,11 @@ public class MenuService {
             current = menuRepository.findOne(menu.getObjectId());
             current.setName(menu.getName());
             current.setTag(menu.getTag());
-            current.setOrderNo(menu.getOrderNo());
             current.setDescription(menu.getDescription());
             current.setEnabled(menu.getEnabled());
             current.setHidden(menu.getHidden());
             current.setIcon(menu.getIcon());
             current.setUrl(menu.getUrl());
-            if (menu.getParent() != null) {
-                current.setParent(menu.getParent());
-            }
         }
         return current;
     }
@@ -52,5 +54,4 @@ public class MenuService {
 
         menuRepository.logicDelete(objectId);
     }
-
 }

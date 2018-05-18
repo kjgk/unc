@@ -1,7 +1,6 @@
-package com.unicorn.base.rest;
+package com.unicorn.base.web;
 
 import com.alibaba.fastjson.JSON;
-import com.unicorn.base.MediaTypes;
 import com.unicorn.core.exception.ServiceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         errors.put("error", ex.getMessage());
         errors.put("code", ex.getCode());
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(MediaTypes.TEXT_PLAIN_UTF_8));
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.BAD_REQUEST, request);
     }
 
@@ -42,7 +41,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put("error", "HTTP-Internal Server Error!");
         }
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(MediaTypes.TEXT_PLAIN_UTF_8));
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

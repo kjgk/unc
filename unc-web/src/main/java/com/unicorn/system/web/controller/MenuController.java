@@ -1,76 +1,49 @@
 package com.unicorn.system.web.controller;
 
+import com.unicorn.base.web.BaseController;
 import com.unicorn.system.domain.po.Menu;
 import com.unicorn.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/system/menu")
-public class MenuController {
+public class MenuController extends BaseController {
 
     @Autowired
     private MenuService menuService;
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     public List loadMenuTree(String id
-            , @RequestParam(defaultValue = "false") Boolean fetchChild, @RequestParam(defaultValue = "true") Boolean fetchRoot) {
+            , @RequestParam(defaultValue = "false") Boolean fetchChild
+            , @RequestParam(defaultValue = "false") Boolean backward
+    ) {
 
-        List result;
+        if (backward) {
+            return buildTreeDataBackward(menuService.getMenu(id));
+        }
 
         // 获取全部
         if (StringUtils.isEmpty(id)) {
             Menu menu = menuService.getRootMenu();
-            result = convertMenuData(menu, true);
+            return buildTreeData(menu.getChildList(), true);
         }
         // 根据ID获取
         else {
             Menu menu;
-            if (StringUtils.isEmpty(id) || "ROOT".equalsIgnoreCase(id)) {
-                if (fetchRoot) {
-                    menu = new Menu();
-                    menu.setChildList(new ArrayList());
-                    menu.getChildList().add(menuService.getRootMenu());
-                } else {
-                    menu = menuService.getRootMenu();
-                }
+            if ("root".equalsIgnoreCase(id)) {
+                menu = new Menu();
+                menu.setChildList(new ArrayList());
+                menu.getChildList().add(menuService.getRootMenu());
             } else {
                 menu = menuService.getMenu(id);
             }
-            result = convertMenuData(menu, fetchChild);
+            return buildTreeData(menu.getChildList(), fetchChild);
         }
-        return result;
-    }
-
-    private List convertMenuData(Menu menu, Boolean fetchChild) {
-        List result = new ArrayList();
-        if (!CollectionUtils.isEmpty(menu.getChildList())) {
-            for (Menu child : menu.getChildList()) {
-                Map data = new HashMap();
-                data.put("id", child.getObjectId());
-                data.put("objectId", child.getObjectId());
-                data.put("name", child.getName());
-                data.put("tag", child.getTag());
-                data.put("url", child.getUrl());
-                data.put("icon", child.getIcon());
-                data.put("hidden", child.getHidden());
-                data.put("enabled", child.getEnabled());
-                data.put("orderNo", child.getOrderNo());
-                data.put("leaf", CollectionUtils.isEmpty(child.getChildList()) ? 1 : 0);
-                if (fetchChild) {
-                    data.put("childList", convertMenuData(child, fetchChild));
-                }
-                result.add(data);
-            }
-        }
-        return result;
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
@@ -85,7 +58,7 @@ public class MenuController {
         return menuService.saveMenu(menu);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
     public void update(@RequestBody Menu menu, @PathVariable String objectId) {
 
         menuService.saveMenu(menu);

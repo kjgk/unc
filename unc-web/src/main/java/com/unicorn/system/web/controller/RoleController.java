@@ -29,7 +29,7 @@ public class RoleController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.ASC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
         return roleService.getRole(queryInfo);
     }
 
@@ -45,7 +45,7 @@ public class RoleController {
         return roleService.saveRole(role);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
     public void update(@RequestBody Role role, @PathVariable String objectId) {
 
         roleService.saveRole(role);
@@ -57,6 +57,11 @@ public class RoleController {
         roleService.deleteRole(objectId);
     }
 
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void delete(@RequestBody List<String> ids) {
+
+        roleService.deleteRole(ids);
+    }
 
     @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.GET)
     public List getRoleMenu(@PathVariable("objectId") String objectId) {

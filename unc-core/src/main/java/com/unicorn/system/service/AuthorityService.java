@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -46,4 +47,10 @@ public class AuthorityService {
         authorityRepository.logicDelete(objectId);
     }
 
+    public void deleteAuthority(List<String> ids) {
+
+        for (String objectId : ids) {
+            authorityRepository.logicDelete(objectId);
+        }
+    }
 }

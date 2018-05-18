@@ -11,14 +11,18 @@ import java.util.List;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class DefaultRecursive<T> extends DefaultNomenclator implements Recursive<T> {
+public abstract class DefaultRecursive<T extends DefaultRecursive> extends DefaultNomenclator implements Recursive<T> {
+
+    @Column(name = "parent_id")
+    private String parentId;
 
     @ManyToOne
-    @JoinColumn(name = "PARENT_ID")
+    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
+    @JsonIgnore
     private T parent;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    @OrderBy(value = "ORDER_NO asc")
+    @OneToMany(mappedBy = "parentId", fetch = FetchType.LAZY)
+    @OrderBy(value = "order_no asc")
     @Where(clause = "deleted=0")
     @JsonIgnore
     private List<T> childList;
