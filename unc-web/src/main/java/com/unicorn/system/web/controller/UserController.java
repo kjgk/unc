@@ -29,12 +29,15 @@ public class UserController {
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<User> list(PageInfo pageInfo, String keyword) {
+    public Page<User> list(PageInfo pageInfo, @RequestParam(value = "role", required = false) String roleId, String keyword) {
 
         QUser user = QUser.user;
         BooleanExpression expression = user.isNotNull();
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(user.name.containsIgnoreCase(keyword).or(user.userRoleList.any().role.name.containsIgnoreCase(keyword)));
+        }
+        if (!StringUtils.isEmpty(roleId)) {
+            expression = expression.and(user.userRoleList.any().role.objectId.eq(roleId));
         }
         QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
         return userService.getUser(queryInfo);

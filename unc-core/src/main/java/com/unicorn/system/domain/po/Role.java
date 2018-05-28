@@ -22,6 +22,6 @@ public class Role extends DefaultNomenclator {
 
     private String tag;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "role")
     private List<RoleAuthority> roleAuthorityList;
 }

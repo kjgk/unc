@@ -72,9 +72,9 @@ public class RoleService {
 
     public void deleteRole(String objectId) {
 
-        roleRepository.delete(objectId);
         roleMenuRepository.deleteByRoleId(objectId);
         roleAuthorityRepository.deleteByRoleId(objectId);
+        roleRepository.delete(objectId);
     }
 
     public void deleteRole(List<String> ids) {

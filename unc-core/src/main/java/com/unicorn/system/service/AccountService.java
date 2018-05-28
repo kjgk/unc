@@ -107,7 +107,7 @@ public class AccountService {
         Account account = accounts.get(0);
         Hibernate.initialize(account.getUser().getUserRoleList());
         for (UserRole userRole : account.getUser().getUserRoleList()) {
-            Hibernate.initialize(userRole.getRole().getAuthorityList());
+            Hibernate.initialize(userRole.getRole().getRoleAuthorityList());
         }
         return account;
     }
