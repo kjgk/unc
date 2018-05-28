@@ -8,10 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -25,6 +22,6 @@ public class Role extends DefaultNomenclator {
 
     private String tag;
 
-    @OneToMany(mappedBy = "role")
-    private List<RoleAuthority> authorityList;
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private List<RoleAuthority> roleAuthorityList;
 }

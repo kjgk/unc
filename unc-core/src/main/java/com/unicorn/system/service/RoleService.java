@@ -36,6 +36,11 @@ public class RoleService {
         return roleRepository.findAll(queryInfo);
     }
 
+    public List getRole() {
+
+        return roleRepository.list();
+    }
+
     public Role getRole(String id) {
 
         return roleRepository.findOne(id);
@@ -51,29 +56,31 @@ public class RoleService {
             current.setName(role.getName());
             current.setTag(role.getTag());
             current.setDescription(role.getDescription());
+
+            roleAuthorityRepository.delete(current.getRoleAuthorityList());
         }
 
-        roleAuthorityRepository.deleteByRoleId(current.getObjectId());
-
-        if (!CollectionUtils.isEmpty(role.getAuthorityList())) {
-            for (RoleAuthority roleAuthority : role.getAuthorityList()) {
+        if (!CollectionUtils.isEmpty(role.getRoleAuthorityList())) {
+            for (RoleAuthority roleAuthority : role.getRoleAuthorityList()) {
                 roleAuthority.setRole(current);
                 roleAuthorityRepository.save(roleAuthority);
             }
+            current.setRoleAuthorityList(role.getRoleAuthorityList());
         }
-
         return current;
     }
 
     public void deleteRole(String objectId) {
 
-        roleRepository.logicDelete(objectId);
+        roleRepository.delete(objectId);
+        roleMenuRepository.deleteByRoleId(objectId);
+        roleAuthorityRepository.deleteByRoleId(objectId);
     }
 
     public void deleteRole(List<String> ids) {
 
         for (String objectId : ids) {
-            roleRepository.logicDelete(objectId);
+            deleteRole(objectId);
         }
     }
 

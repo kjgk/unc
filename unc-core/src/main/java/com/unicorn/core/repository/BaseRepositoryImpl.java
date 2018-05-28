@@ -162,6 +162,16 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
         return super.count(pretreatmentPredicate(predicate));
     }
 
+
+    public List list() {
+
+        Query query = this.entityManager.createQuery("select a.objectId, a.name from " + entityInformation.getJavaType().getName()
+                + " a where a.deleted = 0");
+
+        return query.getResultList();
+    }
+
+
     public T findRoot() {
 
         return findRoot(null);

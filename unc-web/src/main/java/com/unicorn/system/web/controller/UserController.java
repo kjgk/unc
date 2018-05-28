@@ -36,7 +36,7 @@ public class UserController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(user.name.containsIgnoreCase(keyword).or(user.userRoleList.any().role.name.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.ASC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
         return userService.getUser(queryInfo);
     }
 

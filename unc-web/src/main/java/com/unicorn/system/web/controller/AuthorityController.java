@@ -34,6 +34,12 @@ public class AuthorityController {
         return authorityService.getAuthority(queryInfo);
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List list() {
+
+        return authorityService.getAuthority();
+    }
+
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
     public Authority get(@PathVariable String objectId) {
 

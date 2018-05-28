@@ -23,6 +23,12 @@ public class AuthorityService {
         return authorityRepository.findAll(queryInfo);
     }
 
+
+    public List getAuthority() {
+
+        return authorityRepository.list();
+    }
+
     public Authority getAuthority(String id) {
 
         return authorityRepository.findOne(id);
@@ -44,13 +50,13 @@ public class AuthorityService {
 
     public void deleteAuthority(String objectId) {
 
-        authorityRepository.logicDelete(objectId);
+        authorityRepository.delete(objectId);
     }
 
     public void deleteAuthority(List<String> ids) {
 
         for (String objectId : ids) {
-            authorityRepository.logicDelete(objectId);
+            deleteAuthority(objectId);
         }
     }
 }

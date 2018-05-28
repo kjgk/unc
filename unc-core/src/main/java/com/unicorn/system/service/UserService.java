@@ -1,5 +1,6 @@
 package com.unicorn.system.service;
 
+import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.core.userdetails.UserDetail;
 import com.unicorn.system.domain.po.RoleMenu;
@@ -28,13 +29,15 @@ public class UserService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private UserRoleRepository userRoleRepository;
 
     @Autowired
     private RoleMenuRepository roleMenuRepository;
+
+
+    private final String ADMINISTRATOR_USER_ID = "36e6754b82894343919a6b42a1a3216d";
+
+    private final String SYSTEM_USER_ID = "ff0d905985564798853e531fe0dc98ac";
 
 
     public Page<User> getUser(QueryInfo queryInfo) {
@@ -81,6 +84,10 @@ public class UserService {
 
     public void deleteUser(String objectId) {
 
+        if (objectId.equalsIgnoreCase(ADMINISTRATOR_USER_ID) || objectId.equalsIgnoreCase(SYSTEM_USER_ID)) {
+            throw new ServiceException("该用户不允许删除！");
+        }
+
         userRepository.logicDelete(objectId);
 
         accountRepository.deleteByUserId(objectId);
@@ -103,11 +110,11 @@ public class UserService {
 
     public User getAdministrator() {
 
-        return userRepository.findOne("36e6754b82894343919a6b42a1a3216d");
+        return userRepository.findOne(ADMINISTRATOR_USER_ID);
     }
 
     public User getSystemUser() {
 
-        return userRepository.findOne("ff0d905985564798853e531fe0dc98ac");
+        return userRepository.findOne(SYSTEM_USER_ID);
     }
 }

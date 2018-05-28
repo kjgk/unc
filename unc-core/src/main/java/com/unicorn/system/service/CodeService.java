@@ -4,6 +4,7 @@ import com.unicorn.system.domain.po.Code;
 import com.unicorn.system.repository.CodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
@@ -49,6 +50,12 @@ public class CodeService {
 
     public void deleteCode(String objectId) {
 
-        codeRepository.logicDelete(objectId);
+        Code code = codeRepository.findOne(objectId);
+        if (!CollectionUtils.isEmpty(code.getChildList())) {
+            for (Code child : code.getChildList()) {
+                deleteCode(child.getObjectId());
+            }
+        }
+        codeRepository.delete(objectId);
     }
 }

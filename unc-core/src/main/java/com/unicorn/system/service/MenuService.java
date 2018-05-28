@@ -4,6 +4,7 @@ import com.unicorn.system.domain.po.Menu;
 import com.unicorn.system.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
@@ -52,6 +53,12 @@ public class MenuService {
 
     public void deleteMenu(String objectId) {
 
-        menuRepository.logicDelete(objectId);
+        Menu menu = menuRepository.findOne(objectId);
+        if (!CollectionUtils.isEmpty(menu.getChildList())) {
+            for (Menu child : menu.getChildList()) {
+                deleteMenu(child.getObjectId());
+            }
+        }
+        menuRepository.delete(objectId);
     }
 }

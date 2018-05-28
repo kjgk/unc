@@ -22,7 +22,7 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<Role> list(PageInfo pageInfo, String keyword) {
+    public Page<Role> query(PageInfo pageInfo, String keyword) {
 
         QRole role = QRole.role;
         BooleanExpression expression = role.isNotNull();
@@ -31,6 +31,12 @@ public class RoleController {
         }
         QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
         return roleService.getRole(queryInfo);
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List list() {
+
+        return roleService.getRole();
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
