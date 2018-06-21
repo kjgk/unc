@@ -14,8 +14,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 @RestController
-@RequestMapping(value = "/system/file/upload")
+@RequestMapping(API_V1 + "/system/file/upload")
 public class FileUploadController {
 
     @Autowired

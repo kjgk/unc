@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 @RestController
-@RequestMapping("/system/role")
+@RequestMapping(API_V1 + "/system/role")
 public class RoleController {
 
     @Autowired

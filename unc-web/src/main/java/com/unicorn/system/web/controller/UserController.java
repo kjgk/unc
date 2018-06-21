@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 @RestController
-@RequestMapping("/system/user")
+@RequestMapping(API_V1 + "/system/user")
 public class UserController {
 
     @Autowired

@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 
 @RestController
-@RequestMapping(value = "/system/file/download")
+@RequestMapping(API_V1 + "/system/file/download")
 public class FileDownloadController {
 
     @Autowired

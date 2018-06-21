@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 @RestController
-@RequestMapping("/system/authority")
+@RequestMapping(API_V1 + "/system/authority")
 public class AuthorityController {
 
     @Autowired

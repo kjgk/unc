@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.unicorn.base.web.ApiNamespace.API_V1;
+
 @RestController
-@RequestMapping("/system/code")
+@RequestMapping(API_V1 + "/system/code")
 public class CodeController extends BaseController {
 
     @Autowired
