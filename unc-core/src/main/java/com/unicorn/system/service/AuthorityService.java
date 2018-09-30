@@ -23,7 +23,6 @@ public class AuthorityService {
         return authorityRepository.findAll(queryInfo);
     }
 
-
     public List getAuthority() {
 
         return authorityRepository.list();
@@ -31,7 +30,7 @@ public class AuthorityService {
 
     public Authority getAuthority(String id) {
 
-        return authorityRepository.findOne(id);
+        return authorityRepository.get(id);
     }
 
     public Authority saveAuthority(Authority authority) {
@@ -40,7 +39,7 @@ public class AuthorityService {
         if (StringUtils.isEmpty(authority.getObjectId())) {
             current = authorityRepository.save(authority);
         } else {
-            current = authorityRepository.findOne(authority.getObjectId());
+            current = authorityRepository.get(authority.getObjectId());
             current.setName(authority.getName());
             current.setDescription(authority.getDescription());
             current.setTag(authority.getTag());
@@ -50,7 +49,7 @@ public class AuthorityService {
 
     public void deleteAuthority(String objectId) {
 
-        authorityRepository.delete(objectId);
+        authorityRepository.deleteById(objectId);
     }
 
     public void deleteAuthority(List<String> ids) {

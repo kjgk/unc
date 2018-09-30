@@ -52,7 +52,7 @@ public class AccountService {
             }
         }
 
-        User user = userRepository.findOne(account.getUser().getObjectId());
+        User user = userRepository.get(account.getUser().getObjectId());
         Account temp = getAccountByName(account.getName());
         if (temp == null) {
             if (user.getAccount() == null) {
@@ -87,7 +87,7 @@ public class AccountService {
             }
         }
 
-        User user = userRepository.findOne(userId);
+        User user = userRepository.get(userId);
         if (!passwordEncoder.matches(originPassword, user.getAccount().getPassword())) {
             throw new ServiceException("原始密码不正确!", "E102");
         }

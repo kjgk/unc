@@ -17,7 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.QueryDslJpaRepository;
+import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.util.ClassUtils;
@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepository<T, String> implements BaseRepository<T> {
+public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepository<T, String> implements BaseRepository<T> {
 
     private static final EntityPathResolver DEFAULT_ENTITY_PATH_RESOLVER = SimpleEntityPathResolver.INSTANCE;
 
@@ -54,6 +54,11 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
         return this.entityManager;
     }
 
+    public <S extends T> S get(String objectId) {
+
+        return (S) findById(objectId).orElse(null);
+    }
+
     public <S extends T> S save(S entity) {
 
         if (StringUtils.isEmpty(entity.getObjectId())) {
@@ -68,7 +73,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
             return super.save(entity);
         }
 
-        S current = (S) findOne(entity.getObjectId());
+        S current = (S) getOne(entity.getObjectId());
 
         // 可能是手动设置的objectId
         if (current == null) {
@@ -111,7 +116,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
 
     public void logicDelete(String objectId) {
 
-        T entity = findOne(objectId);
+        T entity = getOne(objectId);
         if (null == entity || !(entity instanceof Persistent)) {
             return;
         }
@@ -127,7 +132,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
 
     public Page<T> findAll(QueryInfo queryInfo) {
 
-        Pageable pageable = new PageRequest(queryInfo.getPageInfo().getPage() - 1, queryInfo.getPageInfo().getPageSize(), queryInfo.getSort());
+        Pageable pageable = PageRequest.of(queryInfo.getPageInfo().getPage() - 1, queryInfo.getPageInfo().getPageSize(), queryInfo.getSort());
         Predicate expression = pretreatmentPredicate(queryInfo.getPredicate());
         return this.findAll(expression, pageable);
     }
@@ -202,7 +207,4 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QueryDslJpaRepos
         }
         return predicate;
     }
-
-
-
 }

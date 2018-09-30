@@ -7,19 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Optional;
+
 public class UserAuditorAware implements AuditorAware<User> {
 
     @Autowired
     private UserService userService;
 
     @Override
-    public User getCurrentAuditor() {
+    public Optional<User> getCurrentAuditor() {
+
+        User user = null;
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetail) {
-                return ((UserDetail) principal).getUser();
+                user = ((UserDetail) principal).getUser();
             }
         }
-        return userService.getSystemUser();
+        if (user == null) {
+            user = userService.getSystemUser();
+        }
+        return Optional.of(user);
     }
 }

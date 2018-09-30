@@ -5,17 +5,19 @@ import com.querydsl.core.types.Predicate;
 import com.unicorn.core.query.QueryInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 @NoRepositoryBean
-public interface BaseRepository<T> extends CrudRepository<T, String>, QueryDslPredicateExecutor<T> {
+public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPredicateExecutor<T> {
 
     EntityManager getEntityManager();
+
+    <S extends T> S get(String objectId);
 
     /**
      * 逻辑删除

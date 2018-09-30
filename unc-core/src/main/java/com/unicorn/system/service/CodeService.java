@@ -25,7 +25,7 @@ public class CodeService {
 
     public Code getCode(String id) {
 
-        return codeRepository.findOne(id);
+        return codeRepository.get(id);
     }
 
     public Code getCodeByTag(String tag) {
@@ -40,7 +40,7 @@ public class CodeService {
         if (StringUtils.isEmpty(code.getObjectId())) {
             current = codeRepository.save(code);
         } else {
-            current = codeRepository.findOne(code.getObjectId());
+            current = codeRepository.get(code.getObjectId());
             current.setName(code.getName());
             current.setTag(code.getTag());
             current.setDescription(code.getDescription());
@@ -50,12 +50,12 @@ public class CodeService {
 
     public void deleteCode(String objectId) {
 
-        Code code = codeRepository.findOne(objectId);
+        Code code = codeRepository.get(objectId);
         if (!CollectionUtils.isEmpty(code.getChildList())) {
             for (Code child : code.getChildList()) {
                 deleteCode(child.getObjectId());
             }
         }
-        codeRepository.delete(objectId);
+        codeRepository.deleteById(objectId);
     }
 }

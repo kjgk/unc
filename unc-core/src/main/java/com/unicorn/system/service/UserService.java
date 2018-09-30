@@ -47,7 +47,7 @@ public class UserService {
 
     public User getUser(String objectId) {
 
-        return userRepository.findOne(objectId);
+        return userRepository.get(objectId);
     }
 
     public User saveUser(User user) {
@@ -56,10 +56,10 @@ public class UserService {
         if (StringUtils.isEmpty(user.getObjectId())) {
             current = userRepository.save(user);
         } else {
-            current = userRepository.findOne(user.getObjectId());
+            current = userRepository.get(user.getObjectId());
             current.setName(user.getName());
             current.setDescription(user.getDescription());
-            userRoleRepository.delete(current.getUserRoleList());
+            userRoleRepository.deleteAll(current.getUserRoleList());
         }
 
         if (!CollectionUtils.isEmpty(user.getUserRoleList())) {
@@ -110,11 +110,11 @@ public class UserService {
 
     public User getAdministrator() {
 
-        return userRepository.findOne(ADMINISTRATOR_USER_ID);
+        return userRepository.get(ADMINISTRATOR_USER_ID);
     }
 
     public User getSystemUser() {
 
-        return userRepository.findOne(SYSTEM_USER_ID);
+        return userRepository.get(SYSTEM_USER_ID);
     }
 }

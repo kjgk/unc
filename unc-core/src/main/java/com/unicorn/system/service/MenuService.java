@@ -30,7 +30,7 @@ public class MenuService {
 
     public Menu getMenu(String id) {
 
-        return menuRepository.findOne(id);
+        return menuRepository.get(id);
     }
 
     public Menu saveMenu(Menu menu) {
@@ -39,7 +39,7 @@ public class MenuService {
         if (StringUtils.isEmpty(menu.getObjectId())) {
             current = menuRepository.save(menu);
         } else {
-            current = menuRepository.findOne(menu.getObjectId());
+            current = menuRepository.get(menu.getObjectId());
             current.setName(menu.getName());
             current.setTag(menu.getTag());
             current.setDescription(menu.getDescription());
@@ -53,12 +53,12 @@ public class MenuService {
 
     public void deleteMenu(String objectId) {
 
-        Menu menu = menuRepository.findOne(objectId);
+        Menu menu = menuRepository.get(objectId);
         if (!CollectionUtils.isEmpty(menu.getChildList())) {
             for (Menu child : menu.getChildList()) {
                 deleteMenu(child.getObjectId());
             }
         }
-        menuRepository.delete(objectId);
+        menuRepository.deleteById(objectId);
     }
 }

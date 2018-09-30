@@ -43,7 +43,7 @@ public class RoleService {
 
     public Role getRole(String id) {
 
-        return roleRepository.findOne(id);
+        return roleRepository.get(id);
     }
 
     public Role saveRole(Role role) {
@@ -52,12 +52,12 @@ public class RoleService {
         if (StringUtils.isEmpty(role.getObjectId())) {
             current = roleRepository.save(role);
         } else {
-            current = roleRepository.findOne(role.getObjectId());
+            current = roleRepository.get(role.getObjectId());
             current.setName(role.getName());
             current.setTag(role.getTag());
             current.setDescription(role.getDescription());
 
-            roleAuthorityRepository.delete(current.getRoleAuthorityList());
+            roleAuthorityRepository.deleteAll(current.getRoleAuthorityList());
         }
 
         if (!CollectionUtils.isEmpty(role.getRoleAuthorityList())) {
@@ -74,7 +74,7 @@ public class RoleService {
 
         roleMenuRepository.deleteByRoleId(objectId);
         roleAuthorityRepository.deleteByRoleId(objectId);
-        roleRepository.delete(objectId);
+        roleRepository.deleteById(objectId);
     }
 
     public void deleteRole(List<String> ids) {
