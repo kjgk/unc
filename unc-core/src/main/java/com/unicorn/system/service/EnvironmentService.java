@@ -1,29 +1,52 @@
 package com.unicorn.system.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+@Setter
+@ConfigurationProperties(prefix = "environment")
 public class EnvironmentService {
 
-    @Value("${environment.path.temp}")
-    private String tempPath;
+    private EnvironmentService.Path path;
 
-    @Value("${environment.path.upload}")
-    private String uploadPath;
-
-    @Value("${environment.password.transport}")
-    private String passwordTransport;
+    private EnvironmentService.Password password;
 
     public String getTempPath() {
-        return tempPath;
+        return path.getTemp();
     }
 
     public String getUploadPath() {
-        return uploadPath;
+        return path.getUpload();
     }
 
     public String getPasswordTransport() {
-        return passwordTransport;
+        return password.getTransport();
+    }
+
+    @Getter
+    @Setter
+    public static class Path {
+
+        private String temp = "./temp";
+
+        private String upload = "./upload";
+
+        public Path() {
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class Password {
+
+        private String transport;
+
+        public Password() {
+        }
     }
 }
+
+
