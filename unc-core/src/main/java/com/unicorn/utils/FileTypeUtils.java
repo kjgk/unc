@@ -5,9 +5,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -82,28 +80,6 @@ public class FileTypeUtils {
         return null;
     }
 
-    @Deprecated
-    // todo 无法重新读取 inputStream
-    public final static String getFileTypeByStream(InputStream inputStream) {
-
-        byte[] bytes = new byte[64];
-        try {
-            inputStream.read(bytes, 0, bytes.length);
-        } catch (IOException e) {
-            return null;
-        }
-        String fileTypeHex = String.valueOf(getFileHexString(bytes));
-        Iterator<Map.Entry<String, String>> iterator = FILE_TYPE_MAP.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, String> entry = iterator.next();
-            String fileTypeHexValue = entry.getValue();
-            if (fileTypeHex.toUpperCase().startsWith(fileTypeHexValue)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
     /**
      * 判断文件是否为图片
      */
@@ -124,28 +100,5 @@ public class FileTypeUtils {
             flag = false;
         }
         return flag;
-    }
-
-    public final static String getFileHexString(byte[] b) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (b == null || b.length <= 0) {
-            return null;
-        }
-        for (int i = 0; i < b.length; i++) {
-            int v = b[i] & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hv);
-        }
-        return stringBuilder.toString();
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        byte[] bytes = new byte[64];
-        new FileInputStream("C:\\Users\\Administrator\\Desktop\\123.jpg").read(bytes, 0, bytes.length);
-        getFileHexString(bytes);
     }
 }
