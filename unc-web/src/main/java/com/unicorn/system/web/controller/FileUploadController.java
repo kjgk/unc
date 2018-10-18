@@ -3,14 +3,16 @@ package com.unicorn.system.web.controller;
 import com.unicorn.system.service.EnvironmentService;
 import com.unicorn.utils.Identities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,19 +26,25 @@ public class FileUploadController {
     private EnvironmentService environmentService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Map upload(@RequestParam(value = "attachment") CommonsMultipartFile attachment, HttpServletRequest request) throws Exception {
+    public Map upload(@RequestParam(value = "attachment") MultipartFile attachment, HttpServletRequest request) throws Exception {
 
-        String filename = attachment.getFileItem().getName();
+        String filename = attachment.getOriginalFilename();
         String tempFilename = Identities.randomLong() + "";
-
         String tempDirectory = environmentService.getTempPath();
+        FileCopyUtils.copy(attachment.getInputStream(), new FileOutputStream(new File(tempDirectory + "/" + tempFilename)));
 
-        attachment.getFileItem().write(new File(tempDirectory + "/" + tempFilename));
+        boolean isImage = false;
+        if (filename != null && (filename.toLowerCase().endsWith(".jpg")
+                || filename.toLowerCase().endsWith(".jpeg")
+                || filename.toLowerCase().endsWith(".png")
+                || filename.toLowerCase().endsWith(".bmp"))) {
+            isImage = true;
+        }
 
         Map data = new HashMap();
         data.put("filename", filename);
         data.put("tempFilename", tempFilename);
-        data.put("link", request.getContextPath() + "/system/file/download?tempFilename=" + tempFilename + "&type=image");
+        data.put("link", request.getContextPath() + API_V1 + "/system/file/download?tempFilename=" + tempFilename + (isImage ? "&type=image" : ""));
         return data;
     }
 }

@@ -37,7 +37,6 @@ public class FileDownloadController {
             response.setHeader("Content-Disposition", "filename=" + new String(filename.getBytes("GBK"), "ISO-8859-1"));
         }
         if ("image".equals(type)) {
-
             response.setContentType("image/jpg");
         } else {
             response.setContentType("application/octet-stream");
