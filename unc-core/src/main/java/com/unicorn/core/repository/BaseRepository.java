@@ -19,6 +19,8 @@ public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPre
 
     <S extends T> S get(String objectId);
 
+    <S extends T> S get(Predicate predicate);
+
     /**
      * 逻辑删除
      */

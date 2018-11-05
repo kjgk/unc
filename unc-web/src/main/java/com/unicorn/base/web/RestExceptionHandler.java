@@ -22,39 +22,41 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {ServiceException.class})
     protected ResponseEntity<Object> handleExceptionInternal(ServiceException ex, WebRequest request) {
 
-
         ex.printStackTrace();
-        Map errors = new HashMap();
-        errors.put("error", ex.getMessage());
-        errors.put("code", ex.getCode());
+        Map result = new HashMap();
+        result.put("success", false);
+        result.put("message", ex.getMessage());
+        result.put("code", ex.getCode());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, JSON.toJSON(result).toString(), headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
     protected ResponseEntity<Object> handleExceptionInternal(DataIntegrityViolationException ex, WebRequest request) {
 
         ex.printStackTrace();
-        Map errors = new HashMap();
-        errors.put("error", ex.getMessage());
+        Map result = new HashMap();
+        result.put("success", false);
+        result.put("message", ex.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.EXPECTATION_FAILED, request);
+        return handleExceptionInternal(ex, JSON.toJSON(result).toString(), headers, HttpStatus.EXPECTATION_FAILED, request);
     }
 
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, WebRequest request) {
 
         ex.printStackTrace();
-        Map errors = new HashMap();
+        Map result = new HashMap();
+        result.put("success", false);
         if (ex instanceof FileNotFoundException) {
-            errors.put("error", "File Not Found!");
+            result.put("message", "File Not Found!");
         } else {
-            errors.put("error", "HTTP-Internal Server Error!");
+            result.put("message", "HTTP-Internal Server Error!");
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return handleExceptionInternal(ex, JSON.toJSON(errors).toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return handleExceptionInternal(ex, JSON.toJSON(result).toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

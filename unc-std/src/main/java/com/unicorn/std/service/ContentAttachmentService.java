@@ -5,6 +5,7 @@ import com.unicorn.std.domain.po.ContentAttachment;
 import com.unicorn.std.repository.ContentAttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
@@ -28,9 +29,8 @@ public class ContentAttachmentService {
 
     public void save(ContentAttachment contentAttachment) {
 
-        if (contentAttachment == null) {
-            return;
-        }
+        Assert.notNull(contentAttachment, "contentAttachment不能为空！");
+
         save(contentAttachment.getRelatedType(), contentAttachment.getRelatedId(), contentAttachment.getCategory(), Arrays.asList(contentAttachment));
     }
 
@@ -40,12 +40,12 @@ public class ContentAttachmentService {
             category = "default";
         }
 
-        assert relatedType != null;
-        assert relatedId != null;
-        assert !CollectionUtils.isEmpty(list);
+        Assert.notNull(relatedType, "relatedType不能为空！");
+        Assert.notNull(relatedId, "relatedId不能为空！");
+        Assert.notEmpty(list, "contentAttachmentList不能为空！");
 
         // 删除附件
-        List<ContentAttachment> currentList = contentAttachmentRepository.getAttachmentList(relatedId);
+        List<ContentAttachment> currentList = contentAttachmentRepository.getAttachmentList(relatedId, category);
         if (!CollectionUtils.isEmpty(currentList)) {
             for (ContentAttachment currentAttachment : currentList) {
                 boolean delete = true;

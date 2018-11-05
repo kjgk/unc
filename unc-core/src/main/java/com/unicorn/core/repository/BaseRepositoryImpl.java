@@ -8,6 +8,8 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.unicorn.core.domain.DefaultPersistent;
 import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
+import com.unicorn.core.domain.vo.BasicInfo;
+import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.utils.Identities;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +35,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepository<T, String> implements BaseRepository<T> {
 
     private static final EntityPathResolver DEFAULT_ENTITY_PATH_RESOLVER = SimpleEntityPathResolver.INSTANCE;
@@ -57,6 +61,20 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
     public <S extends T> S get(String objectId) {
 
         return (S) findById(objectId).orElse(null);
+    }
+
+    public <S extends T> S get(Predicate predicate) {
+
+        Pageable pageable = PageRequest.of(0, 1);
+        Predicate expression = pretreatmentPredicate(predicate);
+        Page<T> page = findAll(expression, pageable);
+        if (page.getSize() == 0) {
+            return null;
+        } else if (page.getSize() == 1) {
+            return (S) page.getContent().get(0);
+        } else {
+            throw new ServiceException("More than one row with the given predicate");
+        }
     }
 
     public <S extends T> S save(S entity) {
@@ -167,13 +185,14 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
         return super.count(pretreatmentPredicate(predicate));
     }
 
-
-    public List list() {
+    public List<BasicInfo> list() {
 
         Query query = this.entityManager.createQuery("select a.objectId, a.name from " + entityInformation.getJavaType().getName()
                 + " a where a.deleted = 0");
-
-        return query.getResultList();
+        return ((List<Object[]>) query.getResultList())
+                .stream()
+                .map(data -> BasicInfo.valueOf((String) data[0], (String) (data)[1]))
+                .collect(toList());
     }
 
 
