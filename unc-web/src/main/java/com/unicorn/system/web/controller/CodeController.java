@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.unicorn.base.web.ApiNamespace.API_V1;
 
@@ -75,5 +76,11 @@ public class CodeController extends BaseController {
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("objectId") String objectId) {
         codeService.deleteCode(objectId);
+    }
+
+    @RequestMapping(value = "/{objectId}/move", method = RequestMethod.POST)
+    public Map move(@RequestBody Map params, @PathVariable String objectId) {
+
+        return codeService.moveCode(objectId, (String) params.get("targetId"), (Integer) params.get("position"));
     }
 }

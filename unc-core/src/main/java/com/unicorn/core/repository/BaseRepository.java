@@ -11,6 +11,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 
 @NoRepositoryBean
 public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPredicateExecutor<T> {
@@ -49,7 +50,7 @@ public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPre
     /**
      * 基于QueryDSL的查询
      */
-    public List<T> findAll(Predicate predicate, Sort sort);
+    List<T> findAll(Predicate predicate, Sort sort);
 
     /**
      * 基于QueryDSL的查询
@@ -63,4 +64,6 @@ public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPre
     T findRoot();
 
     T findRoot(String tag);
+
+    Map move(String objectId, String targetId, Integer position);
 }

@@ -29,11 +29,14 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Table;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -211,6 +214,126 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
             return null;
         }
         return (T) resultList.get(0);
+    }
+
+    public Map move(String objectId, String targetId, Integer position) {
+
+        Map result = new HashMap();
+
+        if (objectId.equals(targetId)) {
+            return result;
+        }
+
+        // 获取当前操作的表名
+        String annotationInfo = this.entityInformation.getJavaType().getAnnotation(Table.class).toString();
+        String tableName = org.apache.commons.lang3.StringUtils.substringBetween(annotationInfo, "name=", ",");
+
+        String sql = "select a.parent_id, a.order_no from " + tableName + " a where a.objectid = ?";
+
+        String parentId, targetParentId;
+        Integer orderNo, targetOrderNo;
+
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, objectId);
+        Object[] singleResult = (Object[]) query.getSingleResult();
+        parentId = (String) singleResult[0];
+        orderNo = (Integer) singleResult[1];
+
+        query.setParameter(1, targetId);
+        singleResult = (Object[]) query.getSingleResult();
+        targetParentId = (String) singleResult[0];
+        targetOrderNo = (Integer) singleResult[1];
+
+        // 移动到目标节点下面
+        if (position == 1) {
+            targetOrderNo++;
+        }
+
+        result.put("parentId", parentId);
+        result.put("targetParentId", targetParentId);
+        result.put("targetOrderNo", targetOrderNo);
+
+        Query updateQuery = entityManager.createNativeQuery("update " + tableName + " set parent_id = ?, order_no = ? where objectid = ?");
+        Query plusOrderNoQuery = entityManager.createNativeQuery("update " + tableName + " set order_no = order_no + 1 where parent_id = ? and order_no >= ?");
+        Query minusOrderNoQuery = entityManager.createNativeQuery("update " + tableName + " set order_no = order_no - 1 where parent_id = ? and order_no > ?");
+
+        // TODO 过滤移动到子节点
+
+        // 在同一父节点下移动
+        if (parentId.equals(targetParentId) && position != 0) {
+            if (targetOrderNo == orderNo) {
+                return result;
+            }
+            // 向上移动
+            if (targetOrderNo < orderNo) {
+                Query nativeQuery = entityManager.createNativeQuery("update " + tableName + " set order_no = order_no + 1" +
+                        " where parent_id = ? and order_no >= ? and order_no < ?");
+                nativeQuery.setParameter(1, parentId);
+                nativeQuery.setParameter(2, targetOrderNo);
+                nativeQuery.setParameter(3, orderNo);
+                nativeQuery.executeUpdate();
+            }
+            // 向下移动
+            else {
+                targetOrderNo--;
+                Query nativeQuery = entityManager.createNativeQuery("update " + tableName + " set order_no = order_no - 1" +
+                        " where parent_id = ? and order_no > ? and order_no <= ?");
+                nativeQuery.setParameter(1, parentId);
+                nativeQuery.setParameter(2, orderNo);
+                nativeQuery.setParameter(3, targetOrderNo);
+                nativeQuery.executeUpdate();
+            }
+            result.put("targetOrderNo", targetOrderNo);
+
+            // 更新当前节点
+            updateQuery.setParameter(1, parentId);
+            updateQuery.setParameter(2, targetOrderNo);
+            updateQuery.setParameter(3, objectId);
+            updateQuery.executeUpdate();
+            return result;
+        }
+
+        // 移动到父节点（不做任何处理）
+        if (parentId.equals(targetId) && position == 0) {
+            return result;
+        }
+
+        // 移动到目标节点里面
+        if (position == 0) {
+
+            // 获取目标节点下最大orderNo
+            Query nativeQuery = entityManager.createNativeQuery("select max(order_no) from " + tableName + " where parent_id = ?");
+            nativeQuery.setParameter(1, targetId);
+            Integer maxOrderNo = (Integer) nativeQuery.getSingleResult();
+            maxOrderNo = maxOrderNo == null ? 0 : maxOrderNo;
+
+            // 更新当前节点
+            updateQuery.setParameter(1, targetId);
+            updateQuery.setParameter(2, maxOrderNo + 1);
+            updateQuery.setParameter(3, objectId);
+            updateQuery.executeUpdate();
+
+            result.put("targetParentId", targetId);
+            result.put("targetOrderNo", maxOrderNo + 1);
+        } else {
+
+            // 更新排序号
+            plusOrderNoQuery.setParameter(1, targetParentId);
+            plusOrderNoQuery.setParameter(2, targetOrderNo);
+            plusOrderNoQuery.executeUpdate();
+
+            // 更新当前节点
+            updateQuery.setParameter(1, targetParentId);
+            updateQuery.setParameter(2, targetOrderNo);
+            updateQuery.setParameter(3, objectId);
+            updateQuery.executeUpdate();
+        }
+
+        // 更新原始父节点下子节点的排序号
+        minusOrderNoQuery.setParameter(1, parentId);
+        minusOrderNoQuery.setParameter(2, orderNo);
+        minusOrderNoQuery.executeUpdate();
+        return result;
     }
 
     private Predicate pretreatmentPredicate(Predicate predicate) {

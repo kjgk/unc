@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -16,7 +17,6 @@ public class CodeService {
 
     @Autowired
     private CodeRepository codeRepository;
-
 
     public Code getRootCode() {
 
@@ -38,6 +38,8 @@ public class CodeService {
 
         Code current;
         if (StringUtils.isEmpty(code.getObjectId())) {
+            Integer maxOrderNo = codeRepository.findMaxOrderNo(code.getParentId());
+            code.setOrderNo(maxOrderNo == null ? 1 : maxOrderNo + 1);
             current = codeRepository.save(code);
         } else {
             current = codeRepository.get(code.getObjectId());
@@ -57,5 +59,12 @@ public class CodeService {
             }
         }
         codeRepository.deleteById(objectId);
+
+        codeRepository.minusOrderNo(code.getParentId(), code.getOrderNo());
+    }
+
+    public Map moveCode(String objectId, String targetId, Integer position) {
+
+        return codeRepository.move(objectId, targetId, position);
     }
 }
