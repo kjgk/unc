@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -37,6 +38,8 @@ public class MenuService {
 
         Menu current;
         if (StringUtils.isEmpty(menu.getObjectId())) {
+            Integer maxOrderNo = menuRepository.findMaxOrderNo(menu.getParentId());
+            menu.setOrderNo(maxOrderNo == null ? 1 : maxOrderNo + 1);
             current = menuRepository.save(menu);
         } else {
             current = menuRepository.get(menu.getObjectId());
@@ -60,5 +63,12 @@ public class MenuService {
             }
         }
         menuRepository.deleteById(objectId);
+
+        menuRepository.minusOrderNo(menu.getParentId(), menu.getOrderNo());
+    }
+
+    public Map moveMenu(String objectId, String targetId, Integer position) {
+
+        return menuRepository.move(objectId, targetId, position);
     }
 }
