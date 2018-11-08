@@ -1,5 +1,6 @@
 package com.unicorn.system.service;
 
+import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Authority;
 import com.unicorn.system.repository.AuthorityRepository;
@@ -23,7 +24,7 @@ public class AuthorityService {
         return authorityRepository.findAll(queryInfo);
     }
 
-    public List getAuthority() {
+    public List<BasicInfo> getAuthority() {
 
         return authorityRepository.list();
     }
@@ -52,10 +53,8 @@ public class AuthorityService {
         authorityRepository.deleteById(objectId);
     }
 
-    public void deleteAuthority(List<String> ids) {
+    public void deleteAuthority(List<String> objectIds) {
 
-        for (String objectId : ids) {
-            deleteAuthority(objectId);
-        }
+        objectIds.forEach(this::deleteAuthority);
     }
 }

@@ -1,5 +1,6 @@
 package com.unicorn.system.service;
 
+import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Menu;
 import com.unicorn.system.domain.po.Role;
@@ -36,7 +37,7 @@ public class RoleService {
         return roleRepository.findAll(queryInfo);
     }
 
-    public List getRole() {
+    public List<BasicInfo> getRole() {
 
         return roleRepository.list();
     }
@@ -77,11 +78,9 @@ public class RoleService {
         roleRepository.deleteById(objectId);
     }
 
-    public void deleteRole(List<String> ids) {
+    public void deleteRole(List<String> objectIds) {
 
-        for (String objectId : ids) {
-            deleteRole(objectId);
-        }
+        objectIds.forEach(this::deleteRole);
     }
 
     public List<String> getRoleMenuList(String objectId) {

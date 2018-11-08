@@ -1,6 +1,7 @@
 package com.unicorn.system.web.controller;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.domain.po.Authority;
@@ -37,7 +38,7 @@ public class AuthorityController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List list() {
+    public List<BasicInfo> list() {
 
         return authorityService.getAuthority();
     }
