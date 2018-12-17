@@ -6,11 +6,13 @@ import com.unicorn.std.repository.ContentAttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -89,5 +91,46 @@ public class ContentAttachmentService {
     public List<ContentAttachment> getAttachmentList(String relatedId, String category) {
 
         return contentAttachmentRepository.getAttachmentList(relatedId, category);
+    }
+
+    public String getImageAttachmentLink(String relatedId) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildImageAttachmentLink(attachmentList.get(0).getAttachment());
+    }
+
+    public String getImageAttachmentLink(String relatedId, String category) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildImageAttachmentLink(attachmentList.get(0).getAttachment());
+    }
+
+    public List<String> getImageAttachmentLinks(String relatedId) {
+
+        return getAttachmentList(relatedId)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildImageAttachmentLink)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getImageAttachmentLinks(String relatedId, String category) {
+
+        return getAttachmentList(relatedId, category)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildImageAttachmentLink)
+                .collect(Collectors.toList());
+    }
+
+    private String buildImageAttachmentLink(Attachment attachment) {
+
+        return "/content/image/" + Base64Utils.encodeToString(attachment.getFilename().getBytes());
     }
 }
