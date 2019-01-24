@@ -29,9 +29,9 @@ public class AuthorityService {
         return authorityRepository.list();
     }
 
-    public Authority getAuthority(String id) {
+    public Authority getAuthority(Long objectId) {
 
-        return authorityRepository.get(id);
+        return authorityRepository.get(objectId);
     }
 
     public Authority saveAuthority(Authority authority) {
@@ -48,12 +48,12 @@ public class AuthorityService {
         return current;
     }
 
-    public void deleteAuthority(String objectId) {
+    public void deleteAuthority(Long objectId) {
 
         authorityRepository.deleteById(objectId);
     }
 
-    public void deleteAuthority(List<String> objectIds) {
+    public void deleteAuthority(List<Long> objectIds) {
 
         objectIds.forEach(this::deleteAuthority);
     }

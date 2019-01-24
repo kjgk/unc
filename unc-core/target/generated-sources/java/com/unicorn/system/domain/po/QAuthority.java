@@ -46,7 +46,7 @@ public class QAuthority extends EntityPathBase<Authority> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public final StringPath tag = createString("tag");
 

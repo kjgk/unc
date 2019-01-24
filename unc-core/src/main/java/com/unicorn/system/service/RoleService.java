@@ -42,9 +42,9 @@ public class RoleService {
         return roleRepository.list();
     }
 
-    public Role getRole(String id) {
+    public Role getRole(Long objectId) {
 
-        return roleRepository.get(id);
+        return roleRepository.get(objectId);
     }
 
     public Role saveRole(Role role) {
@@ -71,19 +71,19 @@ public class RoleService {
         return current;
     }
 
-    public void deleteRole(String objectId) {
+    public void deleteRole(Long objectId) {
 
         roleMenuRepository.deleteByRoleId(objectId);
         roleAuthorityRepository.deleteByRoleId(objectId);
         roleRepository.deleteById(objectId);
     }
 
-    public void deleteRole(List<String> objectIds) {
+    public void deleteRole(List<Long> objectIds) {
 
         objectIds.forEach(this::deleteRole);
     }
 
-    public List<String> getRoleMenuList(String objectId) {
+    public List<String> getRoleMenuList(Long objectId) {
 
         List result = new ArrayList();
         List<RoleMenu> list = roleMenuRepository.findByRoleId(objectId);
@@ -93,13 +93,13 @@ public class RoleService {
         return result;
     }
 
-    public void saveRoleMenu(String objectId, String[] menuList) {
+    public void saveRoleMenu(Long objectId, Long[] menuList) {
 
         Role role = getRole(objectId);
 
         roleMenuRepository.deleteByRoleId(role.getObjectId());
 
-        for (String menuId : menuList) {
+        for (Long menuId : menuList) {
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRole(role);
             roleMenu.setMenu(new Menu());

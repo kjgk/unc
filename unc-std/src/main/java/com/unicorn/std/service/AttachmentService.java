@@ -27,9 +27,9 @@ public class AttachmentService {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
-    public Attachment getAttachment(String id) {
+    public Attachment getAttachment(Long objectId) {
 
-        return attachmentRepository.get(id);
+        return attachmentRepository.get(objectId);
     }
 
     public Attachment saveAttachment(String path, Attachment attachment) {
@@ -49,7 +49,7 @@ public class AttachmentService {
         return attachmentRepository.save(attachment);
     }
 
-    public void deleteAttachment(String objectId) {
+    public void deleteAttachment(Long objectId) {
 
         Attachment attachment = attachmentRepository.get(objectId);
         attachmentRepository.delete(attachment);

@@ -14,5 +14,5 @@ public interface AccountRepository extends BaseRepository<Account> {
 
     @Modifying
     @Query("delete from Account a where a.user.objectId = ?1")
-    void deleteByUserId(String s);
+    void deleteByUserId(Long s);
 }

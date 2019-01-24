@@ -55,7 +55,7 @@ public class QMenu extends EntityPathBase<Menu> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     //inherited
     public final NumberPath<Integer> orderNo;
@@ -63,7 +63,7 @@ public class QMenu extends EntityPathBase<Menu> {
     public final QMenu parent;
 
     //inherited
-    public final StringPath parentId;
+    public final NumberPath<Long> parentId;
 
     public final StringPath tag = createString("tag");
 

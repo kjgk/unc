@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 @ToString
 public class BasicInfo implements Serializable {
 
-    protected String objectId;
+    protected Long objectId;
 
     protected String name;
 
-    protected BasicInfo(String objectId, String name) {
+    protected BasicInfo(Long objectId, String name) {
         this.objectId = objectId;
         this.name = name;
     }
 
-    public static BasicInfo valueOf(String objectId, String name) {
+    public static BasicInfo valueOf(Long objectId, String name) {
         return new BasicInfo(objectId, name);
     }
 

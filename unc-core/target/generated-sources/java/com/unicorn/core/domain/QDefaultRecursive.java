@@ -48,13 +48,13 @@ public class QDefaultRecursive extends EntityPathBase<DefaultRecursive<?>> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public final NumberPath<Integer> orderNo = createNumber("orderNo", Integer.class);
 
     public final QDefaultRecursive parent;
 
-    public final StringPath parentId = createString("parentId");
+    public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
 
     @SuppressWarnings({"all", "rawtypes", "unchecked"})
     public QDefaultRecursive(String variable) {

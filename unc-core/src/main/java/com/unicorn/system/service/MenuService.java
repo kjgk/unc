@@ -18,7 +18,6 @@ public class MenuService {
     @Autowired
     private MenuRepository menuRepository;
 
-
     public List<Menu> getAll() {
 
         return menuRepository.findAll();
@@ -29,9 +28,9 @@ public class MenuService {
         return menuRepository.findRoot();
     }
 
-    public Menu getMenu(String id) {
+    public Menu getMenu(Long objectId) {
 
-        return menuRepository.get(id);
+        return menuRepository.get(objectId);
     }
 
     public Menu saveMenu(Menu menu) {
@@ -54,7 +53,7 @@ public class MenuService {
         return current;
     }
 
-    public void deleteMenu(String objectId) {
+    public void deleteMenu(Long objectId) {
 
         Menu menu = menuRepository.get(objectId);
         if (!CollectionUtils.isEmpty(menu.getChildList())) {
@@ -67,7 +66,7 @@ public class MenuService {
         menuRepository.minusOrderNo(menu.getParentId(), menu.getOrderNo());
     }
 
-    public Map moveMenu(String objectId, String targetId, Integer position) {
+    public Map moveMenu(Long objectId, Long targetId, Integer position) {
 
         return menuRepository.move(objectId, targetId, position);
     }

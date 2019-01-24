@@ -23,9 +23,9 @@ public class CodeService {
         return codeRepository.findRoot();
     }
 
-    public Code getCode(String id) {
+    public Code getCode(Long objectId) {
 
-        return codeRepository.get(id);
+        return codeRepository.get(objectId);
     }
 
     public Code getCodeByTag(String tag) {
@@ -50,7 +50,7 @@ public class CodeService {
         return current;
     }
 
-    public void deleteCode(String objectId) {
+    public void deleteCode(Long objectId) {
 
         Code code = codeRepository.get(objectId);
         if (!CollectionUtils.isEmpty(code.getChildList())) {
@@ -63,7 +63,7 @@ public class CodeService {
         codeRepository.minusOrderNo(code.getParentId(), code.getOrderNo());
     }
 
-    public Map moveCode(String objectId, String targetId, Integer position) {
+    public Map moveCode(Long objectId, Long targetId, Integer position) {
 
         return codeRepository.move(objectId, targetId, position);
     }

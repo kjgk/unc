@@ -39,7 +39,7 @@ public class QDefaultPersistent extends EntityPathBase<DefaultPersistent> {
     public final com.unicorn.system.domain.po.QUser lastUpdatedBy;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public QDefaultPersistent(String variable) {
         this(DefaultPersistent.class, forVariable(variable), INITS);

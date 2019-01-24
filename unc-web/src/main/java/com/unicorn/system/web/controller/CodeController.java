@@ -21,13 +21,13 @@ public class CodeController extends BaseController {
     private CodeService codeService;
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
-    public List loadCodeTree(String id, String tag
+    public List loadCodeTree(@RequestParam(value = "id", required = false) Long objectId, String tag
             , @RequestParam(defaultValue = "false") Boolean fetchChild
             , @RequestParam(defaultValue = "false") Boolean backward
     ) {
 
         if (backward) {
-            return buildTreeDataBackward(codeService.getCode(id));
+            return buildTreeDataBackward(codeService.getCode(objectId));
         }
 
         // 根据标识获取
@@ -36,19 +36,19 @@ public class CodeController extends BaseController {
             return buildTreeData(code.getChildList(), fetchChild);
         }
         // 获取全部
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(objectId)) {
             Code code = codeService.getRootCode();
             return buildTreeData(code.getChildList(), true);
         }
         // 根据ID获取
         else {
             Code code;
-            if ("root".equalsIgnoreCase(id)) {
+            if (objectId == -1) {
                 code = new Code();
                 code.setChildList(new ArrayList());
                 code.getChildList().add(codeService.getRootCode());
             } else {
-                code = codeService.getCode(id);
+                code = codeService.getCode(objectId);
             }
             return buildTreeData(code.getChildList(), fetchChild);
         }
@@ -56,7 +56,7 @@ public class CodeController extends BaseController {
 
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
-    public Code get(@PathVariable String objectId) {
+    public Code get(@PathVariable Long objectId) {
 
         return codeService.getCode(objectId);
     }
@@ -68,19 +68,19 @@ public class CodeController extends BaseController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
-    public void update(@RequestBody Code code, @PathVariable String objectId) {
+    public void update(@RequestBody Code code, @PathVariable Long objectId) {
 
         codeService.saveCode(code);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("objectId") String objectId) {
+    public void delete(@PathVariable("objectId") Long objectId) {
         codeService.deleteCode(objectId);
     }
 
     @RequestMapping(value = "/{objectId}/move", method = RequestMethod.POST)
-    public Map move(@RequestBody Map params, @PathVariable String objectId) {
+    public Map move(@RequestBody Map params, @PathVariable Long objectId) {
 
-        return codeService.moveCode(objectId, (String) params.get("targetId"), (Integer) params.get("position"));
+        return codeService.moveCode(objectId, Long.valueOf(params.get("targetId").toString()), (Integer) params.get("position"));
     }
 }

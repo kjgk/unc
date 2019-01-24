@@ -48,7 +48,7 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public final ListPath<UserRole, QUserRole> userRoleList = this.<UserRole, QUserRole>createList("userRoleList", UserRole.class, QUserRole.class, PathInits.DIRECT2);
 

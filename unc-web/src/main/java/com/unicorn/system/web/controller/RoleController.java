@@ -43,7 +43,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
-    public Role get(@PathVariable String objectId) {
+    public Role get(@PathVariable Long objectId) {
 
         return roleService.getRole(objectId);
     }
@@ -55,31 +55,31 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
-    public void update(@RequestBody Role role, @PathVariable String objectId) {
+    public void update(@RequestBody Role role, @PathVariable Long objectId) {
 
         roleService.saveRole(role);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("objectId") String objectId) {
+    public void delete(@PathVariable("objectId") Long objectId) {
 
         roleService.deleteRole(objectId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public void delete(@RequestBody List<String> ids) {
+    public void delete(@RequestBody List<Long> objectIds) {
 
-        roleService.deleteRole(ids);
+        roleService.deleteRole(objectIds);
     }
 
     @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.GET)
-    public List getRoleMenu(@PathVariable("objectId") String objectId) {
+    public List getRoleMenu(@PathVariable("objectId") Long objectId) {
 
         return roleService.getRoleMenuList(objectId);
     }
 
     @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.POST)
-    public void saveRoleMenu(@PathVariable("objectId") String objectId, @RequestBody String[] menus) {
+    public void saveRoleMenu(@PathVariable("objectId") Long objectId, @RequestBody Long[] menus) {
 
         roleService.saveRoleMenu(objectId, menus);
     }

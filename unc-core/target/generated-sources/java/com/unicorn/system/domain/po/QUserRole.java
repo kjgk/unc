@@ -25,7 +25,7 @@ public class QUserRole extends EntityPathBase<UserRole> {
     public final com.unicorn.core.domain.QDefaultIdentifiable _super = new com.unicorn.core.domain.QDefaultIdentifiable(this);
 
     //inherited
-    public final StringPath objectId = _super.objectId;
+    public final NumberPath<Long> objectId = _super.objectId;
 
     public final QRole role;
 

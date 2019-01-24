@@ -24,7 +24,7 @@ public class ContentAttachmentService {
     @Autowired
     private AttachmentService attachmentService;
 
-    public ContentAttachment getContentAttachment(String objectId) {
+    public ContentAttachment getContentAttachment(Long objectId) {
 
         return contentAttachmentRepository.get(objectId);
     }

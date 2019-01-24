@@ -44,7 +44,7 @@ public class AuthorityController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
-    public Authority get(@PathVariable String objectId) {
+    public Authority get(@PathVariable Long objectId) {
 
         return authorityService.getAuthority(objectId);
     }
@@ -56,20 +56,20 @@ public class AuthorityController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
-    public void update(@RequestBody Authority authority, @PathVariable String objectId) {
+    public void update(@RequestBody Authority authority, @PathVariable Long objectId) {
 
         authorityService.saveAuthority(authority);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("objectId") String objectId) {
+    public void delete(@PathVariable("objectId") Long objectId) {
 
         authorityService.deleteAuthority(objectId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public void delete(@RequestBody List<String> ids) {
+    public void delete(@RequestBody List<Long> objectIds) {
 
-        authorityService.deleteAuthority(ids);
+        authorityService.deleteAuthority(objectIds);
     }
 }

@@ -31,7 +31,7 @@ public class UserController {
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Page<User> list(PageInfo pageInfo, @RequestParam(value = "role", required = false) String roleId, String keyword) {
+    public Page<User> list(PageInfo pageInfo, @RequestParam(value = "role", required = false) Long roleId, String keyword) {
 
         QUser user = QUser.user;
         BooleanExpression expression = user.isNotNull();
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
-    public User get(@PathVariable String objectId) {
+    public User get(@PathVariable Long objectId) {
 
         return userService.getUser(objectId);
     }
@@ -58,13 +58,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "{objectId}", method = RequestMethod.PATCH)
-    public void update(@RequestBody User user, @PathVariable String objectId) {
+    public void update(@RequestBody User user, @PathVariable Long objectId) {
 
         userService.saveUser(user);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("objectId") String objectId) {
+    public void delete(@PathVariable("objectId") Long objectId) {
         userService.deleteUser(objectId);
     }
 
@@ -72,7 +72,7 @@ public class UserController {
      * ***************** 帐号 *******************
      */
     @RequestMapping(value = "/{objectId}/account", method = RequestMethod.PUT)
-    public void saveAccount(@RequestBody Map data, @PathVariable String objectId) throws Exception {
+    public void saveAccount(@RequestBody Map data, @PathVariable Long objectId) throws Exception {
 
         User user = userService.getUser(objectId);
         Account account = new Account();

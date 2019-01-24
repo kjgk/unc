@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public interface Identifiable extends Serializable {
 
-    String getObjectId();
+    Long getObjectId();
 
-    void setObjectId(String objectId);
+    void setObjectId(Long objectId);
 }

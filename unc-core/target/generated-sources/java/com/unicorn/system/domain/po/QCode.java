@@ -49,7 +49,7 @@ public class QCode extends EntityPathBase<Code> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     //inherited
     public final NumberPath<Integer> orderNo;
@@ -57,7 +57,7 @@ public class QCode extends EntityPathBase<Code> {
     public final QCode parent;
 
     //inherited
-    public final StringPath parentId;
+    public final NumberPath<Long> parentId;
 
     public final StringPath tag = createString("tag");
 

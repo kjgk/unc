@@ -21,36 +21,36 @@ public class MenuController extends BaseController {
     private MenuService menuService;
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
-    public List loadMenuTree(String id
+    public List loadMenuTree(@RequestParam(value = "id", required = false) Long objectId
             , @RequestParam(defaultValue = "false") Boolean fetchChild
             , @RequestParam(defaultValue = "false") Boolean backward
     ) {
 
         if (backward) {
-            return buildTreeDataBackward(menuService.getMenu(id));
+            return buildTreeDataBackward(menuService.getMenu(objectId));
         }
 
         // 获取全部
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(objectId)) {
             Menu menu = menuService.getRootMenu();
             return buildTreeData(menu.getChildList(), true);
         }
         // 根据ID获取
         else {
             Menu menu;
-            if ("root".equalsIgnoreCase(id)) {
+            if (objectId == -1) {
                 menu = new Menu();
                 menu.setChildList(new ArrayList());
                 menu.getChildList().add(menuService.getRootMenu());
             } else {
-                menu = menuService.getMenu(id);
+                menu = menuService.getMenu(objectId);
             }
             return buildTreeData(menu.getChildList(), fetchChild);
         }
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
-    public Menu get(@PathVariable String objectId) {
+    public Menu get(@PathVariable Long objectId) {
 
         return menuService.getMenu(objectId);
     }
@@ -62,19 +62,19 @@ public class MenuController extends BaseController {
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
-    public void update(@RequestBody Menu menu, @PathVariable String objectId) {
+    public void update(@RequestBody Menu menu, @PathVariable Long objectId) {
 
         menuService.saveMenu(menu);
     }
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("objectId") String objectId) {
+    public void delete(@PathVariable("objectId") Long objectId) {
         menuService.deleteMenu(objectId);
     }
 
     @RequestMapping(value = "/{objectId}/move", method = RequestMethod.POST)
-    public Map move(@RequestBody Map params, @PathVariable String objectId) {
+    public Map move(@RequestBody Map params, @PathVariable Long objectId) {
 
-        return menuService.moveMenu(objectId, (String) params.get("targetId"), (Integer) params.get("position"));
+        return menuService.moveMenu(objectId, Long.valueOf(params.get("targetId").toString()), (Integer) params.get("position"));
     }
 }

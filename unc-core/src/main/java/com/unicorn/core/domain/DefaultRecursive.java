@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class DefaultRecursive<T extends DefaultRecursive> extends DefaultNomenclator implements Recursive<T> {
 
     @Column(name = "parent_id")
-    private String parentId;
+    private Long parentId;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", insertable = false, updatable = false)

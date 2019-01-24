@@ -33,7 +33,7 @@ public class QDefaultLoggable extends EntityPathBase<DefaultLoggable> {
     public final com.unicorn.system.domain.po.QUser lastUpdatedBy;
 
     //inherited
-    public final StringPath objectId = _super.objectId;
+    public final NumberPath<Long> objectId = _super.objectId;
 
     public QDefaultLoggable(String variable) {
         this(DefaultLoggable.class, forVariable(variable), INITS);

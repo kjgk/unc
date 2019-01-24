@@ -44,7 +44,7 @@ public class QDefaultNomenclator extends EntityPathBase<DefaultNomenclator> {
     public final StringPath name = createString("name");
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public QDefaultNomenclator(String variable) {
         this(DefaultNomenclator.class, forVariable(variable), INITS);

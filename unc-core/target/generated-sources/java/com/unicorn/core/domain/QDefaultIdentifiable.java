@@ -19,7 +19,7 @@ public class QDefaultIdentifiable extends EntityPathBase<DefaultIdentifiable> {
 
     public static final QDefaultIdentifiable defaultIdentifiable = new QDefaultIdentifiable("defaultIdentifiable");
 
-    public final StringPath objectId = createString("objectId");
+    public final NumberPath<Long> objectId = createNumber("objectId", Long.class);
 
     public QDefaultIdentifiable(String variable) {
         super(DefaultIdentifiable.class, forVariable(variable));

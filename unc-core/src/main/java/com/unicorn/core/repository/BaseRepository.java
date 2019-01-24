@@ -15,18 +15,18 @@ import java.util.List;
 import java.util.Map;
 
 @NoRepositoryBean
-public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPredicateExecutor<T> {
+public interface BaseRepository<T> extends JpaRepository<T, Long>, QuerydslPredicateExecutor<T> {
 
     EntityManager getEntityManager();
 
-    <S extends T> S get(String objectId);
+    <S extends T> S get(Long objectId);
 
     <S extends T> S get(Predicate predicate);
 
     /**
      * 逻辑删除
      */
-    void logicDelete(String objectId);
+    void logicDelete(Long objectId);
 
     /**
      * 逻辑删除
@@ -66,5 +66,5 @@ public interface BaseRepository<T> extends JpaRepository<T, String>, QuerydslPre
 
     T findRoot(String tag);
 
-    Map move(String objectId, String targetId, Integer position);
+    Map move(Long objectId, Long targetId, Integer position);
 }

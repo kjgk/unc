@@ -46,7 +46,7 @@ public class QRole extends EntityPathBase<Role> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public final ListPath<RoleAuthority, QRoleAuthority> roleAuthorityList = this.<RoleAuthority, QRoleAuthority>createList("roleAuthorityList", RoleAuthority.class, QRoleAuthority.class, PathInits.DIRECT2);
 

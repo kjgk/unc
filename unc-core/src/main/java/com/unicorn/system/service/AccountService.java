@@ -73,7 +73,7 @@ public class AccountService {
         }
     }
 
-    public void modifyPassword(String userId, String newPassword, String originPassword) {
+    public void modifyPassword(Long userId, String newPassword, String originPassword) {
 
         String passwordTransport = environmentService.getPasswordTransport();
         if (!StringUtils.isEmpty(passwordTransport)) {

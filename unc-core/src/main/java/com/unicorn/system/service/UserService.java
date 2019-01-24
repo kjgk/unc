@@ -34,18 +34,16 @@ public class UserService {
     @Autowired
     private RoleMenuRepository roleMenuRepository;
 
+    private final Long SYSTEM_USER_ID = 1000L;
 
-    private final String ADMINISTRATOR_USER_ID = "36e6754b82894343919a6b42a1a3216d";
-
-    private final String SYSTEM_USER_ID = "ff0d905985564798853e531fe0dc98ac";
-
+    private final Long ADMINISTRATOR_USER_ID = 2000L;
 
     public Page<User> getUser(QueryInfo queryInfo) {
 
         return userRepository.findAll(queryInfo);
     }
 
-    public User getUser(String objectId) {
+    public User getUser(Long objectId) {
 
         return userRepository.get(objectId);
     }
@@ -82,9 +80,9 @@ public class UserService {
         return userDetail.getUser();
     }
 
-    public void deleteUser(String objectId) {
+    public void deleteUser(Long objectId) {
 
-        if (objectId.equalsIgnoreCase(ADMINISTRATOR_USER_ID) || objectId.equalsIgnoreCase(SYSTEM_USER_ID)) {
+        if (ADMINISTRATOR_USER_ID.equals(objectId) || SYSTEM_USER_ID.equals(objectId)) {
             throw new ServiceException("该用户不允许删除！");
         }
 
@@ -93,9 +91,9 @@ public class UserService {
         accountRepository.deleteByUserId(objectId);
     }
 
-    public List<String> getUserMenus(String objectId) {
+    public List<Long> getUserMenus(Long objectId) {
 
-        List<String> resultList = new ArrayList<>();
+        List<Long> resultList = new ArrayList<>();
         List<UserRole> userRoleList = userRoleRepository.findByUserId(objectId);
         for (UserRole userRole : userRoleList) {
             List<RoleMenu> roleMenuList = roleMenuRepository.findByRoleId(userRole.getRole().getObjectId());
@@ -111,6 +109,11 @@ public class UserService {
     public User getAdministrator() {
 
         return userRepository.get(ADMINISTRATOR_USER_ID);
+    }
+
+    public boolean isAdministrator() {
+
+        return ADMINISTRATOR_USER_ID.equals(getCurrentUser().getObjectId());
     }
 
     public User getSystemUser() {

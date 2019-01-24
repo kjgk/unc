@@ -21,7 +21,7 @@ public class BaseController {
         return buildTreeData(childList, fetchChild, null);
     }
 
-    protected List buildTreeData(List<DefaultRecursive> childList, Boolean fetchChild, List<String> filter) {
+    protected List buildTreeData(List<DefaultRecursive> childList, Boolean fetchChild, List<Long> filter) {
         List result = new ArrayList();
         if (!CollectionUtils.isEmpty(childList)) {
             for (DefaultRecursive child : childList) {
@@ -56,7 +56,7 @@ public class BaseController {
 
         List<DefaultRecursive> treePath = getTreePath(entity);
         Collections.reverse(treePath);
-        List<String> filter = new ArrayList();
+        List<Long> filter = new ArrayList();
         for (DefaultRecursive item : treePath) {
             filter.add(item.getObjectId());
         }

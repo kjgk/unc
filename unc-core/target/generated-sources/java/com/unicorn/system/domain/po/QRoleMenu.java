@@ -27,7 +27,7 @@ public class QRoleMenu extends EntityPathBase<RoleMenu> {
     public final QMenu menu;
 
     //inherited
-    public final StringPath objectId = _super.objectId;
+    public final NumberPath<Long> objectId = _super.objectId;
 
     public final QRole role;
 

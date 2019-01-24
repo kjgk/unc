@@ -46,7 +46,7 @@ public class QAccount extends EntityPathBase<Account> {
     public final StringPath name;
 
     //inherited
-    public final StringPath objectId;
+    public final NumberPath<Long> objectId;
 
     public final StringPath password = createString("password");
 

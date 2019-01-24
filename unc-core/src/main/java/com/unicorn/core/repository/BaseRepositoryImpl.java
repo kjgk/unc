@@ -5,15 +5,12 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.unicorn.core.domain.DefaultPersistent;
 import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
 import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.QueryInfo;
-import com.unicorn.utils.Identities;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.FatalBeanException;
+import com.unicorn.utils.SnowflakeIdWorker;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +19,6 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -30,17 +26,14 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Table;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
-public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepository<T, String> implements BaseRepository<T> {
+public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepository<T, Long> implements BaseRepository<T> {
 
     private static final EntityPathResolver DEFAULT_ENTITY_PATH_RESOLVER = SimpleEntityPathResolver.INSTANCE;
 
@@ -48,12 +41,16 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
 
     private final JpaEntityInformation entityInformation;
 
+    private final SnowflakeIdWorker idWorker;
 
     public BaseRepositoryImpl(JpaEntityInformation entityInformation, EntityManager entityManager) {
 
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
         this.entityInformation = entityInformation;
+
+        // todo workerId和dataCenterId通过配置文件指定
+        idWorker = new SnowflakeIdWorker(0, 0);
     }
 
     public EntityManager getEntityManager() {
@@ -61,7 +58,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
         return this.entityManager;
     }
 
-    public <S extends T> S get(String objectId) {
+    public <S extends T> S get(Long objectId) {
 
         return (S) findById(objectId).orElse(null);
     }
@@ -83,59 +80,12 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
     public <S extends T> S save(S entity) {
 
         if (StringUtils.isEmpty(entity.getObjectId())) {
-            entity.setObjectId(Identities.uuid2());
-            return super.save(entity);
+            entity.setObjectId(idWorker.nextId());
         }
-
-        if (!(entity instanceof DefaultPersistent)) {
-            if (StringUtils.isEmpty(entity.getObjectId())) {
-                entity.setObjectId(Identities.uuid2());
-            }
-            return super.save(entity);
-        }
-
-        S current = (S) getOne(entity.getObjectId());
-
-        // 可能是手动设置的objectId
-        if (current == null) {
-            return super.save(entity);
-        }
-
-        PropertyDescriptor[] targetPds = BeanUtils.getPropertyDescriptors(entity.getClass());
-        List<String> ignoreList = null;
-        for (PropertyDescriptor targetPd : targetPds) {
-            Method writeMethod = targetPd.getWriteMethod();
-            if (writeMethod != null && (ignoreList == null || !ignoreList.contains(targetPd.getName()))) {
-                PropertyDescriptor sourcePd = BeanUtils.getPropertyDescriptor(current.getClass(), targetPd.getName());
-                if (sourcePd != null) {
-                    Method readMethod = sourcePd.getReadMethod();
-                    if (readMethod != null &&
-                            ClassUtils.isAssignable(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
-                        try {
-                            if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
-                                readMethod.setAccessible(true);
-                            }
-                            Object value = readMethod.invoke(entity);
-                            if (value == null) {
-                                continue;
-                            }
-                            if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) {
-                                writeMethod.setAccessible(true);
-                            }
-                            writeMethod.invoke(current, value);
-                        } catch (Throwable ex) {
-                            throw new FatalBeanException(
-                                    "Could not copy property '" + targetPd.getName() + "' from source to target", ex);
-                        }
-                    }
-                }
-            }
-        }
-
-        return current;
+        return super.save(entity);
     }
 
-    public void logicDelete(String objectId) {
+    public void logicDelete(Long objectId) {
 
         T entity = getOne(objectId);
         if (null == entity || !(entity instanceof Persistent)) {
@@ -194,7 +144,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
                 + " a where a.deleted = 0");
         return ((List<Object[]>) query.getResultList())
                 .stream()
-                .map(data -> BasicInfo.valueOf((String) data[0], (String) (data)[1]))
+                .map(data -> BasicInfo.valueOf((Long) data[0], (String) (data)[1]))
                 .collect(toList());
     }
 
@@ -216,7 +166,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
         return (T) resultList.get(0);
     }
 
-    public Map move(String objectId, String targetId, Integer position) {
+    public Map move(Long objectId, Long targetId, Integer position) {
 
         Map result = new HashMap();
 
@@ -230,18 +180,18 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
 
         String sql = "select a.parent_id, a.order_no from " + tableName + " a where a.objectid = ?";
 
-        String parentId, targetParentId;
+        Long parentId, targetParentId;
         Integer orderNo, targetOrderNo;
 
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, objectId);
         Object[] singleResult = (Object[]) query.getSingleResult();
-        parentId = (String) singleResult[0];
+        parentId = Long.valueOf(singleResult[0].toString());
         orderNo = (Integer) singleResult[1];
 
         query.setParameter(1, targetId);
         singleResult = (Object[]) query.getSingleResult();
-        targetParentId = (String) singleResult[0];
+        targetParentId = singleResult[0] == null ? null : Long.valueOf(singleResult[0].toString());
         targetOrderNo = (Integer) singleResult[1];
 
         // 移动到目标节点下面

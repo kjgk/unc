@@ -22,6 +22,6 @@ public class SnowflakeIdConfigurer {
     @Bean(name = "snowflakeIdWorker")
     public SnowflakeIdWorker snowflakeIdWorker() {
 
-        return  new SnowflakeIdWorker(workerId, dataCenterId);
+        return new SnowflakeIdWorker(workerId, dataCenterId);
     }
 }

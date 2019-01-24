@@ -16,10 +16,10 @@ public interface CodeRepository extends BaseRepository<Code> {
     List<Code> findByEnum(String parentTag, String tag);
 
     @Query("select max(a.orderNo) from Code a where a.parent.objectId = ?1 and a.deleted = 0")
-    Integer findMaxOrderNo(String parentId);
+    Integer findMaxOrderNo(Long parentId);
 
     @Modifying
     @Query("update Code a set a.orderNo = a.orderNo - 1 where a.parent.objectId = ?1 and a.orderNo > ?2 and a.deleted = 0")
-    Integer minusOrderNo(String parentId, Integer orderNo);
+    Integer minusOrderNo(Long parentId, Integer orderNo);
 
 }
