@@ -9,8 +9,8 @@ import java.util.List;
 public interface ContentAttachmentRepository extends BaseRepository<ContentAttachment> {
 
     @Query(value = "select a from ContentAttachment a where a.relatedId = ?1 order by a.orderNo")
-    List<ContentAttachment> getAttachmentList(String relatedId);
+    List<ContentAttachment> getAttachmentList(Long relatedId);
 
     @Query(value = "select a from ContentAttachment a where a.relatedId = ?1 and a.category = ?2 order by a.orderNo")
-    List<ContentAttachment> getAttachmentList(String relatedId, String category);
+    List<ContentAttachment> getAttachmentList(Long relatedId, String category);
 }

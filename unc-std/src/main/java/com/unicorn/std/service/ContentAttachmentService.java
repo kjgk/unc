@@ -2,6 +2,7 @@ package com.unicorn.std.service;
 
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
+import com.unicorn.std.domain.vo.FileDownloadInfo;
 import com.unicorn.std.repository.ContentAttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ContentAttachmentService {
         save(contentAttachment.getRelatedType(), contentAttachment.getRelatedId(), contentAttachment.getCategory(), Arrays.asList(contentAttachment));
     }
 
-    public void save(String relatedType, String relatedId, String category, List<ContentAttachment> list) {
+    public void save(String relatedType, Long relatedId, String category, List<ContentAttachment> list) {
 
         if (category == null) {
             category = "default";
@@ -83,17 +84,60 @@ public class ContentAttachmentService {
         }
     }
 
-    public List<ContentAttachment> getAttachmentList(String relatedId) {
+    public List<ContentAttachment> getAttachmentList(Long relatedId) {
 
         return contentAttachmentRepository.getAttachmentList(relatedId);
     }
 
-    public List<ContentAttachment> getAttachmentList(String relatedId, String category) {
+    public List<ContentAttachment> getAttachmentList(Long relatedId, String category) {
 
         return contentAttachmentRepository.getAttachmentList(relatedId, category);
     }
 
-    public String getImageAttachmentLink(String relatedId) {
+    /**************************** 附件下载 ****************************/
+    public FileDownloadInfo getAttachmentLink(Long relatedId) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildFileDownloadInfo(attachmentList.get(0).getAttachment());
+    }
+
+    public FileDownloadInfo getAttachmentLink(Long relatedId, String category) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildFileDownloadInfo(attachmentList.get(0).getAttachment());
+    }
+
+    public List<FileDownloadInfo> getAttachmentLinks(Long relatedId) {
+
+        return getAttachmentList(relatedId)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildFileDownloadInfo)
+                .collect(Collectors.toList());
+    }
+
+    public List<FileDownloadInfo> getAttachmentLinks(Long relatedId, String category) {
+
+        return getAttachmentList(relatedId, category)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildFileDownloadInfo)
+                .collect(Collectors.toList());
+    }
+
+    private FileDownloadInfo buildFileDownloadInfo(Attachment attachment) {
+
+        return FileDownloadInfo.valueOf(buildAttachmentLink(attachment), attachment.getOriginalFilename());
+    }
+
+    /**************************** 图片链接 ****************************/
+    public String getImageAttachmentLink(Long relatedId) {
 
         List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
         if (CollectionUtils.isEmpty(attachmentList)) {
@@ -102,7 +146,7 @@ public class ContentAttachmentService {
         return buildImageAttachmentLink(attachmentList.get(0).getAttachment());
     }
 
-    public String getImageAttachmentLink(String relatedId, String category) {
+    public String getImageAttachmentLink(Long relatedId, String category) {
 
         List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
         if (CollectionUtils.isEmpty(attachmentList)) {
@@ -111,7 +155,7 @@ public class ContentAttachmentService {
         return buildImageAttachmentLink(attachmentList.get(0).getAttachment());
     }
 
-    public List<String> getImageAttachmentLinks(String relatedId) {
+    public List<String> getImageAttachmentLinks(Long relatedId) {
 
         return getAttachmentList(relatedId)
                 .stream()
@@ -120,7 +164,7 @@ public class ContentAttachmentService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getImageAttachmentLinks(String relatedId, String category) {
+    public List<String> getImageAttachmentLinks(Long relatedId, String category) {
 
         return getAttachmentList(relatedId, category)
                 .stream()
@@ -132,5 +176,10 @@ public class ContentAttachmentService {
     private String buildImageAttachmentLink(Attachment attachment) {
 
         return "/content/image/" + Base64Utils.encodeToString(attachment.getFilename().getBytes());
+    }
+
+    private String buildAttachmentLink(Attachment attachment) {
+
+        return "/content/download?id=" + attachment.getObjectId();
     }
 }

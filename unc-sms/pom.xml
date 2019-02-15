@@ -8,8 +8,8 @@
 
     <parent>
         <groupId>com.unicorn</groupId>
-        <artifactId>unc-parent</artifactId>
-        <version>2.1.2-RELEASE</version>
+        <artifactId>unc</artifactId>
+        <version>2.1.2</version>
     </parent>
 
     <dependencies>

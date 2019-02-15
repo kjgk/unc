@@ -20,7 +20,7 @@ import javax.persistence.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContentAttachment extends DefaultIdentifiable {
 
-    private String relatedId;
+    private Long relatedId;
 
     private String relatedType;
 
