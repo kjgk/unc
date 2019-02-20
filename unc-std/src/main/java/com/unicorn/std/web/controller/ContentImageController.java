@@ -1,7 +1,7 @@
 package com.unicorn.std.web.controller;
 
 import com.unicorn.std.utils.ThumbnailUtils;
-import com.unicorn.system.service.EnvironmentService;
+import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.utils.FileTypeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Base64Utils;

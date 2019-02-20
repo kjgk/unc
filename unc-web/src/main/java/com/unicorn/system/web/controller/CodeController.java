@@ -1,8 +1,8 @@
 package com.unicorn.system.web.controller;
 
 import com.unicorn.base.web.BaseController;
-import com.unicorn.system.domain.po.Code;
-import com.unicorn.system.service.CodeService;
+import com.unicorn.common.domain.po.Code;
+import com.unicorn.core.service.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

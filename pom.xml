@@ -8,15 +8,16 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <unc.version>2.1.2</unc.version>
+        <unc.version>3.0.0</unc.version>
     </properties>
 
     <groupId>com.unicorn</groupId>
     <artifactId>unc</artifactId>
-    <version>2.1.2</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
+        <module>unc-common</module>
         <module>unc-core</module>
         <module>unc-std</module>
         <module>unc-sms</module>
@@ -48,6 +49,13 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>3.11.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.unicorn</groupId>
+                <artifactId>unc-common</artifactId>
+                <type>jar</type>
+                <version>${unc.version}</version>
             </dependency>
 
             <dependency>

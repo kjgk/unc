@@ -1,7 +1,7 @@
 package com.unicorn.core.userdetails;
 
 
-import com.unicorn.system.domain.po.User;
+import com.unicorn.common.domain.po.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;

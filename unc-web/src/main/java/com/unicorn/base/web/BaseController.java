@@ -1,7 +1,7 @@
 package com.unicorn.base.web;
 
 import com.unicorn.core.DateEditor;
-import com.unicorn.core.domain.DefaultRecursive;
+import com.unicorn.common.domain.DefaultRecursive;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;

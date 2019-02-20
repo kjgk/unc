@@ -2,7 +2,7 @@ package com.unicorn.sms.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.unicorn.core.exception.ServiceException;
+import com.unicorn.common.exception.ServiceException;
 import com.unicorn.sms.config.MiaodiConfigurationProperties;
 import com.unicorn.utils.Identities;
 import com.unicorn.utils.Md5Utils;

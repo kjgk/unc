@@ -1,10 +1,10 @@
 package com.unicorn.core.userdetails;
 
-import com.unicorn.system.domain.po.Account;
-import com.unicorn.system.domain.po.RoleAuthority;
-import com.unicorn.system.domain.po.User;
-import com.unicorn.system.domain.po.UserRole;
-import com.unicorn.system.service.AccountService;
+import com.unicorn.common.domain.po.Account;
+import com.unicorn.common.domain.po.RoleAuthority;
+import com.unicorn.common.domain.po.User;
+import com.unicorn.common.domain.po.UserRole;
+import com.unicorn.core.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -2,7 +2,7 @@ package com.unicorn.std.service;
 
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.repository.AttachmentRepository;
-import com.unicorn.system.service.EnvironmentService;
+import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.utils.FileTypeUtils;
 import com.unicorn.utils.SnowflakeIdWorker;
 import org.apache.commons.io.FileUtils;
