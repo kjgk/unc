@@ -1,8 +1,8 @@
 package com.unicorn.system.web.controller;
 
 import com.unicorn.base.web.BaseController;
-import com.unicorn.common.domain.po.Menu;
-import com.unicorn.core.service.MenuService;
+import com.unicorn.core.domain.po.Menu;
+import com.unicorn.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

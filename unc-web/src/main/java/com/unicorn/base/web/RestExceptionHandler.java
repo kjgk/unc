@@ -1,7 +1,7 @@
 package com.unicorn.base.web;
 
 import com.alibaba.fastjson.JSON;
-import com.unicorn.common.exception.ServiceException;
+import com.unicorn.core.exception.ServiceException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

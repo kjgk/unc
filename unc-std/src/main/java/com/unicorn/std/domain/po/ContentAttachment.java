@@ -2,7 +2,7 @@ package com.unicorn.std.domain.po;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.unicorn.common.domain.DefaultIdentifiable;
+import com.unicorn.core.domain.DefaultIdentifiable;
 import com.unicorn.std.domain.vo.FileUploadInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;

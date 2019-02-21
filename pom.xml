@@ -17,7 +17,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>unc-common</module>
         <module>unc-core</module>
         <module>unc-std</module>
         <module>unc-sms</module>

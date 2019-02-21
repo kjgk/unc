@@ -1,12 +1,12 @@
 package com.unicorn.system.web.controller;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.unicorn.common.domain.vo.BasicInfo;
-import com.unicorn.common.query.PageInfo;
-import com.unicorn.common.query.QueryInfo;
-import com.unicorn.common.domain.po.Authority;
-import com.unicorn.common.domain.po.QAuthority;
-import com.unicorn.core.service.AuthorityService;
+import com.unicorn.core.domain.vo.BasicInfo;
+import com.unicorn.core.query.PageInfo;
+import com.unicorn.core.query.QueryInfo;
+import com.unicorn.core.domain.po.Authority;
+import com.unicorn.core.domain.po.QAuthority;
+import com.unicorn.system.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
