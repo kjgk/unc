@@ -1,4 +1,4 @@
-package com.unicorn.core.repository;
+package com.unicorn.common.repository;
 
 import com.unicorn.common.domain.po.RoleAuthority;
 import org.springframework.data.jpa.repository.Modifying;

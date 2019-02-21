@@ -1,7 +1,6 @@
-package com.unicorn.core.repository;
+package com.unicorn.common.repository;
 
 import com.unicorn.common.domain.po.User;
-import com.unicorn.common.repository.BaseRepository;
 
 public interface UserRepository extends BaseRepository<User> {
 

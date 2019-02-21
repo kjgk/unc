@@ -1,7 +1,7 @@
 package com.unicorn.core.service;
 
 import com.unicorn.common.domain.po.Menu;
-import com.unicorn.core.repository.MenuRepository;
+import com.unicorn.common.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

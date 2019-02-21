@@ -3,7 +3,7 @@ package com.unicorn.core.service;
 import com.unicorn.common.domain.vo.BasicInfo;
 import com.unicorn.common.query.QueryInfo;
 import com.unicorn.common.domain.po.Authority;
-import com.unicorn.core.repository.AuthorityRepository;
+import com.unicorn.common.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
