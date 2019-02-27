@@ -28,11 +28,13 @@ public final class DateUtils {
     /**
      * 中文全称 如：2010年12月01日 23时15分06秒
      */
-    public static String FORMAT_LONG_CN = "yyyy年MM月dd日  HH时mm分ss秒";
+    public static String FORMAT_LONG_CN = "yyyy年MM月dd日 HH时mm分ss秒";
     /**
      * 精确到毫秒的完整中文时间
      */
-    public static String FORMAT_FULL_CN = "yyyy年MM月dd日  HH时mm分ss秒SSS毫秒";
+    public static String FORMAT_FULL_CN = "yyyy年MM月dd日 HH时mm分ss秒SSS毫秒";
+
+    private static String[] otherDateSpilt = new String[]{"/", "_"};
 
     /**
      * 获得默认的 date pattern
@@ -111,6 +113,38 @@ public final class DateUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 强制转为日期
+     *
+     * @param strDate 日期字符串
+     * @return
+     */
+    public static Date forceParse(String strDate) throws ParseException {
+
+        for (String pattern : new String[]{FORMAT_SHORT, FORMAT_LONG, FORMAT_FULL, FORMAT_SHORT_CN, FORMAT_LONG_CN, FORMAT_FULL_CN}) {
+            SimpleDateFormat df = new SimpleDateFormat(pattern);
+            try {
+                return df.parse(strDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        for (String split : otherDateSpilt) {
+            for (String pattern : new String[]{FORMAT_SHORT, FORMAT_LONG, FORMAT_FULL}) {
+                SimpleDateFormat df = new SimpleDateFormat(pattern.replaceAll("-", split));
+                try {
+                    return df.parse(strDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+        }
+        throw new ParseException("无法将“" + strDate + "”转换为日期", 0);
     }
 
     /**
@@ -217,10 +251,7 @@ public final class DateUtils {
                 endDate.set(Calendar.YEAR, endDate.get(Calendar.YEAR) + 1);
             }
         }
-        if (calendar.after(startDate) && calendar.before(endDate)) {
-            return true;
-        }
-        return false;
+        return calendar.after(startDate) && calendar.before(endDate);
     }
 
     /**
@@ -253,9 +284,6 @@ public final class DateUtils {
                 endDate.set(Calendar.DATE, endDate.get(Calendar.DATE) + 1);
             }
         }
-        if (calendar.after(startDate) && calendar.before(endDate)) {
-            return true;
-        }
-        return false;
+        return calendar.after(startDate) && calendar.before(endDate);
     }
 }
