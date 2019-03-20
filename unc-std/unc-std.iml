@@ -65,6 +65,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.1.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.8" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.1.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.1.2.RELEASE" level="project" />

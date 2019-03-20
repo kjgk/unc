@@ -24,7 +24,7 @@ public final class DateUtils {
     /**
      * 中文简写 如：2010年12月01日
      */
-    public static String FORMAT_SHORT_CN = "yyyy年MM月dd";
+    public static String FORMAT_SHORT_CN = "yyyy年MM月dd日";
     /**
      * 中文全称 如：2010年12月01日 23时15分06秒
      */
@@ -128,7 +128,6 @@ public final class DateUtils {
             try {
                 return df.parse(strDate);
             } catch (ParseException e) {
-                e.printStackTrace();
                 continue;
             }
         }
@@ -139,7 +138,6 @@ public final class DateUtils {
                 try {
                     return df.parse(strDate);
                 } catch (ParseException e) {
-                    e.printStackTrace();
                     continue;
                 }
             }

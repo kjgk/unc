@@ -2,7 +2,7 @@ package com.unicorn.std.service;
 
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
-import com.unicorn.std.domain.vo.FileDownloadInfo;
+import com.unicorn.core.domain.vo.FileDownloadInfo;
 import com.unicorn.std.repository.ContentAttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

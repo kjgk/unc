@@ -1,22 +1,21 @@
 package com.unicorn.std.service;
 
-import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.repository.AttachmentRepository;
+import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.utils.FileTypeUtils;
 import com.unicorn.utils.SnowflakeIdWorker;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.IOException;
 
 @Service
 @Transactional
-@Slf4j
 public class AttachmentService {
 
     @Autowired
@@ -39,7 +38,7 @@ public class AttachmentService {
         String filename = (StringUtils.isEmpty(path) ? "" : path) + "/" + fileId;
         File file = new File(environmentService.getTempPath() + "/" + attachment.getFileInfo().getTempFilename());
         try {
-            FileCopyUtils.copy(file, new File(environmentService.getUploadPath() + filename));
+            FileUtils.copyFile(file, new File(environmentService.getUploadPath() + filename));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,9 +53,10 @@ public class AttachmentService {
 
         Attachment attachment = attachmentRepository.get(objectId);
         attachmentRepository.delete(attachment);
-        boolean delete = new File(environmentService.getUploadPath() + attachment.getFilename()).delete();
-        if (delete) {
-            log.info("附件已删除");
+        try {
+            FileUtils.forceDelete(new File(environmentService.getUploadPath() + attachment.getFilename()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

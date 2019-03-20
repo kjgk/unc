@@ -1,4 +1,4 @@
-package com.unicorn.std.domain.vo;
+package com.unicorn.core.domain.vo;
 
 import lombok.Getter;
 import lombok.Setter;
