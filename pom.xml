@@ -8,12 +8,12 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <unc.version>3.1.4-SNAPSHOT</unc.version>
+        <unc.version>3.1.4-RELEASE</unc.version>
     </properties>
 
     <groupId>com.unicorn</groupId>
     <artifactId>unc</artifactId>
-    <version>3.1.4-SNAPSHOT</version>
+    <version>3.1.4-RELEASE</version>
     <packaging>pom</packaging>
 
     <modules>
