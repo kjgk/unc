@@ -1,5 +1,6 @@
 package com.unicorn.poi.excel.parser;
 
+import com.unicorn.poi.excel.ExcelEntry;
 import com.unicorn.poi.excel.IExcelParser;
 import com.unicorn.poi.excel.IParserParam;
 import com.unicorn.poi.excel.handler.IExcelParseHandler;
@@ -8,14 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Objects;
 
 abstract class AbstractExcelParser<T> implements IExcelParser<T> {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public List<T> parse(IParserParam parserParam) {
+    public ExcelEntry<T> parse(IParserParam parserParam) {
         checkParserParam(parserParam);
         IExcelParseHandler<T> handler = this.createHandler(parserParam.getExcelInputStream());
         try {

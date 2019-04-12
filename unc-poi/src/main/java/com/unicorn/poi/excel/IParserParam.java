@@ -1,7 +1,6 @@
 package com.unicorn.poi.excel;
 
 import java.io.InputStream;
-import java.util.List;
 
 public interface IParserParam {
 
@@ -15,5 +14,5 @@ public interface IParserParam {
 
     Integer getSheetNum();
 
-    List<String> getHeader();
+//    List<String> getHeader();
 }

@@ -1,5 +1,6 @@
 package com.unicorn.poi.excel.handler.impl;
 
+import com.unicorn.poi.excel.ExcelEntry;
 import com.unicorn.poi.excel.IParserParam;
 import org.apache.poi.hssf.eventusermodel.*;
 import org.apache.poi.hssf.eventusermodel.dummyrecord.LastCellOfRowDummyRecord;
@@ -46,7 +47,7 @@ public class Excel2003ParseHandler<T> extends BaseExcelParseHandler<T> implement
     private List<T> result;
 
 
-    public List<T> process(IParserParam parserParam) throws Exception {
+    public ExcelEntry<T> process(IParserParam parserParam) throws Exception {
         this.parserParam = parserParam;
         result = new ArrayList<>();
         rowData = initRowList(parserParam.getColumnSize());
@@ -65,7 +66,7 @@ public class Excel2003ParseHandler<T> extends BaseExcelParseHandler<T> implement
         }
 
         factory.processWorkbookEvents(request, fs);
-        return result;
+        return new ExcelEntry(result, header);
     }
 
 

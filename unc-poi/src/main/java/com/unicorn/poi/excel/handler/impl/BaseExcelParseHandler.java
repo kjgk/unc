@@ -16,6 +16,8 @@ abstract class BaseExcelParseHandler<T> implements IExcelParseHandler<T> {
 
     private boolean head = true;
 
+    protected List<String> header;
+
     <T> Optional<T> parseRowToTarget(IParserParam parserParam, List<String> rowData) {
         if (isRowDataEmpty(rowData)) {
             return Optional.empty();
@@ -65,24 +67,12 @@ abstract class BaseExcelParseHandler<T> implements IExcelParseHandler<T> {
         return true;
     }
 
-    void validHeader(IParserParam parserParam, List<String> rowData) {
-        int index = 0;
-        if (rowData.size() != parserParam.getHeader().size()) {
-            throw new IllegalArgumentException("Excel Header Check Failed");
-        }
-        for (String head : parserParam.getHeader()) {
-            if (!Objects.equals(rowData.get(index++), head.trim())) {
-                throw new IllegalArgumentException("Excel Header Check Failed");
-            }
-        }
-    }
-
     protected void handleEndOfRow(IParserParam parserParam, List<String> rowData, List<T> result) {
         boolean empty = isRowDataEmpty(rowData);
         if (!empty) {
-            if (head && parserParam.getHeader() != null && parserParam.getHeader().size() != 0) {
-                validHeader(parserParam, rowData);
+            if (head) {
                 head = false;
+                header = rowData;
             } else {
                 Optional<T> t = parseRowToTarget(parserParam, rowData);
                 t.ifPresent(result::add);

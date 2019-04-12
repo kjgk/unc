@@ -5,26 +5,23 @@ import com.unicorn.poi.excel.parser.ExcelSaxParser;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
         IExcelParser<DataPointValue> parser = new ExcelSaxParser<DataPointValue>();
-
-        List<String> headers = Arrays.asList("编号", "区代码", "镇代码", "小班号", "面积", "地类", "森林类别", "事权等级", "保护等级", "林种", "绿地类型", "造林年份", "更新时间");
-
+        FileInputStream fileInputStream = new FileInputStream("/home/kjgk/Desktop/lhsr/2016年主题库林业小班数据.xls");
         IParserParam parserParam = DefaultParserParam.builder()
-                .excelInputStream(new FileInputStream("/home/kjgk/Desktop/lhsr/2017年主题库林业小班数据.xlsx"))
-                .columnSize(headers.size())
-                .sheetNum(IParserParam.FIRST_SHEET)
+                .excelInputStream(fileInputStream)
+                .columnSize(13)
                 .targetClass(DataPointValue.class)
-                .header(headers)
                 .build();
 
-        List<DataPointValue> list = parser.parse(parserParam);
+        ExcelEntry<DataPointValue> entry = parser.parse(parserParam);
+        for (DataPointValue dataPointValue : entry.getContent()) {
+            System.out.println(dataPointValue);
+        }
     }
 }
 

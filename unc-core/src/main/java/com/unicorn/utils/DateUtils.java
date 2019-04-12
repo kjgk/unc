@@ -34,7 +34,7 @@ public final class DateUtils {
      */
     public static String FORMAT_FULL_CN = "yyyy年MM月dd日 HH时mm分ss秒SSS毫秒";
 
-    private static String[] otherDateSpilt = new String[]{"/", "_"};
+    private static String[] otherDateSpilt = new String[]{"/", "_", ".", ""};
 
     /**
      * 获得默认的 date pattern
@@ -123,7 +123,9 @@ public final class DateUtils {
      */
     public static Date forceParse(String strDate) throws ParseException {
 
-        for (String pattern : new String[]{FORMAT_SHORT, FORMAT_LONG, FORMAT_FULL, FORMAT_SHORT_CN, FORMAT_LONG_CN, FORMAT_FULL_CN}) {
+        for (String pattern : new String[]{
+                FORMAT_FULL, FORMAT_LONG, "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH", FORMAT_SHORT, "yyyy-MM"
+                , FORMAT_FULL_CN, FORMAT_LONG_CN, "yyyy年MM月dd日 HH时mm分", "yyyy年MM月dd日 HH时", FORMAT_SHORT_CN, "yyyy年MM月", "yyyy年"}) {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
             try {
                 return df.parse(strDate);
@@ -133,13 +135,19 @@ public final class DateUtils {
         }
 
         for (String split : otherDateSpilt) {
-            for (String pattern : new String[]{FORMAT_SHORT, FORMAT_LONG, FORMAT_FULL}) {
+            for (String pattern : new String[]{FORMAT_FULL, FORMAT_LONG, "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH", FORMAT_SHORT, "yyyy-MM"}) {
                 SimpleDateFormat df = new SimpleDateFormat(pattern.replaceAll("-", split));
                 try {
                     return df.parse(strDate);
                 } catch (ParseException e) {
                     continue;
                 }
+            }
+        }
+        if (strDate.length() == 4) {
+            try {
+                return new SimpleDateFormat("yyyy").parse(strDate);
+            } catch (ParseException e) {
             }
         }
         throw new ParseException("无法将“" + strDate + "”转换为日期", 0);

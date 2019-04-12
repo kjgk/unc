@@ -2,23 +2,26 @@ package com.unicorn.poi.excel.param;
 
 import com.unicorn.poi.excel.IParserParam;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.util.List;
 
 public class DefaultParserParam implements IParserParam {
 
     private InputStream inputStream;
     private Class targetClass;
     private Integer columnSize;
-    private List<String> header;
     private Integer sheetNum;
 
-    private DefaultParserParam(InputStream inputStream, Class targetClass, Integer columnSize, List<String> header, Integer sheetNum) {
-        this.inputStream = inputStream;
+    private DefaultParserParam(InputStream inputStream, Class targetClass, Integer columnSize, Integer sheetNum) {
+
+        if (inputStream.markSupported()) {
+            this.inputStream = inputStream;
+        } else {
+            this.inputStream = new BufferedInputStream(inputStream);
+        }
         this.targetClass = targetClass;
         this.columnSize = columnSize;
         this.sheetNum = sheetNum;
-        this.header = header;
     }
 
     public static Builder builder() {
@@ -46,18 +49,12 @@ public class DefaultParserParam implements IParserParam {
         return sheetNum;
     }
 
-    @Override
-    public List<String> getHeader() {
-        return header;
-    }
-
     public static class Builder {
 
         private InputStream inputStream;
         private Class targetClass;
         private Integer columnSize;
-        private List<String> header;
-        private Integer sheetNum;
+        private Integer sheetNum = IParserParam.FIRST_SHEET;
 
         public Builder excelInputStream(InputStream inputStream) {
             this.inputStream = inputStream;
@@ -75,18 +72,13 @@ public class DefaultParserParam implements IParserParam {
             return this;
         }
 
-        public Builder header(List<String> header) {
-            this.header = header;
-            return this;
-        }
-
         public Builder sheetNum(Integer sheetNum) {
             this.sheetNum = sheetNum;
             return this;
         }
 
         public DefaultParserParam build() {
-            return new DefaultParserParam(inputStream, targetClass, columnSize, header, sheetNum);
+            return new DefaultParserParam(inputStream, targetClass, columnSize, sheetNum);
         }
     }
 }

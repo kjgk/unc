@@ -1,5 +1,6 @@
 package com.unicorn.poi.excel.handler.impl;
 
+import com.unicorn.poi.excel.ExcelEntry;
 import com.unicorn.poi.excel.IParserParam;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -14,34 +15,19 @@ import java.util.Optional;
 public class ExcelDomParseHandler<T> extends BaseExcelParseHandler<T> {
 
     @Override
-    public List<T> process(IParserParam parserParam) throws Exception {
+    public ExcelEntry<T> process(IParserParam parserParam) throws Exception {
         Workbook workbook = generateWorkBook(parserParam);
         Sheet sheet = workbook.getSheetAt(parserParam.getSheetNum());
         Iterator<Row> rowIterator = sheet.rowIterator();
-        if (parserParam.getHeader() != null && parserParam.getHeader().size() != 0) {
-            checkHeader(rowIterator, parserParam);
-        }
-        return parseRowToTargetList(rowIterator, parserParam);
+        List<T> result = parseRowToTargetList(rowIterator, parserParam);
+        return new ExcelEntry(result, header);
     }
-
-    private void checkHeader(Iterator<Row> rowIterator, IParserParam parserParam) {
-        while (true) {
-            Row row = rowIterator.next();
-            List<String> rowData = parseRowToList(row, parserParam.getColumnSize());
-            boolean empty = isRowDataEmpty(rowData);
-            if (!empty) {
-                validHeader(parserParam, rowData);
-                break;
-            }
-        }
-    }
-
 
     private Workbook generateWorkBook(IParserParam parserParam) throws IOException, InvalidFormatException {
         return WorkbookFactory.create(parserParam.getExcelInputStream());
     }
 
-    private List<T> parseRowToTargetList(Iterator<Row> rowIterator, IParserParam parserParam) throws InstantiationException, IllegalAccessException {
+    private List<T> parseRowToTargetList(Iterator<Row> rowIterator, IParserParam parserParam) {
         List<T> result = new ArrayList<>();
         for (; rowIterator.hasNext(); ) {
             Row row = rowIterator.next();
