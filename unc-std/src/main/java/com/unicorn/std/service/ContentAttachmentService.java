@@ -1,8 +1,8 @@
 package com.unicorn.std.service;
 
+import com.unicorn.core.domain.vo.FileDownloadInfo;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
-import com.unicorn.core.domain.vo.FileDownloadInfo;
 import com.unicorn.std.repository.ContentAttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,15 +46,16 @@ public class ContentAttachmentService {
 
         Assert.notNull(relatedType, "relatedType不能为空！");
         Assert.notNull(relatedId, "relatedId不能为空！");
-        Assert.notEmpty(list, "contentAttachmentList不能为空！");
 
         // 删除附件
         List<ContentAttachment> currentList = contentAttachmentRepository.getAttachmentList(relatedId, category);
+        List<Long> deletedList = new ArrayList();
         if (!CollectionUtils.isEmpty(currentList)) {
             for (ContentAttachment currentAttachment : currentList) {
                 boolean delete = true;
                 for (ContentAttachment contentAttachment : list) {
-                    if (currentAttachment.getObjectId().equals(contentAttachment.getObjectId())) {
+                    if (contentAttachment.getAttachment() != null
+                            && currentAttachment.getAttachment().getObjectId().equals(contentAttachment.getAttachment().getObjectId())) {
                         delete = false;
                         break;
                     }
@@ -61,25 +63,33 @@ public class ContentAttachmentService {
                 if (delete) {
                     contentAttachmentRepository.delete(currentAttachment);
                     attachmentService.deleteAttachment(currentAttachment.getAttachment().getObjectId());
+                    deletedList.add(currentAttachment.getObjectId());
                 }
+            }
+        }
+
+        // 更新排序号
+        int orderNo = 1;
+        for (ContentAttachment contentAttachment : currentList) {
+            if (!deletedList.contains(contentAttachment.getObjectId())) {
+                contentAttachment.setOrderNo(orderNo++);
             }
         }
 
         // 保存附件
         if (!CollectionUtils.isEmpty(list)) {
-            int orderNo = 1;
             for (ContentAttachment contentAttachment : list) {
                 if (contentAttachment.getAttachment() == null) {
                     Attachment attachment = new Attachment();
                     attachment.setFileInfo(contentAttachment.getFileInfo());
                     String path = "/" + relatedType + "/" + category;
                     contentAttachment.setAttachment(attachmentService.saveAttachment(path, attachment));
+                    contentAttachment.setOrderNo(orderNo++);
+                    contentAttachment.setRelatedId(relatedId);
+                    contentAttachment.setRelatedType(relatedType);
+                    contentAttachment.setCategory(category);
+                    contentAttachmentRepository.save(contentAttachment);
                 }
-                contentAttachment.setOrderNo(orderNo++);
-                contentAttachment.setRelatedId(relatedId);
-                contentAttachment.setRelatedType(relatedType);
-                contentAttachment.setCategory(category);
-                contentAttachmentRepository.save(contentAttachment);
             }
         }
     }
