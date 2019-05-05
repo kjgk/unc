@@ -292,4 +292,17 @@ public final class DateUtils {
         }
         return calendar.after(startDate) && calendar.before(endDate);
     }
+
+
+    /**
+     * 获取某个月的天数
+     * @param date
+     * @return
+     */
+    public static int getDaysOfMonth(Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
 }
