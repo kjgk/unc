@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -41,16 +43,40 @@ public class MiaodiService {
         String key = getRedisKey(phoneNo, tunnel);
         redisTemplate.opsForValue().set(key, code, 30, TimeUnit.MINUTES);
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+        // 发送
+        sendMessage(phoneNo, configurationProperties.getTemplateId(), code);
+    }
 
+    public String getVerifyCode(String phoneNo, String tunnel) {
+
+        return redisTemplate.opsForValue().get(getRedisKey(phoneNo, tunnel));
+    }
+
+    public void removeVerifyCode(String phoneNo, String tunnel) {
+
+        redisTemplate.delete(getRedisKey(phoneNo, tunnel));
+    }
+
+    public void sendMessage(String phoneNo, String templateId, String... params) {
+
+        OkHttpClient okHttpClient = new OkHttpClient();
         String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String sign = Md5Utils.encrypt(configurationProperties.getAccountSid() + configurationProperties.getAuthToken() + timestamp);
-        Request request = new Request.Builder()
-                .url(configurationProperties.getUrl())
-                .post(RequestBody.create(null, "accountSid=" + configurationProperties.getAccountSid() + "&smsContent=" + code + "&templateid=" + configurationProperties.getTemplateId() + "&param=" + code + "&to=" + phoneNo + "&timestamp=" + timestamp + "&sig=" + sign))
-                .header("Content-Type", "application/x-www-form-urlencoded").build();
-
+        String paramsText = "";
+        for (String param : params) {
+            paramsText += (StringUtils.isEmpty(paramsText) ? "" : ",") + param;
+        }
         try {
+            Request request = new Request.Builder()
+                    .url(configurationProperties.getUrl())
+                    .post(RequestBody.create(null,
+                            "accountSid=" + configurationProperties.getAccountSid()
+                                    + "&templateid=" + templateId
+                                    + "&param=" + URLEncoder.encode(paramsText, "utf-8")
+                                    + "&to=" + phoneNo
+                                    + "&timestamp=" + timestamp
+                                    + "&sig=" + sign))
+                    .header("Content-Type", "application/x-www-form-urlencoded").build();
             Response response = okHttpClient.newCall(request).execute();
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
@@ -66,18 +92,17 @@ public class MiaodiService {
         }
     }
 
-    public String getVerifyCode(String phoneNo, String tunnel) {
-
-        return redisTemplate.opsForValue().get(getRedisKey(phoneNo, tunnel));
-    }
-
-    public void removeVerifyCode(String phoneNo, String tunnel) {
-
-        redisTemplate.delete(getRedisKey(phoneNo, tunnel));
-    }
-
     private String getRedisKey(String phoneNo, String tunnel) {
 
         return ("sms_verification:" + phoneNo + ":" + tunnel).toLowerCase();
+    }
+
+
+    public static void main(String[] args) {
+
+        long timestamp = System.currentTimeMillis();
+        String sign = Md5Utils.encrypt("824daecfe8fa49cf946186afac76650b78f66c22f6894481a6b1a54fe5d52f71" + timestamp);
+        System.out.println(timestamp);
+        System.out.println(sign);
     }
 }
