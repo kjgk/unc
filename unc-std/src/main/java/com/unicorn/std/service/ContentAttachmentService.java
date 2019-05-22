@@ -1,5 +1,6 @@
 package com.unicorn.std.service;
 
+import com.unicorn.core.domain.vo.AttachmentInfo;
 import com.unicorn.core.domain.vo.FileDownloadInfo;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
@@ -104,6 +105,43 @@ public class ContentAttachmentService {
         return contentAttachmentRepository.getAttachmentList(relatedId, category);
     }
 
+
+    public AttachmentInfo getAttachmentInfo(Long relatedId) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
+    }
+
+    public AttachmentInfo getAttachmentInfo(Long relatedId, String category) {
+
+        List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
+        if (CollectionUtils.isEmpty(attachmentList)) {
+            return null;
+        }
+        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
+    }
+
+    public List<AttachmentInfo> getAttachmentInfos(Long relatedId) {
+
+        return getAttachmentList(relatedId)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildAttachmentInfo)
+                .collect(Collectors.toList());
+    }
+
+    public List<AttachmentInfo> getAttachmentInfos(Long relatedId, String category) {
+
+        return getAttachmentList(relatedId, category)
+                .stream()
+                .map(ContentAttachment::getAttachment)
+                .map(this::buildAttachmentInfo)
+                .collect(Collectors.toList());
+    }
+
     /**************************** 附件下载 ****************************/
     public FileDownloadInfo getAttachmentLink(Long relatedId) {
 
@@ -144,6 +182,19 @@ public class ContentAttachmentService {
     private FileDownloadInfo buildFileDownloadInfo(Attachment attachment) {
 
         return FileDownloadInfo.valueOf(buildAttachmentLink(attachment), attachment.getOriginalFilename());
+    }
+
+    private AttachmentInfo buildAttachmentInfo(Attachment attachment) {
+
+        AttachmentInfo attachmentInfo = new AttachmentInfo();
+        attachmentInfo.setUrl(buildAttachmentLink(attachment));
+        if (attachment.getFileType() != null && "jpg,png,gif,tif,bmp".contains(attachment.getFileType())) {
+            attachmentInfo.setImageUrl(buildImageAttachmentLink(attachment));
+        }
+        attachmentInfo.setAttachmentId(attachment.getObjectId());
+        attachmentInfo.setFilename(attachment.getOriginalFilename());
+        return attachmentInfo;
+
     }
 
     /**************************** 图片链接 ****************************/

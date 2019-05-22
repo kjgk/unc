@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -42,6 +43,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return handleExceptionInternal(ex, JSON.toJSON(result).toString(), headers, HttpStatus.EXPECTATION_FAILED, request);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    protected ResponseEntity<Object> handleExceptionInternal(AccessDeniedException ex, WebRequest request) {
+
+        ex.printStackTrace();
+        Map result = new HashMap();
+        result.put("success", false);
+        result.put("message", "您没有权限执行此操作！");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return handleExceptionInternal(ex, JSON.toJSON(result).toString(), headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {Exception.class})

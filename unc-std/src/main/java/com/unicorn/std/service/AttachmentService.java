@@ -44,7 +44,7 @@ public class AttachmentService {
         }
         attachment.setFileSize(file.length());
         attachment.setFilename(filename);
-        attachment.setFileType(FileTypeUtils.getImageFileType(file));
+        attachment.setFileType(FileTypeUtils.getFileType(file));
         attachment.setOriginalFilename(attachment.getFileInfo().getFilename());
         return attachmentRepository.save(attachment);
     }
