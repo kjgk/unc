@@ -5,6 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.unicorn.core.content.ApplicationContextProvider;
 import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
 import com.unicorn.core.domain.vo.BasicInfo;
@@ -41,16 +42,17 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
 
     private final JpaEntityInformation entityInformation;
 
-    private final SnowflakeIdWorker idWorker;
+
+    private SnowflakeIdWorker getIdWorker() {
+
+        return ApplicationContextProvider.getBean(SnowflakeIdWorker.class);
+    }
 
     public BaseRepositoryImpl(JpaEntityInformation entityInformation, EntityManager entityManager) {
 
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
         this.entityInformation = entityInformation;
-
-        // todo workerId和dataCenterId通过配置文件指定
-        idWorker = new SnowflakeIdWorker(0, 0);
     }
 
     public EntityManager getEntityManager() {
@@ -80,7 +82,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
     public <S extends T> S save(S entity) {
 
         if (StringUtils.isEmpty(entity.getObjectId())) {
-            entity.setObjectId(idWorker.nextId());
+            entity.setObjectId(getIdWorker().nextId());
         }
         return super.save(entity);
     }

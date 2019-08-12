@@ -1,4 +1,4 @@
-package com.unicorn.system.config;
+package com.unicorn.core.config;
 
 import com.unicorn.utils.SnowflakeIdWorker;
 import lombok.Getter;

@@ -27,6 +27,7 @@ public class ResponseHandler implements ResponseBodyAdvice {
 
         Map data = new HashMap();
         data.put("success", true);
+        data.put("code", 200);
         return data;
     }
 }

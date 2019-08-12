@@ -63,6 +63,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ex.printStackTrace();
         Map result = new HashMap();
         result.put("success", false);
+        result.put("code", 500);
         if (ex instanceof FileNotFoundException) {
             result.put("message", "File Not Found!");
         } else {
