@@ -3,7 +3,7 @@ package com.unicorn.std.domain.po;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.unicorn.core.domain.DefaultPersistent;
-import com.unicorn.core.domain.vo.FileUploadInfo;
+import com.unicorn.core.domain.vo.AttachmentInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,5 +32,5 @@ public class Attachment extends DefaultPersistent {
     private String originalFilename;
 
     @Transient
-    private FileUploadInfo fileInfo;
+    private AttachmentInfo attachmentInfo;
 }

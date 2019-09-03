@@ -1,4 +1,4 @@
-package com.unicorn.std.web.controller;
+package com.unicorn.std.controller;
 
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.service.AttachmentService;

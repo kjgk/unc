@@ -3,7 +3,6 @@ package com.unicorn.std.domain.po;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.unicorn.core.domain.DefaultIdentifiable;
-import com.unicorn.core.domain.vo.FileUploadInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +30,4 @@ public class ContentAttachment extends DefaultIdentifiable {
     private String category;
 
     private Integer orderNo;
-
-    @Transient
-    private FileUploadInfo fileInfo;
 }

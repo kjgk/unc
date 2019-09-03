@@ -1,11 +1,10 @@
 package com.unicorn.std.service;
 
 import com.unicorn.core.domain.vo.AttachmentInfo;
-import com.unicorn.core.domain.vo.FileDownloadInfo;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
 import com.unicorn.std.repository.ContentAttachmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
@@ -13,33 +12,19 @@ import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class ContentAttachmentService {
 
-    @Autowired
     private ContentAttachmentRepository contentAttachmentRepository;
 
-    @Autowired
     private AttachmentService attachmentService;
 
-    public ContentAttachment getContentAttachment(Long objectId) {
-
-        return contentAttachmentRepository.get(objectId);
-    }
-
-    public void save(ContentAttachment contentAttachment) {
-
-        Assert.notNull(contentAttachment, "contentAttachment不能为空！");
-
-        save(contentAttachment.getRelatedType(), contentAttachment.getRelatedId(), contentAttachment.getCategory(), Arrays.asList(contentAttachment));
-    }
-
-    public void save(String relatedType, Long relatedId, String category, List<ContentAttachment> list) {
+    public void save(String relatedType, Long relatedId, String category, AttachmentInfo... attachments) {
 
         if (category == null) {
             category = "default";
@@ -54,9 +39,8 @@ public class ContentAttachmentService {
         if (!CollectionUtils.isEmpty(currentList)) {
             for (ContentAttachment currentAttachment : currentList) {
                 boolean delete = true;
-                for (ContentAttachment contentAttachment : list) {
-                    if (contentAttachment.getAttachment() != null
-                            && currentAttachment.getAttachment().getObjectId().equals(contentAttachment.getAttachment().getObjectId())) {
+                for (AttachmentInfo attachment : attachments) {
+                    if (attachment.getAttachmentId() != null && currentAttachment.getAttachment().getObjectId().equals(attachment.getAttachmentId())) {
                         delete = false;
                         break;
                     }
@@ -78,21 +62,27 @@ public class ContentAttachmentService {
         }
 
         // 保存附件
-        if (!CollectionUtils.isEmpty(list)) {
-            for (ContentAttachment contentAttachment : list) {
-                if (contentAttachment.getAttachment() == null) {
+        if (attachments != null && attachments.length > 0) {
+            for (AttachmentInfo attachmentInfo : attachments) {
+                if (attachmentInfo.getAttachmentId() == null) {
                     Attachment attachment = new Attachment();
-                    attachment.setFileInfo(contentAttachment.getFileInfo());
+                    ContentAttachment contentAttachment = new ContentAttachment();
+                    attachment.setAttachmentInfo(attachmentInfo);
                     String path = "/" + relatedType + "/" + category;
                     contentAttachment.setAttachment(attachmentService.saveAttachment(path, attachment));
-                    contentAttachment.setOrderNo(orderNo++);
                     contentAttachment.setRelatedId(relatedId);
                     contentAttachment.setRelatedType(relatedType);
                     contentAttachment.setCategory(category);
+                    contentAttachment.setOrderNo(orderNo++);
                     contentAttachmentRepository.save(contentAttachment);
                 }
             }
         }
+    }
+
+    public ContentAttachment getContentAttachment(Long objectId) {
+
+        return contentAttachmentRepository.get(objectId);
     }
 
     public List<ContentAttachment> getAttachmentList(Long relatedId) {
@@ -104,7 +94,6 @@ public class ContentAttachmentService {
 
         return contentAttachmentRepository.getAttachmentList(relatedId, category);
     }
-
 
     public AttachmentInfo getAttachmentInfo(Long relatedId) {
 
@@ -124,7 +113,7 @@ public class ContentAttachmentService {
         return buildAttachmentInfo(attachmentList.get(0).getAttachment());
     }
 
-    public List<AttachmentInfo> getAttachmentInfos(Long relatedId) {
+    public List<AttachmentInfo> getAttachmentInfoList(Long relatedId) {
 
         return getAttachmentList(relatedId)
                 .stream()
@@ -133,7 +122,7 @@ public class ContentAttachmentService {
                 .collect(Collectors.toList());
     }
 
-    public List<AttachmentInfo> getAttachmentInfos(Long relatedId, String category) {
+    public List<AttachmentInfo> getAttachmentInfoList(Long relatedId, String category) {
 
         return getAttachmentList(relatedId, category)
                 .stream()
@@ -142,48 +131,44 @@ public class ContentAttachmentService {
                 .collect(Collectors.toList());
     }
 
-    /**************************** 附件下载 ****************************/
-    public FileDownloadInfo getAttachmentLink(Long relatedId) {
+    /*  */
+
+    /**************************** 附件下载 ****************************//*
+    public AttachmentInfo getAttachmentLink(Long relatedId) {
 
         List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
         if (CollectionUtils.isEmpty(attachmentList)) {
             return null;
         }
-        return buildFileDownloadInfo(attachmentList.get(0).getAttachment());
+        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
     }
 
-    public FileDownloadInfo getAttachmentLink(Long relatedId, String category) {
+    public AttachmentInfo getAttachmentLink(Long relatedId, String category) {
 
         List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
         if (CollectionUtils.isEmpty(attachmentList)) {
             return null;
         }
-        return buildFileDownloadInfo(attachmentList.get(0).getAttachment());
+        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
     }
 
-    public List<FileDownloadInfo> getAttachmentLinks(Long relatedId) {
+    public List<AttachmentInfo> getAttachmentLinks(Long relatedId) {
 
         return getAttachmentList(relatedId)
                 .stream()
                 .map(ContentAttachment::getAttachment)
-                .map(this::buildFileDownloadInfo)
+                .map(this::buildAttachmentInfo)
                 .collect(Collectors.toList());
     }
 
-    public List<FileDownloadInfo> getAttachmentLinks(Long relatedId, String category) {
+    public List<AttachmentInfo> getAttachmentLinks(Long relatedId, String category) {
 
         return getAttachmentList(relatedId, category)
                 .stream()
                 .map(ContentAttachment::getAttachment)
-                .map(this::buildFileDownloadInfo)
+                .map(this::buildAttachmentInfo)
                 .collect(Collectors.toList());
-    }
-
-    private FileDownloadInfo buildFileDownloadInfo(Attachment attachment) {
-
-        return FileDownloadInfo.valueOf(buildAttachmentLink(attachment), attachment.getOriginalFilename());
-    }
-
+    }*/
     private AttachmentInfo buildAttachmentInfo(Attachment attachment) {
 
         AttachmentInfo attachmentInfo = new AttachmentInfo();

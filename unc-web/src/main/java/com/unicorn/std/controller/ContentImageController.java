@@ -1,4 +1,4 @@
-package com.unicorn.std.web.controller;
+package com.unicorn.std.controller;
 
 import com.unicorn.std.utils.ThumbnailUtils;
 import com.unicorn.core.service.EnvironmentService;

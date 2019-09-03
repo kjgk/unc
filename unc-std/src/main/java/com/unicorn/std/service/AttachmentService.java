@@ -36,7 +36,7 @@ public class AttachmentService {
 
         String fileId = String.valueOf(snowflakeIdWorker.nextId());
         String filename = (StringUtils.isEmpty(path) ? "" : path) + "/" + fileId;
-        File file = new File(environmentService.getTempPath() + "/" + attachment.getFileInfo().getTempFilename());
+        File file = new File(environmentService.getTempPath() + "/" + attachment.getAttachmentInfo().getTempFilename());
         try {
             FileUtils.copyFile(file, new File(environmentService.getUploadPath() + filename));
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class AttachmentService {
         attachment.setFileSize(file.length());
         attachment.setFilename(filename);
         attachment.setFileType(FileTypeUtils.getFileType(file));
-        attachment.setOriginalFilename(attachment.getFileInfo().getFilename());
+        attachment.setOriginalFilename(attachment.getAttachmentInfo().getFilename());
         return attachmentRepository.save(attachment);
     }
 

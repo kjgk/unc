@@ -18,4 +18,5 @@ public class AttachmentInfo implements Serializable {
     private String url;
 
     private String imageUrl;
+
 }

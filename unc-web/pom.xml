@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.unicorn</groupId>
         <artifactId>unc</artifactId>
-        <version>3.1.7-RELEASE</version>
+        <version>3.2.2-RELEASE</version>
     </parent>
 
     <dependencies>
@@ -51,10 +51,16 @@
             <artifactId>joda-time</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>com.unicorn</groupId>
             <artifactId>unc-core</artifactId>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.unicorn</groupId>
+            <artifactId>unc-std</artifactId>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -67,6 +73,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
