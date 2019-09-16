@@ -4,6 +4,7 @@ import com.unicorn.core.domain.vo.AttachmentInfo;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
 import com.unicorn.std.repository.ContentAttachmentRepository;
+import com.unicorn.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,12 +65,12 @@ public class ContentAttachmentService {
 
         // 保存附件
         if (attachments != null && attachments.length > 0) {
+            String path = "/" + relatedType + "/" + category + "/" + DateUtils.format(new Date(), "yyyyMM");
             for (AttachmentInfo attachmentInfo : attachments) {
                 if (attachmentInfo.getAttachmentId() == null) {
                     Attachment attachment = new Attachment();
                     ContentAttachment contentAttachment = new ContentAttachment();
                     attachment.setAttachmentInfo(attachmentInfo);
-                    String path = "/" + relatedType + "/" + category;
                     contentAttachment.setAttachment(attachmentService.saveAttachment(path, attachment));
                     contentAttachment.setRelatedId(relatedId);
                     contentAttachment.setRelatedType(relatedType);
