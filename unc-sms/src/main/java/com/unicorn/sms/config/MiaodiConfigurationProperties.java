@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Setter
 public class MiaodiConfigurationProperties {
 
-    private String url = "https://api.miaodiyun.com/20150822/industrySMS/sendSMS";
+    private String url = "https://openapi.miaodiyun.com/distributor/sendSMS";
 
     private String accountSid;
 

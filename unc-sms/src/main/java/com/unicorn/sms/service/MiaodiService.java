@@ -6,10 +6,7 @@ import com.unicorn.core.exception.ServiceException;
 import com.unicorn.sms.config.MiaodiConfigurationProperties;
 import com.unicorn.utils.Identities;
 import com.unicorn.utils.Md5Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +16,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -60,7 +55,7 @@ public class MiaodiService {
     public void sendMessage(String phoneNo, String templateId, String... params) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
-        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String timestamp = System.currentTimeMillis() + "";
         String sign = Md5Utils.encrypt(configurationProperties.getAccountSid() + configurationProperties.getAuthToken() + timestamp);
         String paramsText = "";
         for (String param : params) {
@@ -69,7 +64,7 @@ public class MiaodiService {
         try {
             Request request = new Request.Builder()
                     .url(configurationProperties.getUrl())
-                    .post(RequestBody.create(null,
+                    .post(RequestBody.create(MediaType.get("application/x-www-form-urlencoded"),
                             "accountSid=" + configurationProperties.getAccountSid()
                                     + "&templateid=" + templateId
                                     + "&param=" + URLEncoder.encode(paramsText, "utf-8")
@@ -80,7 +75,7 @@ public class MiaodiService {
             Response response = okHttpClient.newCall(request).execute();
             String result = response.body().string();
             JSONObject jsonObject = JSON.parseObject(result);
-            if (!"00000".equals(jsonObject.getString("respCode"))) {
+            if (!"0000".equals(jsonObject.getString("respCode"))) {
                 String message = "短信发送失败：" + jsonObject.getString("respDesc");
                 logger.error(message);
                 throw new ServiceException(message);
@@ -95,14 +90,5 @@ public class MiaodiService {
     private String getRedisKey(String phoneNo, String tunnel) {
 
         return ("sms_verification:" + phoneNo + ":" + tunnel).toLowerCase();
-    }
-
-
-    public static void main(String[] args) {
-
-        long timestamp = System.currentTimeMillis();
-        String sign = Md5Utils.encrypt("824daecfe8fa49cf946186afac76650b78f66c22f6894481a6b1a54fe5d52f71" + timestamp);
-        System.out.println(timestamp);
-        System.out.println(sign);
     }
 }
