@@ -1,15 +1,16 @@
 package com.unicorn.system.web.controller;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.unicorn.core.domain.po.QRole;
+import com.unicorn.core.domain.po.Role;
 import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.query.PageInfo;
 import com.unicorn.core.query.QueryInfo;
-import com.unicorn.core.domain.po.QRole;
-import com.unicorn.core.domain.po.Role;
 import com.unicorn.system.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,10 @@ import static com.unicorn.base.web.ApiNamespace.API_V1;
 
 @RestController
 @RequestMapping(API_V1 + "/system/role")
+@AllArgsConstructor
+@Secured("ROLE_ADMIN")
 public class RoleController {
 
-    @Autowired
     private RoleService roleService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -32,7 +34,7 @@ public class RoleController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "name"));
         return roleService.getRole(queryInfo);
     }
 

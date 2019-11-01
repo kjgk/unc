@@ -3,7 +3,8 @@ package com.unicorn.system.web.controller;
 import com.unicorn.base.web.BaseController;
 import com.unicorn.core.domain.po.Code;
 import com.unicorn.system.service.CodeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +16,14 @@ import static com.unicorn.base.web.ApiNamespace.API_V1;
 
 @RestController
 @RequestMapping(API_V1 + "/system/code")
+@AllArgsConstructor
+@Secured("ROLE_ADMIN")
 public class CodeController extends BaseController {
 
-    @Autowired
     private CodeService codeService;
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List loadCodeTree(@RequestParam(value = "id", required = false) Long objectId, String tag
             , @RequestParam(defaultValue = "false") Boolean fetchChild
             , @RequestParam(defaultValue = "false") Boolean backward
@@ -53,7 +56,6 @@ public class CodeController extends BaseController {
             return buildTreeData(code.getChildList(), fetchChild);
         }
     }
-
 
     @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
     public Code get(@PathVariable Long objectId) {

@@ -143,7 +143,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
     public List<BasicInfo> list() {
 
         Query query = this.entityManager.createQuery("select a.objectId, a.name from " + entityInformation.getJavaType().getName()
-                + " a where a.deleted = 0");
+                + " a where a.deleted = 0 order by a.name desc");
         return ((List<Object[]>) query.getResultList())
                 .stream()
                 .map(data -> BasicInfo.valueOf((Long) data[0], (String) (data)[1]))

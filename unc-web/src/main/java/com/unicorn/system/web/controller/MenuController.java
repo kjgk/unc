@@ -3,7 +3,8 @@ package com.unicorn.system.web.controller;
 import com.unicorn.base.web.BaseController;
 import com.unicorn.core.domain.po.Menu;
 import com.unicorn.system.service.MenuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +16,14 @@ import static com.unicorn.base.web.ApiNamespace.API_V1;
 
 @RestController
 @RequestMapping(API_V1 + "/system/menu")
+@AllArgsConstructor
+@Secured("ROLE_ADMIN")
 public class MenuController extends BaseController {
 
-    @Autowired
     private MenuService menuService;
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List loadMenuTree(@RequestParam(value = "id", required = false) Long objectId
             , @RequestParam(defaultValue = "false") Boolean fetchChild
             , @RequestParam(defaultValue = "false") Boolean backward

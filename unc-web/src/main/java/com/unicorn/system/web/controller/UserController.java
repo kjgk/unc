@@ -1,17 +1,18 @@
 package com.unicorn.system.web.controller;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.unicorn.core.query.PageInfo;
-import com.unicorn.core.query.QueryInfo;
-import com.unicorn.system.userdetails.UserDetail;
 import com.unicorn.core.domain.po.Account;
 import com.unicorn.core.domain.po.QUser;
 import com.unicorn.core.domain.po.User;
+import com.unicorn.core.query.PageInfo;
+import com.unicorn.core.query.QueryInfo;
 import com.unicorn.system.service.AccountService;
 import com.unicorn.system.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.unicorn.system.userdetails.UserDetail;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ import static com.unicorn.base.web.ApiNamespace.API_V1;
 
 @RestController
 @RequestMapping(API_V1 + "/system/user")
+@AllArgsConstructor
+@Secured("ROLE_ADMIN")
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -82,6 +83,7 @@ public class UserController {
         accountService.saveAccount(account);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
     public void modifyPassword(@RequestBody Map data) {
 
