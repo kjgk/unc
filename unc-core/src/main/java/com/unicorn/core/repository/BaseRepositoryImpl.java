@@ -179,6 +179,7 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
         // 获取当前操作的表名
         String annotationInfo = this.entityInformation.getJavaType().getAnnotation(Table.class).toString();
         String tableName = org.apache.commons.lang3.StringUtils.substringBetween(annotationInfo, "name=", ",");
+        tableName = tableName.replaceAll("\"", "").replaceAll("'", "");
 
         String sql = "select a.parent_id, a.order_no from " + tableName + " a where a.objectid = ?";
 
