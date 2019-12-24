@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 
 import static com.unicorn.base.web.ApiNamespace.API_V1;
 
@@ -34,7 +35,7 @@ public class FileDownloadController {
 
         response.setHeader("Content-Length", file.length() + "");
         if (filename != null) {
-            response.setHeader("Content-Disposition", "filename=" + new String(filename.getBytes("GBK"), "ISO-8859-1"));
+            response.setHeader("Content-Disposition", "filename=" + new String(filename.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
         }
         if ("image".equals(type)) {
             response.setContentType("image/jpg");

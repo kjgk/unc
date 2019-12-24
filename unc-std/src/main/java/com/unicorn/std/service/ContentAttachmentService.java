@@ -41,10 +41,14 @@ public class ContentAttachmentService {
         if (!CollectionUtils.isEmpty(currentList)) {
             for (ContentAttachment currentAttachment : currentList) {
                 boolean delete = true;
-                for (AttachmentInfo attachment : attachments) {
-                    if (attachment.getAttachmentId() != null && currentAttachment.getAttachment().getObjectId().equals(attachment.getAttachmentId())) {
-                        delete = false;
-                        break;
+                if (attachments != null && attachments.length > 0) {
+                    for (AttachmentInfo attachment : attachments) {
+                        if (attachment != null
+                                && attachment.getAttachmentId() != null
+                                && currentAttachment.getAttachment().getObjectId().equals(attachment.getAttachmentId())) {
+                            delete = false;
+                            break;
+                        }
                     }
                 }
                 if (delete) {
@@ -67,7 +71,7 @@ public class ContentAttachmentService {
         if (attachments != null && attachments.length > 0) {
             String path = "/" + relatedType + "/" + category + "/" + DateUtils.format(new Date(), "yyyyMM");
             for (AttachmentInfo attachmentInfo : attachments) {
-                if (attachmentInfo.getAttachmentId() == null) {
+                if (attachmentInfo != null && attachmentInfo.getAttachmentId() == null) {
                     Attachment attachment = new Attachment();
                     ContentAttachment contentAttachment = new ContentAttachment();
                     attachment.setAttachmentInfo(attachmentInfo);
