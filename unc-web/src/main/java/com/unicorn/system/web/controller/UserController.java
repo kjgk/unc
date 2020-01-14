@@ -37,7 +37,9 @@ public class UserController {
         QUser user = QUser.user;
         BooleanExpression expression = user.isNotNull();
         if (!StringUtils.isEmpty(keyword)) {
-            expression = expression.and(user.name.containsIgnoreCase(keyword).or(user.userRoleList.any().role.name.containsIgnoreCase(keyword)));
+            expression = expression.and(user.name.containsIgnoreCase(keyword)
+                    .or(user.account.name.containsIgnoreCase(keyword))
+                    .or(user.userRoleList.any().role.name.containsIgnoreCase(keyword)));
         }
         if (!StringUtils.isEmpty(roleId)) {
             expression = expression.and(user.userRoleList.any().role.objectId.eq(roleId));

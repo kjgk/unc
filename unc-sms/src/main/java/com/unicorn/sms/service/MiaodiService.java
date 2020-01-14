@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 @Component
 public class MiaodiService {
@@ -30,29 +31,43 @@ public class MiaodiService {
     private MiaodiConfigurationProperties configurationProperties;
 
 
-    public void sendVerifyCode(String phoneNo, String tunnel) {
+    public void sendVerifyCode(String phoneNo, String category) {
+
+        if (StringUtils.isEmpty(phoneNo) || !Pattern.matches("^1[3456789][0-9]{9}$", phoneNo)) {
+            throw new ServiceException("手机号码不合法！");
+        }
+
+        if (StringUtils.isEmpty(category)) {
+            throw new ServiceException("category 不能为空！");
+        }
 
         String code = Long.toString(Identities.randomLong()).substring(0, 6);
 
         // 将验证码保存到redis
-        String key = getRedisKey(phoneNo, tunnel);
-        redisTemplate.opsForValue().set(key, code, 30, TimeUnit.MINUTES);
+        String key = getRedisKey(phoneNo, category);
+        redisTemplate.opsForValue().set(key, code, 10, TimeUnit.MINUTES);
 
         // 发送
         sendMessage(phoneNo, configurationProperties.getTemplateId(), code);
     }
 
-    public String getVerifyCode(String phoneNo, String tunnel) {
+    public String getVerifyCode(String phoneNo, String category) {
 
-        return redisTemplate.opsForValue().get(getRedisKey(phoneNo, tunnel));
+        return redisTemplate.opsForValue().get(getRedisKey(phoneNo, category));
     }
 
-    public void removeVerifyCode(String phoneNo, String tunnel) {
+    public void removeVerifyCode(String phoneNo, String category) {
 
-        redisTemplate.delete(getRedisKey(phoneNo, tunnel));
+        redisTemplate.delete(getRedisKey(phoneNo, category));
     }
+
 
     public void sendMessage(String phoneNo, String templateId, String... params) {
+
+        sendMessage(new String[]{phoneNo}, templateId, params);
+    }
+
+    public void sendMessage(String[] phoneNumbers, String templateId, String... params) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
         String timestamp = System.currentTimeMillis() + "";
@@ -61,6 +76,11 @@ public class MiaodiService {
         for (String param : params) {
             paramsText += (StringUtils.isEmpty(paramsText) ? "" : ",") + param;
         }
+        String to = "";
+        for (String phoneNo : phoneNumbers) {
+            to += (StringUtils.isEmpty(to) ? "" : ",") + phoneNo;
+        }
+
         try {
             Request request = new Request.Builder()
                     .url(configurationProperties.getUrl())
@@ -68,7 +88,7 @@ public class MiaodiService {
                             "accountSid=" + configurationProperties.getAccountSid()
                                     + "&templateid=" + templateId
                                     + "&param=" + URLEncoder.encode(paramsText, "utf-8")
-                                    + "&to=" + phoneNo
+                                    + "&to=" + to
                                     + "&timestamp=" + timestamp
                                     + "&sig=" + sign))
                     .header("Content-Type", "application/x-www-form-urlencoded").build();
@@ -87,8 +107,8 @@ public class MiaodiService {
         }
     }
 
-    private String getRedisKey(String phoneNo, String tunnel) {
+    private String getRedisKey(String phoneNo, String category) {
 
-        return ("sms_verification:" + phoneNo + ":" + tunnel).toLowerCase();
+        return ("sms_verification:" + phoneNo + ":" + category).toLowerCase();
     }
 }

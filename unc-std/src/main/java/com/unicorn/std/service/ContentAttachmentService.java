@@ -26,7 +26,7 @@ public class ContentAttachmentService {
 
     private AttachmentService attachmentService;
 
-    public void save(String relatedType, Long relatedId, String category, AttachmentInfo... attachments) {
+    public List<ContentAttachment> save(String relatedType, Long relatedId, String category, AttachmentInfo... attachments) {
 
         if (category == null) {
             category = "default";
@@ -34,6 +34,8 @@ public class ContentAttachmentService {
 
         Assert.notNull(relatedType, "relatedType不能为空！");
         Assert.notNull(relatedId, "relatedId不能为空！");
+
+        List<ContentAttachment> result = new ArrayList<>();
 
         // 删除附件
         List<ContentAttachment> currentList = contentAttachmentRepository.getAttachmentList(relatedId, category);
@@ -64,6 +66,7 @@ public class ContentAttachmentService {
         for (ContentAttachment contentAttachment : currentList) {
             if (!deletedList.contains(contentAttachment.getObjectId())) {
                 contentAttachment.setOrderNo(orderNo++);
+                result.add(contentAttachment);
             }
         }
 
@@ -80,10 +83,11 @@ public class ContentAttachmentService {
                     contentAttachment.setRelatedType(relatedType);
                     contentAttachment.setCategory(category);
                     contentAttachment.setOrderNo(orderNo++);
-                    contentAttachmentRepository.save(contentAttachment);
+                    result.add(contentAttachmentRepository.save(contentAttachment));
                 }
             }
         }
+        return result;
     }
 
     public ContentAttachment getContentAttachment(Long objectId) {
