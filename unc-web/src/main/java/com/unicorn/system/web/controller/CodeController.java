@@ -22,7 +22,7 @@ public class CodeController extends BaseController {
 
     private CodeService codeService;
 
-    @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    @GetMapping("/tree")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List loadCodeTree(@RequestParam(value = "id", required = false) Long objectId, String tag
             , @RequestParam(defaultValue = "false") Boolean fetchChild
@@ -57,30 +57,30 @@ public class CodeController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
+    @GetMapping("/{objectId}")
     public Code get(@PathVariable Long objectId) {
 
         return codeService.getCode(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public Code create(@RequestBody Code code) {
 
         return codeService.saveCode(code);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
+    @PatchMapping("/{objectId}")
     public void update(@RequestBody Code code, @PathVariable Long objectId) {
 
         codeService.saveCode(code);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{objectId}")
     public void delete(@PathVariable("objectId") Long objectId) {
         codeService.deleteCode(objectId);
     }
 
-    @RequestMapping(value = "/{objectId}/move", method = RequestMethod.POST)
+    @PostMapping("/{objectId}/move")
     public Map move(@RequestBody Map params, @PathVariable Long objectId) {
 
         return codeService.moveCode(objectId, Long.valueOf(params.get("targetId").toString()), (Integer) params.get("position"));

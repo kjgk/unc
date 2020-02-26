@@ -26,7 +26,7 @@ public class RoleController {
 
     private RoleService roleService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Page<Role> query(PageInfo pageInfo, String keyword) {
 
         QRole role = QRole.role;
@@ -34,53 +34,53 @@ public class RoleController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(role.name.containsIgnoreCase(keyword).or(role.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "name"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, Sort.by(Sort.Direction.DESC, "name"));
         return roleService.getRole(queryInfo);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping("/list")
     public List<BasicInfo> list() {
 
         return roleService.getRole();
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
+    @GetMapping("/{objectId}")
     public Role get(@PathVariable Long objectId) {
 
         return roleService.getRole(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public Role create(@RequestBody Role role) {
 
         return roleService.saveRole(role);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
+    @PatchMapping("/{objectId}")
     public void update(@RequestBody Role role, @PathVariable Long objectId) {
 
         roleService.saveRole(role);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{objectId}")
     public void delete(@PathVariable("objectId") Long objectId) {
 
         roleService.deleteRole(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     public void delete(@RequestBody List<Long> objectIds) {
 
         roleService.deleteRole(objectIds);
     }
 
-    @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.GET)
+    @GetMapping("/{objectId}/menu")
     public List getRoleMenu(@PathVariable("objectId") Long objectId) {
 
         return roleService.getRoleMenuList(objectId);
     }
 
-    @RequestMapping(value = "/{objectId}/menu", method = RequestMethod.POST)
+    @PostMapping("/{objectId}/menu")
     public void saveRoleMenu(@PathVariable("objectId") Long objectId, @RequestBody Long[] menus) {
 
         roleService.saveRoleMenu(objectId, menus);

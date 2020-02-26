@@ -2,7 +2,7 @@ package com.unicorn.system.service;
 
 import com.unicorn.core.domain.po.Code;
 import com.unicorn.core.repository.CodeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -13,9 +13,9 @@ import java.util.Map;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class CodeService {
 
-    @Autowired
     private CodeRepository codeRepository;
 
     public Code getRootCode() {

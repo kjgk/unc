@@ -2,10 +2,10 @@ package com.unicorn.system.web.controller;
 
 import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.utils.Identities;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +20,12 @@ import static com.unicorn.base.web.ApiNamespace.API_V1;
 
 @RestController
 @RequestMapping(API_V1 + "/system/file/upload")
+@AllArgsConstructor
 public class FileUploadController {
 
-    @Autowired
     private EnvironmentService environmentService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public Map upload(@RequestParam(value = "attachment") MultipartFile attachment, HttpServletRequest request) throws Exception {
 
         String filename = attachment.getOriginalFilename();

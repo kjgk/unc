@@ -34,7 +34,7 @@ public class SecurityLogController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(securityLog.account.containsIgnoreCase(keyword).or(securityLog.clientIp.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, Sort.by(Sort.Direction.DESC, "createdDate"));
         return securityLogService.getSecurityLog(queryInfo);
     }
 }

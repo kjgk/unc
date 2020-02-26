@@ -1,10 +1,10 @@
 package com.unicorn.system.service;
 
+import com.unicorn.core.domain.po.Authority;
 import com.unicorn.core.domain.vo.BasicInfo;
 import com.unicorn.core.query.QueryInfo;
-import com.unicorn.core.domain.po.Authority;
 import com.unicorn.core.repository.AuthorityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class AuthorityService {
 
-    @Autowired
     private AuthorityRepository authorityRepository;
 
     public Page<Authority> getAuthority(QueryInfo queryInfo) {

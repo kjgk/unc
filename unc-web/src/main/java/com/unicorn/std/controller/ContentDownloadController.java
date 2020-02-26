@@ -3,12 +3,9 @@ package com.unicorn.std.controller;
 import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.service.AttachmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -17,15 +14,14 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/content/download")
+@AllArgsConstructor
 public class ContentDownloadController {
 
-    @Autowired
     private EnvironmentService environmentService;
 
-    @Autowired
     private AttachmentService attachmentService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public void download(HttpServletResponse response, @RequestParam Long id) throws Exception {
 
         Attachment attachment = attachmentService.getAttachment(id);

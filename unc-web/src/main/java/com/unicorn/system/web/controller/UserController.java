@@ -31,7 +31,7 @@ public class UserController {
 
     private AccountService accountService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Page<User> list(PageInfo pageInfo, @RequestParam(value = "role", required = false) Long roleId, String keyword) {
 
         QUser user = QUser.user;
@@ -44,29 +44,29 @@ public class UserController {
         if (!StringUtils.isEmpty(roleId)) {
             expression = expression.and(user.userRoleList.any().role.objectId.eq(roleId));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, Sort.by(Sort.Direction.DESC, "createdDate"));
         return userService.getUser(queryInfo);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
+    @GetMapping("/{objectId}")
     public User get(@PathVariable Long objectId) {
 
         return userService.getUser(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public User create(@RequestBody User user) {
 
         return userService.saveUser(user);
     }
 
-    @RequestMapping(value = "{objectId}", method = RequestMethod.PATCH)
+    @PatchMapping("/{objectId}")
     public void update(@RequestBody User user, @PathVariable Long objectId) {
 
         userService.saveUser(user);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{objectId}")
     public void delete(@PathVariable("objectId") Long objectId) {
         userService.deleteUser(objectId);
     }
@@ -74,8 +74,8 @@ public class UserController {
     /**
      * ***************** 帐号 *******************
      */
-    @RequestMapping(value = "/{objectId}/account", method = RequestMethod.PUT)
-    public void saveAccount(@RequestBody Map data, @PathVariable Long objectId) throws Exception {
+    @PutMapping("/{objectId}/account")
+    public void saveAccount(@RequestBody Map data, @PathVariable Long objectId) {
 
         User user = userService.getUser(objectId);
         Account account = new Account();
@@ -86,7 +86,7 @@ public class UserController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @RequestMapping(value = "/modifyPassword", method = RequestMethod.PUT)
+    @PutMapping("/modifyPassword")
     public void modifyPassword(@RequestBody Map data) {
 
         UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

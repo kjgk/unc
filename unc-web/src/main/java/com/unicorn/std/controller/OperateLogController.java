@@ -38,7 +38,7 @@ public class OperateLogController {
                             .or(operateLog.servletPath.containsIgnoreCase(keyword))
             );
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, Sort.by(Sort.Direction.DESC, "createdDate"));
         return operateLogService.getOperateLog(queryInfo);
     }
 }

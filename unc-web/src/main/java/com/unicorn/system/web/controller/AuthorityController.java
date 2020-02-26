@@ -26,7 +26,7 @@ public class AuthorityController {
 
     private AuthorityService authorityService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Page<Authority> list(PageInfo pageInfo, String keyword) {
 
         QAuthority authority = QAuthority.authority;
@@ -35,41 +35,41 @@ public class AuthorityController {
         if (!StringUtils.isEmpty(keyword)) {
             expression = expression.and(authority.name.containsIgnoreCase(keyword).or(authority.tag.containsIgnoreCase(keyword)));
         }
-        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, new Sort(Sort.Direction.DESC, "createdDate"));
+        QueryInfo queryInfo = new QueryInfo(expression, pageInfo, Sort.by(Sort.Direction.DESC, "createdDate"));
         return authorityService.getAuthority(queryInfo);
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping("/list")
     public List<BasicInfo> list() {
 
         return authorityService.getAuthority();
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
+    @GetMapping("/{objectId}")
     public Authority get(@PathVariable Long objectId) {
 
         return authorityService.getAuthority(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public Authority create(@RequestBody Authority authority) {
 
         return authorityService.saveAuthority(authority);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
+    @PatchMapping(value = "/{objectId}")
     public void update(@RequestBody Authority authority, @PathVariable Long objectId) {
 
         authorityService.saveAuthority(authority);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{objectId}")
     public void delete(@PathVariable("objectId") Long objectId) {
 
         authorityService.deleteAuthority(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     public void delete(@RequestBody List<Long> objectIds) {
 
         authorityService.deleteAuthority(objectIds);

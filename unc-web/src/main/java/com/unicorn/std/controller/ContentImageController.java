@@ -5,7 +5,7 @@ import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.service.AttachmentService;
 import com.unicorn.std.utils.ThumbnailUtils;
 import com.unicorn.utils.FileTypeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
@@ -17,15 +17,14 @@ import java.io.FileInputStream;
 
 @RestController
 @RequestMapping("/content/image")
+@AllArgsConstructor
 public class ContentImageController {
 
-    @Autowired
     private EnvironmentService environmentService;
 
-    @Autowired
     private AttachmentService attachmentService;
 
-    @RequestMapping(value = "/{tag}", method = RequestMethod.GET)
+    @GetMapping("/{tag}")
     public void download(HttpServletResponse response, @PathVariable String tag) throws Exception {
 
         File file;
@@ -74,7 +73,7 @@ public class ContentImageController {
         FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public void download(HttpServletResponse response, Long attachmentId, @RequestParam(name = "size", required = false) String convert) throws Exception {
 
         if (attachmentId == null) {

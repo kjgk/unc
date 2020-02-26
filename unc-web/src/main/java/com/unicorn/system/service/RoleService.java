@@ -1,15 +1,15 @@
 package com.unicorn.system.service;
 
-import com.unicorn.core.domain.vo.BasicInfo;
-import com.unicorn.core.query.QueryInfo;
 import com.unicorn.core.domain.po.Menu;
 import com.unicorn.core.domain.po.Role;
 import com.unicorn.core.domain.po.RoleAuthority;
 import com.unicorn.core.domain.po.RoleMenu;
+import com.unicorn.core.domain.vo.BasicInfo;
+import com.unicorn.core.query.QueryInfo;
 import com.unicorn.core.repository.RoleAuthorityRepository;
 import com.unicorn.core.repository.RoleMenuRepository;
 import com.unicorn.core.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,15 +21,13 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class RoleService {
 
-    @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
     private RoleMenuRepository roleMenuRepository;
 
-    @Autowired
     private RoleAuthorityRepository roleAuthorityRepository;
 
     public Page<Role> getRole(QueryInfo queryInfo) {

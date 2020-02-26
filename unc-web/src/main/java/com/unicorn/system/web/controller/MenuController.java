@@ -22,7 +22,7 @@ public class MenuController extends BaseController {
 
     private MenuService menuService;
 
-    @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    @GetMapping("/tree")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public List loadMenuTree(@RequestParam(value = "id", required = false) Long objectId
             , @RequestParam(defaultValue = "false") Boolean fetchChild
@@ -52,30 +52,30 @@ public class MenuController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.GET)
+    @GetMapping("/{objectId}")
     public Menu get(@PathVariable Long objectId) {
 
         return menuService.getMenu(objectId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public Menu create(@RequestBody Menu menu) {
 
         return menuService.saveMenu(menu);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.PATCH)
+    @PatchMapping("/{objectId}")
     public void update(@RequestBody Menu menu, @PathVariable Long objectId) {
 
         menuService.saveMenu(menu);
     }
 
-    @RequestMapping(value = "/{objectId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{objectId}")
     public void delete(@PathVariable("objectId") Long objectId) {
         menuService.deleteMenu(objectId);
     }
 
-    @RequestMapping(value = "/{objectId}/move", method = RequestMethod.POST)
+    @PostMapping("/{objectId}/move")
     public Map move(@RequestBody Map params, @PathVariable Long objectId) {
 
         return menuService.moveMenu(objectId, Long.valueOf(params.get("targetId").toString()), (Integer) params.get("position"));

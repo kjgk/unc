@@ -10,7 +10,6 @@ import com.unicorn.core.repository.RoleMenuRepository;
 import com.unicorn.core.repository.UserRepository;
 import com.unicorn.core.repository.UserRoleRepository;
 import com.unicorn.system.userdetails.UserDetail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,17 +24,20 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
     private UserRoleRepository userRoleRepository;
 
-    @Autowired
     private RoleMenuRepository roleMenuRepository;
+
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, UserRoleRepository userRoleRepository, RoleMenuRepository roleMenuRepository) {
+        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.roleMenuRepository = roleMenuRepository;
+    }
 
     private final Long SYSTEM_USER_ID = 1000L;
 

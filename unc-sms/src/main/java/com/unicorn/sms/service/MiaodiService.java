@@ -6,10 +6,9 @@ import com.unicorn.core.exception.ServiceException;
 import com.unicorn.sms.config.MiaodiConfigurationProperties;
 import com.unicorn.utils.Identities;
 import com.unicorn.utils.Md5Utils;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,16 +19,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @Component
+@Slf4j
+@AllArgsConstructor
 public class MiaodiService {
 
-    private final static Logger logger = LoggerFactory.getLogger(MiaodiService.class);
-
-    @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Autowired
     private MiaodiConfigurationProperties configurationProperties;
-
 
     public void sendVerifyCode(String phoneNo, String category) {
 
@@ -97,12 +93,12 @@ public class MiaodiService {
             JSONObject jsonObject = JSON.parseObject(result);
             if (!"0000".equals(jsonObject.getString("respCode"))) {
                 String message = "短信发送失败：" + jsonObject.getString("respDesc");
-                logger.error(message);
+                log.error(message);
                 throw new ServiceException(message);
             }
         } catch (IOException e) {
             String message = "短信发送失败：" + e.getMessage();
-            logger.error(message);
+            log.error(message);
             throw new ServiceException(message);
         }
     }

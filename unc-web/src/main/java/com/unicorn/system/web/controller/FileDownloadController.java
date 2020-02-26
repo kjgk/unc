@@ -1,10 +1,10 @@
 package com.unicorn.system.web.controller;
 
 import com.unicorn.core.service.EnvironmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,15 +15,14 @@ import java.nio.charset.StandardCharsets;
 
 import static com.unicorn.base.web.ApiNamespace.API_V1;
 
-
 @RestController
 @RequestMapping(API_V1 + "/system/file/download")
+@AllArgsConstructor
 public class FileDownloadController {
 
-    @Autowired
     private EnvironmentService environmentService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String filename = request.getParameter("filename");

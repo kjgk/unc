@@ -5,6 +5,7 @@ import com.unicorn.std.repository.AttachmentRepository;
 import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.utils.FileTypeUtils;
 import com.unicorn.utils.SnowflakeIdWorker;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @Service
 @Transactional
+@Slf4j
 public class AttachmentService {
 
     @Autowired
@@ -42,9 +44,14 @@ public class AttachmentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String fileType = FileTypeUtils.getFileType(file);
+        if (StringUtils.isEmpty(fileType)) {
+            log.warn("无法识别的文件类型，用后缀名代替");
+            fileType = attachment.getAttachmentInfo().getFilename().substring(attachment.getAttachmentInfo().getFilename().lastIndexOf(".") + 1);
+        }
         attachment.setFileSize(file.length());
         attachment.setFilename(filename);
-        attachment.setFileType(FileTypeUtils.getFileType(file));
+        attachment.setFileType(fileType);
         attachment.setOriginalFilename(attachment.getAttachmentInfo().getFilename());
         return attachmentRepository.save(attachment);
     }

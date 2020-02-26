@@ -12,18 +12,12 @@ public class EnvironmentService {
 
     private EnvironmentService.Path path;
 
-    private EnvironmentService.Password password;
-
     public String getTempPath() {
         return path.getTemp();
     }
 
     public String getUploadPath() {
         return path.getUpload();
-    }
-
-    public String getPasswordTransport() {
-        return password.getTransport();
     }
 
     @Getter
@@ -38,15 +32,6 @@ public class EnvironmentService {
         }
     }
 
-    @Getter
-    @Setter
-    public static class Password {
-
-        private String transport;
-
-        public Password() {
-        }
-    }
 }
 
 

@@ -8,17 +8,16 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <unc.version>3.2.7-RELEASE</unc.version>
+        <unc.version>3.3.0-SNAPSHOT</unc.version>
     </properties>
 
     <groupId>com.unicorn</groupId>
     <artifactId>unc</artifactId>
-    <version>3.2.7-RELEASE</version>
+    <version>3.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>unc-core</module>
-        <module>unc-poi</module>
         <module>unc-std</module>
         <module>unc-sms</module>
         <module>unc-web</module>
@@ -27,7 +26,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.7.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
     </parent>
 
     <dependencyManagement>
@@ -35,7 +34,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.36</version>
+                <version>1.2.62</version>
             </dependency>
 
             <dependency>
@@ -48,19 +47,19 @@
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
-                <version>3.11.0</version>
+                <version>3.14.7</version>
             </dependency>
 
             <dependency>
                 <groupId>net.coobird</groupId>
                 <artifactId>thumbnailator</artifactId>
-                <version>0.4.8</version>
+                <version>0.4.11</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.5</version>
+                <version>2.6</version>
             </dependency>
 
             <dependency>
@@ -74,26 +73,6 @@
                 <artifactId>kaptcha</artifactId>
                 <version>2.3.2</version>
             </dependency>
-
-            <!--poi start-->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>ooxml-schemas</artifactId>
-                <version>1.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>3.16</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>3.16</version>
-            </dependency>
-            <!--poi end-->
 
             <dependency>
                 <groupId>com.unicorn</groupId>
@@ -119,13 +98,6 @@
             <dependency>
                 <groupId>com.unicorn</groupId>
                 <artifactId>unc-web</artifactId>
-                <type>jar</type>
-                <version>${unc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.unicorn</groupId>
-                <artifactId>unc-poi</artifactId>
                 <type>jar</type>
                 <version>${unc.version}</version>
             </dependency>
