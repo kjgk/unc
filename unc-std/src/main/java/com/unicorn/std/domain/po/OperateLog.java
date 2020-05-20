@@ -29,8 +29,10 @@ public class OperateLog extends DefaultLoggable {
 
     private String clientIp;
 
+    @Column(columnDefinition = "text")
     private String servletPath;
 
+    @Column(columnDefinition = "text")
     private String queryString;
 
     private String method;

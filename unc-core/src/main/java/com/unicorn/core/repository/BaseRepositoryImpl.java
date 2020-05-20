@@ -9,7 +9,6 @@ import com.unicorn.core.content.ApplicationContextProvider;
 import com.unicorn.core.domain.Identifiable;
 import com.unicorn.core.domain.Persistent;
 import com.unicorn.core.domain.vo.BasicInfo;
-import com.unicorn.core.exception.ServiceException;
 import com.unicorn.core.query.QueryInfo;
 import com.unicorn.utils.SnowflakeIdWorker;
 import org.springframework.data.domain.Page;
@@ -70,12 +69,10 @@ public class BaseRepositoryImpl<T extends Identifiable> extends QuerydslJpaRepos
         Pageable pageable = PageRequest.of(0, 1);
         Predicate expression = pretreatmentPredicate(predicate);
         Page<T> page = findAll(expression, pageable);
-        if (page.getSize() == 0) {
+        if (page.getTotalElements() == 0) {
             return null;
-        } else if (page.getSize() == 1) {
-            return (S) page.getContent().get(0);
         } else {
-            throw new ServiceException("More than one row with the given predicate");
+            return (S) page.getContent().get(0);
         }
     }
 
