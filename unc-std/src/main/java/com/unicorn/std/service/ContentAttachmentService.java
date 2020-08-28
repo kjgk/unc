@@ -1,17 +1,22 @@
 package com.unicorn.std.service;
 
 import com.unicorn.core.domain.vo.AttachmentInfo;
+import com.unicorn.core.service.EnvironmentService;
 import com.unicorn.std.domain.po.Attachment;
 import com.unicorn.std.domain.po.ContentAttachment;
 import com.unicorn.std.repository.ContentAttachmentRepository;
 import com.unicorn.utils.DateUtils;
+import com.unicorn.utils.Identities;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.FileCopyUtils;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +30,8 @@ public class ContentAttachmentService {
     private ContentAttachmentRepository contentAttachmentRepository;
 
     private AttachmentService attachmentService;
+
+    private EnvironmentService environmentService;
 
     public List<ContentAttachment> save(String relatedType, Long relatedId, String category, AttachmentInfo... attachments) {
 
@@ -90,6 +97,30 @@ public class ContentAttachmentService {
         return result;
     }
 
+    public void duplicate(Long relatedId, String category, Long newRelatedId) {
+
+        List<ContentAttachment> contentAttachmentList = getAttachmentList(relatedId, category);
+        if (!CollectionUtils.isEmpty(contentAttachmentList)) {
+            List<AttachmentInfo> attachmentInfoList = new ArrayList();
+            for (ContentAttachment contentAttachment : contentAttachmentList) {
+                String tempFilename = Identities.randomLong() + "";
+                try {
+                    FileCopyUtils.copy(
+                            new File(environmentService.getUploadPath() + contentAttachment.getAttachment().getFilename()),
+                            new File(environmentService.getTempPath() + "/" + tempFilename)
+                    );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                AttachmentInfo attachmentInfo = new AttachmentInfo();
+                attachmentInfo.setFilename(contentAttachment.getAttachment().getOriginalFilename());
+                attachmentInfo.setTempFilename(tempFilename);
+                attachmentInfoList.add(attachmentInfo);
+            }
+            save(contentAttachmentList.get(0).getRelatedType(), newRelatedId, category, attachmentInfoList.toArray(new AttachmentInfo[]{}));
+        }
+    }
+
     public ContentAttachment getContentAttachment(Long objectId) {
 
         return contentAttachmentRepository.get(objectId);
@@ -103,6 +134,11 @@ public class ContentAttachmentService {
     public List<ContentAttachment> getAttachmentList(Long relatedId, String category) {
 
         return contentAttachmentRepository.getAttachmentList(relatedId, category);
+    }
+
+    public AttachmentInfo getAttachmentInfoByAttachmentId(Long attachmentId) {
+
+        return buildAttachmentInfo(attachmentService.getAttachment(attachmentId));
     }
 
     public AttachmentInfo getAttachmentInfo(Long relatedId) {
@@ -141,44 +177,7 @@ public class ContentAttachmentService {
                 .collect(Collectors.toList());
     }
 
-    /*  */
-
-    /**************************** 附件下载 ****************************//*
-    public AttachmentInfo getAttachmentLink(Long relatedId) {
-
-        List<ContentAttachment> attachmentList = getAttachmentList(relatedId);
-        if (CollectionUtils.isEmpty(attachmentList)) {
-            return null;
-        }
-        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
-    }
-
-    public AttachmentInfo getAttachmentLink(Long relatedId, String category) {
-
-        List<ContentAttachment> attachmentList = getAttachmentList(relatedId, category);
-        if (CollectionUtils.isEmpty(attachmentList)) {
-            return null;
-        }
-        return buildAttachmentInfo(attachmentList.get(0).getAttachment());
-    }
-
-    public List<AttachmentInfo> getAttachmentLinks(Long relatedId) {
-
-        return getAttachmentList(relatedId)
-                .stream()
-                .map(ContentAttachment::getAttachment)
-                .map(this::buildAttachmentInfo)
-                .collect(Collectors.toList());
-    }
-
-    public List<AttachmentInfo> getAttachmentLinks(Long relatedId, String category) {
-
-        return getAttachmentList(relatedId, category)
-                .stream()
-                .map(ContentAttachment::getAttachment)
-                .map(this::buildAttachmentInfo)
-                .collect(Collectors.toList());
-    }*/
+    /**************************** 附件下载 ****************************/
     private AttachmentInfo buildAttachmentInfo(Attachment attachment) {
 
         AttachmentInfo attachmentInfo = new AttachmentInfo();
