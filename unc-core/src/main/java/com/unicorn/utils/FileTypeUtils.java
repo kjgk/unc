@@ -137,23 +137,27 @@ public class FileTypeUtils {
      * 获取图片文件实际类型,若不是图片则返回null
      */
     public static String getImageFileType(File file) {
-        if (isImage(file)) {
-            try {
-                ImageInputStream iis = ImageIO.createImageInputStream(file);
-                Iterator<ImageReader> iterator = ImageIO.getImageReaders(iis);
-                if (!iterator.hasNext()) {
-                    return null;
-                }
-                ImageReader reader = iterator.next();
-                iis.close();
-                return reader.getFormatName();
-            } catch (IOException e) {
-                return null;
-            } catch (Exception e) {
+
+        ImageInputStream iis = null;
+        try {
+            iis = ImageIO.createImageInputStream(file);
+            Iterator<ImageReader> iterator = ImageIO.getImageReaders(iis);
+            if (!iterator.hasNext()) {
                 return null;
             }
+            ImageReader reader = iterator.next();
+            return reader.getFormatName();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            if (iis != null) {
+                try {
+                    iis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return null;
     }
 
     /**
